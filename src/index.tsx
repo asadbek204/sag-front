@@ -1,9 +1,17 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { ElementLight } from "./screens/ElementLight";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { LanguageProvider } from "./contexts/LanguageContext";
+import { HomePage } from "./screens/HomePage";
 
 createRoot(document.getElementById("app") as HTMLElement).render(
   <StrictMode>
-    <ElementLight />
+    <LanguageProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+        </Routes>
+      </Router>
+    </LanguageProvider>
   </StrictMode>,
 );
