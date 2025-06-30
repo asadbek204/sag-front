@@ -8,7 +8,7 @@ export const InfoSection = () => {
   const { t } = useLanguage();
 
   return (
-    <section className="flex flex-wrap gap-4 py-8  container my-8">
+    <section className="flex flex-wrap gap-4 py-8 container my-8 justify-center">
       <div className="relative w-[275px] h-[375px] rounded overflow-hidden shadow group">
         <img src={gilamImg} alt="" className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-black/30" />
