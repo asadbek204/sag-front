@@ -103,7 +103,7 @@ export const Navbar = (): JSX.Element => {
         onMouseLeave={() => setHovered(false)}
       >
         <div className="flex flex-col w-full items-center">
-          <div className="flex flex-col container w-full items-center px-[15px] py-0 ">
+          <div className="flex flex-col container w-full items-center py-0 ">
             <header className="flex flex-col items-start  self-stretch w-full flex-[0_0_auto] bg-transparent">
               <div className="flex items-center justify-end pt-4 pb-0 px-0  self-stretch w-full">
                 {/* Location */}

@@ -70,4 +70,22 @@ export const uzb = {
     'Namangan viloyati',
     'Sirdaryo viloyati',
   ],
+  'footer.categories': "Kategoriyalar",
+  'footer.information': "Ma'lumotlar",
+  'footer.callcenter': "Call-center",
+  'footer.about': "SAG haqida",
+  'footer.stores': "Do'konlar",
+  'footer.blogs': "Bloglar",
+  'footer.sales': "Chegirmalar",
+  'footer.copyright': "©2021-2025 'SAM-ANTEP-GILAM' MChJ STIR 203212614. Barcha huquqlar himoyalangan",
+
+  
+  'info.carpets': 'Gilamlar',
+  'info.carpets.classic': 'Klassik dizayn',
+  'info.carpets.neoclassic': 'Neoklassik dizayn',
+  'info.carpets.modern': 'Zamonaviy dizayn',
+  'info.carpets.kids': 'Bolalar dizayni',
+  'info.covrolin': 'Kovrolin',
+  'info.lawn': 'Gazon',
+  'info.runner': "Metrlik yo'lak",
 }; 
