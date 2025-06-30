@@ -63,7 +63,6 @@ export const ContactInfoSection = (): JSX.Element => {
                 ))}
               </div>
             </div>
-
             {/* Information Column */}
             <div className="flex flex-col gap-2 p-4">
               <h3 className="font-normal text-[22px] text-[#01091c] leading-[33px] font-['Inter',Helvetica]">
@@ -81,7 +80,6 @@ export const ContactInfoSection = (): JSX.Element => {
                 ))}
               </div>
             </div>
-
             {/* Call Center Column */}
             <div className="flex flex-col gap-2 p-4">
               <h3 className="font-normal text-[21.5px] text-[#01091c] leading-[33px] font-['Inter',Helvetica]">
@@ -99,7 +97,6 @@ export const ContactInfoSection = (): JSX.Element => {
                 ))}
               </div>
             </div>
-
             {/* Social Media Column */}
             <div className="flex flex-col p-4">
               <div className="flex items-center gap-2.5">
