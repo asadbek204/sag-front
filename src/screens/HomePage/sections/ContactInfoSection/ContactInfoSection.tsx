@@ -1,18 +1,28 @@
 import { Card, CardContent } from "../../../../components/ui/card";
+import linkendin from '../../../../assets/linkendin.png'
+import yt from '../../../../assets/youtube.png'
+import pinterest from '../../../../assets/pinterest.png'
+import instagram from '../../../../assets/instagram.png'
+import telegram from '../../../../assets/telegram.png'
+import facebook from '../../../../assets/facbook.png'
+import { useLanguage } from '../../../../contexts/LanguageContext';
 
 export const ContactInfoSection = (): JSX.Element => {
+  const { t } = useLanguage();
+
   // Category data
   const categories = [
-    { name: "Gilamlar" },
+    { name: t('footer.categories') },
     { name: "Kovrolin" },
     { name: "Gazon" },
   ];
 
   // Information data
   const information = [
-    { name: "SAG haqida" },
-    { name: "Do'konlar" },
-    { name: "Bloglar" },
+    { name: t('footer.about') },
+    { name: t('footer.stores') },
+    { name: t('footer.blogs') },
+    { name: t('footer.sales') },
   ];
 
   // Contact data
@@ -23,23 +33,23 @@ export const ContactInfoSection = (): JSX.Element => {
 
   // Social media data
   const socialMedia = [
-    { name: "LinkedIn", bgImage: "bg-[url(/linkedin-w3mrgj2-png.png)]" },
-    { name: "Pinterest", bgImage: "bg-[url(/pinterest-png.png)]" },
-    { name: "YouTube", bgImage: "bg-[url(/youtube-png.png)]" },
-    { name: "Instagram", bgImage: "bg-[url(/instagram-png.png)]" },
-    { name: "Telegram", bgImage: "bg-[url(/telegram-png.png)]" },
-    { name: "Facebook", bgImage: "bg-[url(/facebook-png.png)]" },
+    { name: "LinkedIn", icon: linkendin, link: "#" },
+    { name: "Pinterest", icon: pinterest, link: "#" },
+    { name: "YouTube", icon: yt, link: "#" },
+    { name: "Instagram", icon: instagram, link: "#" },
+    { name: "Telegram", icon: telegram, link: "#" },
+    { name: "Facebook", icon: facebook, link: "#" },
   ];
 
   return (
-    <footer className="w-full flex justify-center bg-transparent py-8">
-      <Card className="border-none shadow-none max-w-[1206px] w-full">
+    <footer className="w-full flex flex-col items-center bg-transparent py-8">
+      <Card className="border-none shadow-none container w-full">
         <CardContent className="p-0">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             {/* Categories Column */}
             <div className="flex flex-col gap-2 p-4">
               <h3 className="font-normal text-[21.8px] text-[#01091c] leading-[33px] font-['Inter',Helvetica]">
-                Kategoriyalar
+                {t('footer.categories')}
               </h3>
               <div className="flex flex-col gap-1">
                 {categories.map((category, index) => (
@@ -57,7 +67,7 @@ export const ContactInfoSection = (): JSX.Element => {
             {/* Information Column */}
             <div className="flex flex-col gap-2 p-4">
               <h3 className="font-normal text-[22px] text-[#01091c] leading-[33px] font-['Inter',Helvetica]">
-                Ma'lumotlar
+                {t('footer.information')}
               </h3>
               <div className="flex flex-col gap-1">
                 {information.map((info, index) => (
@@ -75,7 +85,7 @@ export const ContactInfoSection = (): JSX.Element => {
             {/* Call Center Column */}
             <div className="flex flex-col gap-2 p-4">
               <h3 className="font-normal text-[21.5px] text-[#01091c] leading-[33px] font-['Inter',Helvetica]">
-                Call-center
+                {t('footer.callcenter')}
               </h3>
               <div className="flex flex-col gap-1">
                 {contactNumbers.map((contact, index) => (
@@ -96,12 +106,15 @@ export const ContactInfoSection = (): JSX.Element => {
                 {socialMedia.map((social, index) => (
                   <a
                     key={index}
-                    href="#"
+                    href={social.link}
                     className="inline-flex flex-col items-start pt-[4.08px] pb-[1.92px]"
                     aria-label={social.name}
+                    target="_blank" rel="noopener noreferrer"
                   >
-                    <div
-                      className={`relative w-[18px] h-[18px] ${social.bgImage} bg-cover bg-[50%_50%]`}
+                    <img
+                      src={social.icon}
+                      alt={social.name}
+                      className="w-[30px] h-[30px] object-cover"
                     />
                   </a>
                 ))}
