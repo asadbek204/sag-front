@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 interface ProductCardProps {
   id: number;
@@ -10,6 +11,7 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ id, name, isNew, isOnSale }: ProductCardProps) => {
+  const { t, language } = useLanguage();
   return (
 <Link to={`/product/${id}`} className="group">
   <div className="bg-white shadow-sm  border-gray-200 overflow-hidden transition-shadow hover:shadow-md">
@@ -21,13 +23,13 @@ const ProductCard = ({ id, name, isNew, isOnSale }: ProductCardProps) => {
       />
 
           {isNew && (
-            <div className="absolute top-0 right-0 w-[60px] h-[60px]">
+            <div className={`absolute top-0 right-0 w-[60px] h-[60px]`}>
               <div className="absolute top-0 right-0 w-0 h-0 border-t-[70px] border-t-white border-l-[70px] border-l-transparent z-10" />
 
               <div className="absolute top-0 right-0 w-0 h-0 border-t-[70px] border-t-green-600 border-l-[70px] border-l-transparent z-20 rotate-180" />
 
-              <span className="absolute top-[45px] right-[33px]  text-white text-[10px] font-bold z-30">
-                Yangi
+              <span className={`absolute top-[45px] right-[33px] text-white font-bold z-30 text-[11px]`}>
+                {t ? t('badge.new') : 'Yangi'}
               </span>
             </div>
           )}
@@ -39,7 +41,7 @@ const ProductCard = ({ id, name, isNew, isOnSale }: ProductCardProps) => {
               <div className="absolute top-0 right-0 w-0 h-0 border-t-[70px] border-t-red-500 border-l-[70px] border-l-transparent z-20 rotate-180" />
 
               <span className="absolute top-[45px] right-[20px]  text-white text-[10px] font-bold z-30">
-                Chegirma
+                {t ? t('badge.discount') : 'Chegirma'}
               </span>
             </div>
           )}

@@ -3,8 +3,10 @@ import Filter from "./Filters";
 import ProductCard from "./ProductCard";
 import { Filter as FilterIcon, ChevronLeft } from 'lucide-react';
 import { Link } from "react-router-dom";
+import { useLanguage } from '../../contexts/LanguageContext';
 
 const Catalog = () => {
+    const { t } = useLanguage();
     const rugData = [
         { id: 1, name: "ANATOLIAN SILK", price: 240000, originalPrice: 325000, shape: "Oval", size: "1 - 100 000 uzs", delivery: "1 - 2 kun oraligi", style: "Klassik dizayn", room: "Mehmonxona", color: "Qizil", isNew: false, isOnSale: true, salesCount: 50 },
         { id: 2, name: "MOVAROUNNAHR", price: 240000, originalPrice: 325000, shape: "To'rtburchak", size: "100 000 - 200 000 uzs", delivery: "3 - 6 kun oraligi", style: "Neoklassik dizayn", room: "Yotoqxona", color: "Yashil", isNew: false, isOnSale: true, salesCount: 30 },
@@ -81,17 +83,15 @@ const Catalog = () => {
             <div className="container mx-auto px-4 py-6">
                 <div className="mb-6">
                     <div className="flex items-center text-base text-gray-600 mb-4">
-                        <ChevronLeft size={20} className="text-gray-600" /> <Link to="/">Bosh sahifa</Link>
+                        <ChevronLeft size={20} className="text-gray-600" /> <Link to="/">{t('nav.home')}</Link>
                         <div
                             className="pl-3 flex items-center cursor-pointer"
                             onClick={() => window.history.back()}
                         >
                             <ChevronLeft size={20} className="text-gray-600" />
-                            Gilamlar
+                            {t('product.breadcrumb.carpets')}
                         </div>
-
-                        <div className="pl-3 flex items-center font-semibold"><ChevronLeft size={20} className="text-gray-600" />Movaraunnaxr</div>
-
+                        <div className="pl-3 flex items-center font-semibold"><ChevronLeft size={20} className="text-gray-600" />{t('product.breadcrumb.collection')}</div>
                     </div>
 
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -100,15 +100,15 @@ const Catalog = () => {
                             className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg w-fit"
                         >
                             <FilterIcon size={16} />
-                            <span>Filtr</span>
+                            <span>{t('catalog.filter')}</span>
                         </button>
 
                         <div className="flex overflow-x-auto gap-4 pb-2">
                             {[
-                                { label: "Barchasi", value: "barchasi" },
-                                { label: "Yangilik", value: "yangilik" },
-                                { label: "Ko'p sotilgan", value: "kop" },
-                                { label: "Chegirma", value: "chegirma" },
+                                { label: t('catalog.all'), value: "barchasi" },
+                                { label: t('catalog.new'), value: "yangilik" },
+                                { label: t('catalog.bestseller'), value: "kop" },
+                                { label: t('catalog.discount'), value: "chegirma" },
                             ].map(({ label, value }) => (
                                 <button
                                     key={value}
@@ -240,7 +240,7 @@ const Catalog = () => {
                             </>
                         ) : (
                             <div className="text-center py-12">
-                                <p className="text-gray-500">Hech qanday mahsulot topilmadi. Filtrlarni o'zgartirib ko'ring.</p>
+                                <p className="text-gray-500">{t('catalog.noProducts')}</p>
                             </div>
                         )}
                     </div>

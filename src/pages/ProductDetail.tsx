@@ -3,7 +3,8 @@ import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/ui/Footer";
 import { ContactInfoSection } from "../screens/HomePage/sections/ContactInfoSection";
 import { ChevronLeft } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useLanguage } from '../contexts/LanguageContext';
 
 const images = [
   "https://www.sagexpress.uz/media/images/products/LU5238_BS73.png",
@@ -15,6 +16,9 @@ const images = [
 
 const ProductDetail = () => {
   const [selectedImage, setSelectedImage] = useState(images[0]);
+  const location = useLocation();
+  const fromSales = location.state?.from === 'sales';
+  const { t } = useLanguage();
 
   // 🔁 Autoplay effect
   useEffect(() => {
@@ -34,22 +38,28 @@ const ProductDetail = () => {
       <Navbar />
 
       <div className="flex flex-wrap  items-center container mx-auto text-base text-gray-600 mb-4 px-4">
-        <ChevronLeft size={20} className="text-gray-600" /> <Link to="/">Bosh sahifa</Link>
-        <div
-          className="pl-3 flex items-center cursor-pointer"
-          onClick={() => window.history.back()}
-        >
-          <ChevronLeft size={20} className="text-gray-600" />
-          Gilamlar
-        </div>
-        <div onClick={() => window.history.back()} className="pl-3 flex items-center">
-          <ChevronLeft size={20} className="text-gray-600" />
-          Movaraunnaxr
-        </div>
-        <div className="pl-3 flex items-center font-semibold">
-          <ChevronLeft size={20} className="text-gray-600" />
-          Mahsulot
-        </div>
+        <ChevronLeft size={20} className="text-gray-600" /> <Link to="/">{t('nav.home')}</Link>
+        {fromSales ? (
+          <div className="pl-3 flex items-center font-semibold">
+            <ChevronLeft size={20} className="text-gray-600" />
+            {t('product.breadcrumb.product')}
+          </div>
+        ) : (
+          <>
+            <div className="pl-3 flex items-center cursor-pointer" onClick={() => window.history.back()}>
+              <ChevronLeft size={20} className="text-gray-600" />
+              {t('product.breadcrumb.carpets')}
+            </div>
+            <div className="pl-3 flex items-center" onClick={() => window.history.back()}>
+              <ChevronLeft size={20} className="text-gray-600" />
+              {t('product.breadcrumb.collection')}
+            </div>
+            <div className="pl-3 flex items-center font-semibold">
+              <ChevronLeft size={20} className="text-gray-600" />
+              {t('product.breadcrumb.product')}
+            </div>
+          </>
+        )}
       </div>
 
       <div className="container mx-auto px-4 py-8">
@@ -95,14 +105,14 @@ const ProductDetail = () => {
               <p className="text-sm text-gray-500 mb-4">#JG7203_PE32</p>
 
               <div className="bg-[#CDAA7D] text-white font-semibold text-center py-2 rounded mb-4">
-                To‘rtburchak
+                {t('product.shape.rectangle')}
               </div>
 
               <table className="w-full text-sm text-left mb-4">
                 <thead>
                   <tr className="border-b border-gray-300">
-                    <th className="py-2">O'lchamlar</th>
-                    <th className="py-2">Narxi</th>
+                    <th className="py-2">{t('product.sizes')}</th>
+                    <th className="py-2">{t('product.price')}</th>
                   </tr>
                 </thead>
                 <tbody>

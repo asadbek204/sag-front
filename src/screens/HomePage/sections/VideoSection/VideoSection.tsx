@@ -45,10 +45,10 @@ const posterLinks = [
 ];
 
 const videoLinks = [
-  '/news/1',
-  '/news/2',
-  '/news/3',
-  '/news/4',
+  '/videos/1',
+  '/videos/2',
+  '/videos/3',
+  '/videos/4',
 ];
 
 function useSlidesToShow() {

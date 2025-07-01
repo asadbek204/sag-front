@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/ui/Footer";
-import Filter from "../screens/CatalogPage/Filter";
-import ProductCard from "../screens/CatalogPage/ProductCard";
+import Filter from "../screens/CatalogProductsPage/Filters";
+import ProductCard from "../screens/CatalogProductsPage/ProductCard";
 import { Filter as FilterIcon, ChevronLeft } from 'lucide-react';
 import { ContactInfoSection } from "../screens/HomePage/sections/ContactInfoSection";
 import { Link } from "react-router-dom";
+import { useLanguage } from '../contexts/LanguageContext';
 
 const Catalog = () => {
   const rugData = [
@@ -18,6 +19,8 @@ const Catalog = () => {
     { id: 7, name: "ENIGMA CLASSIC", price: 150000, originalPrice: null, shape: "Noodatiy", size: "100 000 - 200 000 uzs", delivery: "1 - 2 kun oraligi", style: "Zamonaviy dizayn", room: "Oshxona", color: "Qaymoqrang", isNew: true, isOnSale: true, salesCount: 15 },
     { id: 8, name: "ANATOLIAN SILK", price: 280000, originalPrice: 350000, shape: "Metril", size: "200 000 - 300 000 uzs", delivery: "3 - 6 kun oraligi", style: "Klassik dizayn", room: "Mehmonxona", color: "Qizil", isNew: false, isOnSale: true, salesCount: 60 },
   ];
+
+  const { t } = useLanguage()
 
   const [showFilters, setShowFilters] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -101,10 +104,10 @@ const Catalog = () => {
             
             <div className="flex overflow-x-auto gap-4 pb-2">
               {[
-                { label: "Barchasi", value: "barchasi" },
-                { label: "Yangilik", value: "yangilik" },
-                { label: "Ko'p sotilgan", value: "kop" },
-                { label: "Chegirma", value: "chegirma" },
+                { label: t('catalog.all'), value: "barchasi" },
+                { label: t('catalog.new'), value: "yangilik" },
+                { label: t('catalog.bestseller'), value: "kop" },
+                { label: t('catalog.discount'), value: "chegirma" },
               ].map(({ label, value }) => (
                 <button
                   key={value}

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useLanguage } from '../../contexts/LanguageContext';
 
 interface ProductCardProps {
   id: number;
@@ -9,9 +10,10 @@ interface ProductCardProps {
   isOnSale?: boolean;
 }
 
-const ProductCard = ({ id, name, isNew, isOnSale }: ProductCardProps) => {
+const ProductCard = ({ id, name, isOnSale }: ProductCardProps) => {
+  const { t } = useLanguage();
   return (
-<Link to={`/product/${id}`} className="group">
+<Link to={`/product/${id}`} state={{ from: 'sales' }} className="group">
   <div className="bg-white shadow-sm  border-gray-200 overflow-hidden transition-shadow hover:shadow-md">
     <div className="relative bg-gray-100">
       <img
@@ -20,18 +22,6 @@ const ProductCard = ({ id, name, isNew, isOnSale }: ProductCardProps) => {
         className="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105"
       />
 
-          {isNew && (
-            <div className="absolute top-0 right-0 w-[60px] h-[60px]">
-              <div className="absolute top-0 right-0 w-0 h-0 border-t-[70px] border-t-white border-l-[70px] border-l-transparent z-10" />
-
-              <div className="absolute top-0 right-0 w-0 h-0 border-t-[70px] border-t-green-600 border-l-[70px] border-l-transparent z-20 rotate-180" />
-
-              <span className="absolute top-[45px] right-[33px]  text-white text-[10px] font-bold z-30">
-                Yangi
-              </span>
-            </div>
-          )}
-
             {isOnSale && (
             <div className="absolute top-0 right-0 w-[60px] h-[60px]">
               <div className="absolute top-0 right-0 w-0 h-0 border-t-[70px] border-t-white border-l-[70px] border-l-transparent z-10" />
@@ -39,7 +29,7 @@ const ProductCard = ({ id, name, isNew, isOnSale }: ProductCardProps) => {
               <div className="absolute top-0 right-0 w-0 h-0 border-t-[70px] border-t-red-500 border-l-[70px] border-l-transparent z-20 rotate-180" />
 
               <span className="absolute top-[45px] right-[20px]  text-white text-[10px] font-bold z-30">
-                Chegirma
+                {t('badge.discount')}
               </span>
             </div>
           )}
