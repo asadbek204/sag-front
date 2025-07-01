@@ -22,10 +22,10 @@ export const CollectionSection = () => {
   ];
 
   const collectionLinks = [
-    '/collection/1',
-    '/collection/2',
-    '/collection/3',
-    '/collection/4',
+    '/catalog',
+    '/catalog',
+    '/catalog',
+    '/catalog'
   ];
 
   const [index, setIndex] = useState(0);
