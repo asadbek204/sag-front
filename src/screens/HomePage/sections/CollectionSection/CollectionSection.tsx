@@ -43,7 +43,7 @@ export const CollectionSection = () => {
   return (
     <section className="w-full bg-[#cab6a3] py-8 my-[100px]">
       <div className="container w-full">
-        <div className="relative flex items-center w-full">
+        <div className="relative overflow-hidden flex items-center w-full">
           <div className={`flex ${slidesToShow > 1 ? 'flex-row' : 'flex-col'} gap-8 justify-center items-center w-full transition-all`}>
             {visible.map((col, i) => (
               <a

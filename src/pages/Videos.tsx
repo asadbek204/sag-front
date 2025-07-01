@@ -24,7 +24,7 @@ const Videos = () => {
       <Navbar />
       <div className="container mx-auto px-4 py-8">
         <h1 className="md:text-3xl text-lg  font-semibold text-gray-800 mb-6 text-center">Videolavhalar</h1>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid  sm:grid-cols-2 md:grid-cols-4 gap-4">
           {videoData.map((video) => (
             <Link to={video.path} key={video.id} className="block">
               <div className="relative overflow-hidden ">
@@ -34,7 +34,7 @@ const Videos = () => {
                   muted
                   preload="metadata"
                 />
-                <div className="absolute top-3 left-2  text-white p-1 rounded text-lg">
+                <div className="absolute top-3 left-2  text-white p-1 rounded text-sm line-clamp-3 md:text-lg">
                   {video.title}
                 </div>
               </div>

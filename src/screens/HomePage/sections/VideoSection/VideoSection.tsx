@@ -45,10 +45,10 @@ const posterLinks = [
 ];
 
 const videoLinks = [
-  '/videos/1',
-  '/videos/2',
-  '/videos/3',
-  '/videos/4',
+  '/videos',
+  '/videos',
+  '/videos',
+  '/videos',
 ];
 
 function useSlidesToShow() {
@@ -84,12 +84,12 @@ export const VideoSection = () => {
   return (
     <section className="w-full bg-[#cab6a3] py-8 my-[100px]">
       <div className="container w-full">
-        <div className='flex items-center w-full justify-between mb-[30px] flex-col md:flex-row gap-4'>
+        <div className='flex items-center overflow-x-hidden w-full justify-between mb-[30px] flex-col lg:flex-row gap-4'>
           {posters.map((img, i) => (
             <a
               key={i}
               href={posterLinks[i]}
-              className="relative w-full max-w-[400px] h-[350px] lg:h-[250px] rounded overflow-hidden shadow-lg flex-shrink-0 m-auto block group"
+              className="relative w-full max-w-[400px] h-[250px]  rounded overflow-hidden shadow-lg flex-shrink-0 m-auto block group"
               style={{ minWidth: 0 }}
               tabIndex={0}
             >
@@ -108,7 +108,7 @@ export const VideoSection = () => {
           ))}
         </div>
         <h2 className="text-4xl font-normal mb-8 text-white text-center md:text-left">{t('video.title')}</h2>
-        <div className="relative flex items-center w-full">
+        <div className="relative flex items-center overflow-x-hidden w-full">
           <div className={`flex ${slidesToShow > 1 ? 'flex-row' : 'flex-col'} gap-8 justify-center items-center w-full transition-all`}>
             {visible.map((video, i) => (
               <a

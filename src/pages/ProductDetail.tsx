@@ -40,10 +40,21 @@ const ProductDetail = () => {
       <div className="flex flex-wrap  items-center container mx-auto text-base text-gray-600 mb-4 px-4">
         <ChevronLeft size={20} className="text-gray-600" /> <Link to="/">{t('nav.home')}</Link>
         {fromSales ? (
+        <div className="flex items-center">
+        <Link to="/sales" className="pl-3 flex items-center ">
+            <ChevronLeft size={20} className="text-gray-600" />
+            {t('nav.sales')}
+          </Link>
+          <div onClick={() => window.history.back()} className="pl-3 cursor-pointer flex items-center ">
+            <ChevronLeft size={20} className="text-gray-600" />
+           Anatolik Silk
+          </div>
           <div className="pl-3 flex items-center font-semibold">
             <ChevronLeft size={20} className="text-gray-600" />
             {t('product.breadcrumb.product')}
           </div>
+        </div>
+          
         ) : (
           <>
             <div className="pl-3 flex items-center cursor-pointer" onClick={() => window.history.back()}>

@@ -24,23 +24,23 @@ const ProductCard = ({ id, name, isNew, isOnSale }: ProductCardProps) => {
 
           {isNew && (
             <div className="absolute top-0 right-0 w-[60px] h-[60px]">
-              <div className="absolute top-0 right-0 w-0 h-0 border-t-[70px] border-t-white border-l-[70px] border-l-transparent z-10" />
+              <div className="absolute top-0 right-0 w-0 h-0 border-t-[100px] border-t-white border-l-[100px] border-l-transparent z-10" />
 
-              <div className="absolute top-0 right-0 w-0 h-0 border-t-[70px] border-t-green-600 border-l-[70px] border-l-transparent z-20 rotate-180" />
+              <div className="absolute top-0 right-0 w-0 h-0 border-t-[100px] border-t-green-600 border-l-[100px] border-l-transparent z-20 rotate-180" />
 
-              <span className="absolute top-[45px] right-[33px]  text-white text-[10px] font-bold z-30">
+              <span className="absolute top-[70px] right-[50px]  text-white text-[13px] font-bold z-30">
                 {t('badge.new')}
               </span>
             </div>
           )}
 
-            {isOnSale && (
+           {isOnSale && (
             <div className="absolute top-0 right-0 w-[60px] h-[60px]">
-              <div className="absolute top-0 right-0 w-0 h-0 border-t-[70px] border-t-white border-l-[70px] border-l-transparent z-10" />
+              <div className="absolute top-0 right-0 w-0 h-0 border-t-[100px] border-t-white border-l-[100px] border-l-transparent z-10" />
 
-              <div className="absolute top-0 right-0 w-0 h-0 border-t-[70px] border-t-red-500 border-l-[70px] border-l-transparent z-20 rotate-180" />
+              <div className="absolute top-0 right-0 w-0 h-0 border-t-[100px] border-t-red-500 border-l-[100px] border-l-transparent z-20 rotate-180" />
 
-              <span className="absolute top-[45px] right-[20px]  text-white text-[10px] font-bold z-30">
+              <span className="absolute top-[70px] right-[37px]  text-white text-[13px] font-bold z-30">
                 {t('badge.discount')}
               </span>
             </div>

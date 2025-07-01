@@ -13,7 +13,7 @@ interface ProductCardProps {
 const ProductCard = ({ id, name, isOnSale }: ProductCardProps) => {
   const { t } = useLanguage();
   return (
-<Link to={`/product/${id}`} state={{ from: 'sales' }} className="group">
+<Link to={`/product-sales/${id}`} state={{ from: 'sales' }} className="group">
   <div className="bg-white shadow-sm  border-gray-200 overflow-hidden transition-shadow hover:shadow-md">
     <div className="relative bg-gray-100">
       <img
@@ -22,13 +22,13 @@ const ProductCard = ({ id, name, isOnSale }: ProductCardProps) => {
         className="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105"
       />
 
-            {isOnSale && (
+           {isOnSale && (
             <div className="absolute top-0 right-0 w-[60px] h-[60px]">
-              <div className="absolute top-0 right-0 w-0 h-0 border-t-[70px] border-t-white border-l-[70px] border-l-transparent z-10" />
+              <div className="absolute top-0 right-0 w-0 h-0 border-t-[100px] border-t-white border-l-[100px] border-l-transparent z-10" />
 
-              <div className="absolute top-0 right-0 w-0 h-0 border-t-[70px] border-t-red-500 border-l-[70px] border-l-transparent z-20 rotate-180" />
+              <div className="absolute top-0 right-0 w-0 h-0 border-t-[100px] border-t-red-500 border-l-[100px] border-l-transparent z-20 rotate-180" />
 
-              <span className="absolute top-[45px] right-[20px]  text-white text-[10px] font-bold z-30">
+              <span className="absolute top-[70px] right-[37px]  text-white text-[13px] font-bold z-30">
                 {t('badge.discount')}
               </span>
             </div>

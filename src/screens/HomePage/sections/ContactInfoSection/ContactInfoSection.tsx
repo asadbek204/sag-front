@@ -20,8 +20,8 @@ export const ContactInfoSection = (): JSX.Element => {
   // Information data
   const information = [
     { name: t('footer.about'), href: '/about' },
-    { name: t('footer.stores'), href: '/stores' },
-    { name: t('footer.blogs'), href: '/blogs' },
+    { name: t('nav.methods'), href: '/methods' },
+    { name: t('nav.video_clips'), href: '/videos' },
     { name: t('footer.sales'), href: '/sales' },
   ];
 

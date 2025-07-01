@@ -35,7 +35,7 @@ const Sales = () => {
         <div className="mb-6">
           <div className="flex items-center text-base text-gray-600 mb-4">
             <ChevronLeft size={20} className="text-gray-600" /> <Link to="/">{t('nav.home')}</Link>
-            <div className="pl-3 font-semibold">{t('nav.sales')}</div>
+            <div className="pl-3 flex items-center font-semibold"> <ChevronLeft size={20} className="text-gray-600" />{t('nav.sales')}</div>
           </div>
         </div>
 
