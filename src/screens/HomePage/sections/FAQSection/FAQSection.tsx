@@ -1,8 +1,11 @@
 import { useState } from 'react';
 import { useLanguage } from '../../../../contexts/LanguageContext';
+import { ChevronDown, ChevronUp } from "lucide-react";
+
 
 export const FAQSection = () => {
   const { t } = useLanguage();
+  
 
   const questions = [
     { q: t('faq.q1'), a: t('faq.a1') },
@@ -13,11 +16,11 @@ export const FAQSection = () => {
     { q: t('faq.q6'), a: t('faq.a6') },
   ];
 
-  // Две колонки
+
   const left = questions.slice(0, 3);
   const right = questions.slice(3);
 
-  // Состояние для открытия dropdown
+
   const [open, setOpen] = useState<number | null>(null);
 
   return (
@@ -42,9 +45,10 @@ export const FAQSection = () => {
                       group-hover:text-[#0057FF]`}>
                       {item.q}
                     </span>
-                    <span className={`text-xl ml-4 transition-transform ${open === idx ? 'rotate-180' : ''} text-[#23272F]`}>
-                      &#x25BE;
-                    </span>
+                  <span className="text-xl ml-4 transition-transform text-[#23272F]">
+  {open === idx ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
+</span>
+
                   </button>
                   {open === idx && (
                     <div className="mt-2 text-sm text-[#23272F]">{item.a}</div>

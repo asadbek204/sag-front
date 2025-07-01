@@ -2,7 +2,7 @@ import img from "../../assets/sagAbout2.png";
 
 const ProductionSection = () => {
   return (
-    <div className=" md:mt-[80px] bg-white">
+    <div className=" md:mt-[80px]">
       <div className=" py-8">
         {/* Production Volume Header */}
         <div className="bg-[#C6B3A3] w-full text-white   mb-8 ">

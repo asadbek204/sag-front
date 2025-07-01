@@ -16,6 +16,7 @@ export const Navbar = (): JSX.Element => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isCatalogDropdownOpen, setIsCatalogDropdownOpen] = useState(false); // New state for dropdown
   const navigate = useNavigate();
   const menuRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -31,6 +32,7 @@ export const Navbar = (): JSX.Element => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         setIsMenuOpen(false);
+        setIsCatalogDropdownOpen(false); // Close dropdown on outside click
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -44,7 +46,16 @@ export const Navbar = (): JSX.Element => {
   }, [isSearchOpen]);
 
   const navigationItems = [
-    { key: 'nav.catalog', path: '/catalog', className: "text-base" },
+    {
+      key: 'nav.catalog',
+      path: '/catalog',
+      className: "text-base",
+      subItems: [
+        { key: 'nav.gilamlar', path: '/catalog', label: t('Gilamlar') },
+        { key: 'nav.kovrolin', path: '/catalog', label: t('Kovrolin') },
+        { key: 'nav.gazon', path: '/catalog', label: t('Gazon') },
+      ],
+    },
     { key: 'nav.video_clips', path: '/videos', className: "text-[15.9px]" },
     { key: 'nav.about', path: '/about', className: "text-base" },
     { key: 'nav.methods', path: '/methods', className: "text-[15.8px]" },
@@ -70,8 +81,8 @@ export const Navbar = (): JSX.Element => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 md:py-5 py-3 w-full z-20 transition-colors duration-300 ${
-        navActive ? "bg-white  text-black shadow" : "bg-transparent text-white"
+      className={`fixed top-0 left-0 md:py-5 py-3 w-full transition-colors z-30 duration-300 ${
+        navActive ? "bg-white text-black shadow" : "bg-transparent text-white"
       }`}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -89,13 +100,32 @@ export const Navbar = (): JSX.Element => {
           <NavigationMenu className="hidden md:flex max-w-none">
             <NavigationMenuList className="flex gap-8">
               {navigationItems.map((item, index) => (
-                <NavigationMenuItem key={index}>
+                <NavigationMenuItem
+                  key={index}
+                  onMouseEnter={() => item.key === 'nav.catalog' && setIsCatalogDropdownOpen(true)}
+                  onMouseLeave={() => item.key === 'nav.catalog' && setIsCatalogDropdownOpen(false)}
+                  className="relative"
+                >
                   <NavigationMenuLink
                     asChild
                     className={`${item.className} font-['Inter'] font-normal tracking-[0] leading-6 whitespace-nowrap pb-1 hover:border-b-2 hover:border-black transition-all duration-75`}
                   >
                     <Link to={item.path}>{t(item.key)}</Link>
                   </NavigationMenuLink>
+                  {item.key === 'nav.catalog' && isCatalogDropdownOpen && (
+                    <div className="absolute top-full left-0 bg-white text-black shadow-lg  z-40">
+                      {item.subItems?.map((subItem) => (
+                        <Link
+                          key={subItem.key}
+                          to={subItem.path}
+                          className="block px-4 py-2 hover:bg-gray-200"
+                          onClick={() => setIsCatalogDropdownOpen(false)}
+                        >
+                          {subItem.label}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
                 </NavigationMenuItem>
               ))}
             </NavigationMenuList>
@@ -210,14 +240,29 @@ export const Navbar = (): JSX.Element => {
           >
             <div className="flex flex-col items-center py-4 mt-16">
               {navigationItems.map((item, index) => (
-                <Link
-                  key={index}
-                  to={item.path}
-                  className={`${item.className} font-['Inter'] font-normal tracking-[0] leading-6 py-2 hover:border-b-2 hover:border-black transition-all duration-75`}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {t(item.key)}
-                </Link>
+                <div key={index} className="w-full text-center">
+                  <Link
+                    to={item.path}
+                    className={`${item.className} font-['Inter'] font-normal tracking-[0] leading-6 py-2 hover:border-b-2 hover:border-black transition-all duration-75 block`}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {t(item.key)}
+                  </Link>
+                  {item.key === 'nav.catalog' && (
+                    <div className="flex flex-col items-center">
+                      {item.subItems?.map((subItem) => (
+                        <Link
+                          key={subItem.key}
+                          to={subItem.path}
+                          className="py-2 text-sm hover:bg-gray-100 w-full"
+                          onClick={() => setIsMenuOpen(false)}
+                        >
+                          {subItem.label}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
               ))}
             </div>
           </div>

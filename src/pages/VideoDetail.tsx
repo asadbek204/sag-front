@@ -10,6 +10,7 @@ import {
    Send ,
   Link as LinkIcon,
 } from "lucide-react";
+import { ContactInfoSection } from "../screens/HomePage/sections/ContactInfoSection";
 
 const VideoDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -40,7 +41,7 @@ const VideoDetail = () => {
   const views = 668;
 
   return (
-    <div className="md:mt-28 mt-24 bg-white min-h-screen flex flex-col">
+    <div className="md:pt-28 pt-24 bg-[#FAF9F7] min-h-screen flex flex-col">
       <Navbar />
 
       <div className="container mx-auto px-4 py-8 flex-1">
@@ -94,7 +95,7 @@ const VideoDetail = () => {
           Qo'shimcha ma'lumotlar uchun veb-saytimizni kuzating!
         </p>
       </div>
-
+     <ContactInfoSection/>
       <Footer />
     </div>
   );

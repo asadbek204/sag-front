@@ -43,16 +43,31 @@ const posterLinks = [
   '/catalog/top',
   '/sales',
 ];
+
 const videoLinks = [
-  '/news/1',
-  '/news/2',
-  '/news/3',
-  '/news/4',
+  '/videos',
+  '/videos',
+  '/videos',
+  '/videos',
 ];
+
+function useSlidesToShow() {
+  const [slidesToShow, setSlidesToShow] = useState(1);
+  useEffect(() => {
+    function handleResize() {
+      setSlidesToShow(window.innerWidth >= 1024 ? 3 : 1);
+    }
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  return slidesToShow;
+}
 
 export const VideoSection = () => {
   const { t } = useLanguage();
   const [index, setIndex] = useState(0);
+  const slidesToShow = useSlidesToShow();
 
   // Автослайдер: каждые 3 секунды
   useEffect(() => {
@@ -62,45 +77,45 @@ export const VideoSection = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // Получаем 3 видимых видео (слайс с циклическим смещением)
-  const visible = [0, 1, 2].map((offset) => videos[(index + offset) % videos.length]);
+  // Получаем видимые видео (циклически)
+  const visible = Array.from({length: slidesToShow}, (_, i) => videos[(index + i) % videos.length]);
+
 
   return (
     <section className="w-full bg-[#cab6a3] py-8 my-[100px]">
       <div className="container w-full">
-      <div className='flex items-center w-full justify-between mb-[30px] flex-col md:flex-row gap-4'>
-        {posters.map((img, i) => (
-          <a
-            key={i}
-            href={posterLinks[i]}
-            className="relative w-full max-w-[400px] h-[350px] lg:h-[250px] rounded overflow-hidden shadow-lg flex-shrink-0 m-auto block group"
-            style={{ minWidth: 0 }}
-            tabIndex={0}
-          >
-            <img
-              src={img.img}
-              alt={t(img.textKey)}
-              className="absolute inset-0 w-full h-full object-cover group-hover:opacity-80 transition"
-            />
-            <div className="absolute inset-0 bg-black/30" />
-            <div className="absolute left-0 bottom-0 z-10 p-6">
-              <div className="text-white text-xl font-semibold drop-shadow-lg">
-                {t(img.textKey)}
+        <div className='flex items-center overflow-x-hidden w-full justify-between mb-[30px] flex-col lg:flex-row gap-4'>
+          {posters.map((img, i) => (
+            <a
+              key={i}
+              href={posterLinks[i]}
+              className="relative w-full max-w-[400px] h-[250px]  rounded overflow-hidden shadow-lg flex-shrink-0 m-auto block group"
+              style={{ minWidth: 0 }}
+              tabIndex={0}
+            >
+              <img
+                src={img.img}
+                alt={t(img.textKey)}
+                className="absolute inset-0 w-full h-full object-cover group-hover:opacity-80 transition"
+              />
+              <div className="absolute inset-0 bg-black/30" />
+              <div className="absolute left-0 bottom-0 z-10 p-6">
+                <div className="text-white text-xl font-semibold drop-shadow-lg">
+                  {t(img.textKey)}
+                </div>
               </div>
-            </div>
-          </a>
-        ))}
+            </a>
+          ))}
         </div>
-
-        <h2 className="text-4xl font-normal mb-8 text-white text-left">{t('video.title')}</h2>
-        <div className="relative flex items-center w-full overflow-x-hidden">
-          <div className="flex flex-col md:flex-row flex-wrap gap-8 justify-center items-center w-full">
+        <h2 className="text-4xl font-normal mb-8 text-white text-center md:text-left">{t('video.title')}</h2>
+        <div className="relative flex items-center overflow-x-hidden w-full">
+          <div className={`flex ${slidesToShow > 1 ? 'flex-row' : 'flex-col'} gap-8 justify-center items-center w-full transition-all`}>
             {visible.map((video, i) => (
               <a
                 key={i}
                 href={videoLinks[(index + i) % videoLinks.length]}
-                className="relative flex-1 min-w-0 h-[250px] lg:h-[350px] rounded overflow-hidden shadow-lg flex-shrink block group"
-                style={{ maxWidth: 400 }}
+                className="relative w-full max-w-[400px] h-[350px] rounded overflow-hidden shadow-lg flex-shrink-0 m-auto block group"
+                style={{ minWidth: 0 }}
                 tabIndex={0}
               >
                 <img
