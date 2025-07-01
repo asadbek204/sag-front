@@ -82,7 +82,7 @@ const Catalog = () => {
         <div className="bg-[#FAF9F7] md:pt-28 pt-24">
             <div className="container mx-auto px-4 py-6">
                 <div className="mb-6">
-                    <div className="flex items-center text-base text-gray-600 mb-4">
+                    <div className="flex items-center text-base text-gray-600 mb-4 ">
                         <ChevronLeft size={20} className="text-gray-600" /> <Link to="/">{t('nav.home')}</Link>
                         <div
                             className="pl-3 flex items-center cursor-pointer"
@@ -91,7 +91,7 @@ const Catalog = () => {
                             <ChevronLeft size={20} className="text-gray-600" />
                             {t('product.breadcrumb.carpets')}
                         </div>
-                        <div className="pl-3 flex items-center font-semibold"><ChevronLeft size={20} className="text-gray-600" />{t('product.breadcrumb.collection')}</div>
+                        <div className="pl-3 flex items-center font-semibold cursor-pointer"><ChevronLeft size={20} className="text-gray-600" />{t('product.breadcrumb.collection')}</div>
                     </div>
 
                     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">

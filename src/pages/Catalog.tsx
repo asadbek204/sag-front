@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/ui/Footer";
-import Filter from "../screens/CatalogProductsPage/Filters";
-import ProductCard from "../screens/CatalogProductsPage/ProductCard";
+import Filter from "../screens/CatalogPage/Filter";
+import ProductCard from "../screens/CatalogPage/ProductCard";
 import { Filter as FilterIcon, ChevronLeft } from 'lucide-react';
 import { ContactInfoSection } from "../screens/HomePage/sections/ContactInfoSection";
 import { Link } from "react-router-dom";

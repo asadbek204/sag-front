@@ -50,7 +50,7 @@ const ProductDetail = () => {
               <ChevronLeft size={20} className="text-gray-600" />
               {t('product.breadcrumb.carpets')}
             </div>
-            <div className="pl-3 flex items-center" onClick={() => window.history.back()}>
+            <div className="pl-3 flex items-center cursor-pointer" onClick={() => window.history.back()}>
               <ChevronLeft size={20} className="text-gray-600" />
               {t('product.breadcrumb.collection')}
             </div>
