@@ -11,7 +11,7 @@ interface ProductCardProps {
 
 const ProductCard = ({ id, name, isNew, isOnSale }: ProductCardProps) => {
   return (
-<Link to={`/catalog/${id}`} className="group">
+<Link to={`/product/${id}`} className="group">
   <div className="bg-white shadow-sm  border-gray-200 overflow-hidden transition-shadow hover:shadow-md">
     <div className="relative bg-gray-100">
       <img

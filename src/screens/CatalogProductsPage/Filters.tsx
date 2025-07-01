@@ -90,10 +90,31 @@ const Filter = ({ filters, onFilterChange, onClearFilters, onClose }) => {
 
   return (
     <div className="bg-[#FAF9F7] p-6 ">
-      <div className="flex items-center justify-between ">
-
+     
+      
+       <div className="mb-6 border-b pb-4">
+        <button
+          onClick={() => toggleSection('room')}
+          className="flex items-center justify-between w-full text-left font-medium"
+        >
+          <span>Kolleksiyalar</span>
+          {expandedSections.room ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+        </button>
+        {expandedSections.room && (
+          <div className="mt-3 space-y-2">
+            {["ANATOLIAN SILK", "MOVAROUNNAHR", "ENIGMA", "ISFAHAN", "TAMERLAN", "CREANTE BLACK", "CREANTE GREY"].map(room => (
+              <FilterCheckbox 
+                key={room} 
+                category="room" 
+                value={room} 
+                label={room} 
+              />
+            ))}
+          </div>
+        )}
       </div>
-        <div className="mb-6 border-b pb-4">
+
+      <div className="mb-6 border-b pb-4">
         <button
           onClick={() => toggleSection('style')}
           className="flex items-center justify-between w-full text-left font-medium"
@@ -137,7 +158,7 @@ const Filter = ({ filters, onFilterChange, onClearFilters, onClose }) => {
         )}
       </div>
 
-        <div className="mb-6 border-b pb-4">
+      <div className="mb-6 border-b pb-4">
         <button
           onClick={() => toggleSection('size')}
           className="flex items-center justify-between w-full text-left font-medium"
@@ -175,8 +196,7 @@ const Filter = ({ filters, onFilterChange, onClearFilters, onClose }) => {
         )}
       </div>
 
-
-       <div className=" mb-6 border-b pb-4">
+      <div className="mb-6 border-b pb-4">
         <button
           onClick={() => toggleSection('color')}
           className="flex items-center justify-between w-full text-left font-medium"
@@ -199,8 +219,6 @@ const Filter = ({ filters, onFilterChange, onClearFilters, onClose }) => {
         )}
       </div>
 
-
-      {/* Shape Filter */}
       <div className="mb-6 border-b pb-4">
         <button
           onClick={() => toggleSection('shape')}
@@ -223,7 +241,6 @@ const Filter = ({ filters, onFilterChange, onClearFilters, onClose }) => {
         )}
       </div>
 
-      {/* Price Filter */}
       <div className="mb-6 border-b pb-4">
         <button
           onClick={() => toggleSection('price')}
@@ -246,20 +263,18 @@ const Filter = ({ filters, onFilterChange, onClearFilters, onClose }) => {
         )}
       </div>
 
-    
      
 
-    
       <div className="flex flex-col space-y-3">
         <button
           onClick={() => onFilterChange(filters)}
-          className="w-full py-3 bg-[#C89B71] text-white  hover:bg-[#BCAAA4]"
+          className="w-full py-3 bg-[#C89B71] text-white hover:bg-[#BCAAA4]"
         >
           Filtrlarni qo'llash
         </button>
         <button
           onClick={onClearFilters}
-          className="w-full py-3 bg-gray-200 text-gray-700  hover:bg-gray-300"
+          className="w-full py-3 bg-gray-200 text-gray-700 hover:bg-gray-300"
         >
           Filtrlarni o'chirish
         </button>
