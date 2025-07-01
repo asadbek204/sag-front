@@ -29,7 +29,7 @@ const ProductCard = ({ id, name, isOnSale }: ProductCardProps) => {
               <div className="absolute top-0 right-0 w-0 h-0 border-t-[100px] border-t-red-500 border-l-[100px] border-l-transparent z-20 rotate-180" />
 
               <span className="absolute top-[70px] right-[37px]  text-white text-[13px] font-bold z-30">
-                {t('badge.discount')}
+                {t('badge.sale')}
               </span>
             </div>
           )}

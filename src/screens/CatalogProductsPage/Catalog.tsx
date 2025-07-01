@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Filter from "./Filters";
 import ProductCard from "./ProductCard";
 import { Filter as FilterIcon, ChevronLeft } from 'lucide-react';
@@ -18,7 +18,27 @@ const Catalog = () => {
         { id: 8, name: "ANATOLIAN SILK", price: 280000, originalPrice: 350000, shape: "Metril", size: "200 000 - 300 000 uzs", delivery: "3 - 6 kun oraligi", style: "Klassik dizayn", room: "Mehmonxona", color: "Qizil", isNew: false, isOnSale: true, salesCount: 60 },
     ];
 
-    const [showFilters, setShowFilters] = useState(true);
+    const getInitialShowFilters = () => {
+        if (typeof window !== 'undefined' && window.innerWidth >= 1024) {
+            return true;
+        }
+        return false;
+    };
+
+    const [showFilters, setShowFilters] = useState(getInitialShowFilters);
+
+    useEffect(() => {
+        function handleResize() {
+            if (window.innerWidth >= 1024) {
+                setShowFilters(true);
+            } else {
+                setShowFilters(false);
+            }
+        }
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     const [currentPage, setCurrentPage] = useState(1);
     const [sortOption, setSortOption] = useState("barchasi");
 
@@ -108,7 +128,7 @@ const Catalog = () => {
                                 { label: t('catalog.all'), value: "barchasi" },
                                 { label: t('catalog.new'), value: "yangilik" },
                                 { label: t('catalog.bestseller'), value: "kop" },
-                                { label: t('catalog.discount'), value: "chegirma" },
+                                { label: t('catalog.sale'), value: "chegirma" },
                             ].map(({ label, value }) => (
                                 <button
                                     key={value}
@@ -142,7 +162,7 @@ const Catalog = () => {
                     <div className={`${showFilters ? 'md:w-[calc(100%-320px)]' : 'w-full'}`}>
                         {sortedRugs.length > 0 ? (
                             <>
-                                <div className={`grid grid-cols-2 sm:grid-cols-2 ${showFilters ? 'lg:grid-cols-3' : 'lg:grid-cols-4'} gap-4`}>
+                                <div className={`grid grid-cols-2 sm:grid-cols-2 ${showFilters ? 'lg:grid-cols-3' : 'lg:grid-cols-4'} gap-8`}>
                                     {currentRugs.map((rug) => (
                                         <ProductCard
                                             key={rug.id}

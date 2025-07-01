@@ -138,7 +138,7 @@ export const uzb = {
   'catalog.all': 'Barchasi',
   'catalog.new': 'Yangilik',
   'catalog.bestseller': "Ko'p sotilgan",
-  'catalog.discount': 'Chegirma',
+  'catalog.sale': 'Chegirma',
   'catalog.noProducts': "Hech qanday mahsulot topilmadi. Filtrlarni o'zgartirib ko'ring.",
   'filter.apply': "Filtrlarni qo'llash",
   'filter.clear': "Filtrlarni o'chirish",
@@ -148,6 +148,6 @@ export const uzb = {
   'filter.colors': "Rang",
   'filter.shapes': "Shakl",
   'filter.price': "Narxi",
-  'badge.discount': "Chegirma",
+  'badge.sale': "Chegirma",
   'badge.new': "Yangi",
 }; 

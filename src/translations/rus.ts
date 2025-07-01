@@ -136,7 +136,7 @@ export const rus = {
   'catalog.all': 'Все',
   'catalog.new': 'Новинки',
   'catalog.bestseller': 'Хиты продаж',
-  'catalog.discount': 'Скидки',
+  'catalog.sale': 'Скидки',
   'catalog.noProducts': 'Товары не найдены. Попробуйте изменить фильтры.',
   'filter.apply': "Применить фильтры",
   'filter.clear': "Сбросить фильтры",
@@ -146,6 +146,6 @@ export const rus = {
   'filter.colors': "Цвет",
   'filter.shapes': "Форма",
   'filter.price': "Цена",
-  'badge.discount': "Скидка",
+  'badge.sale': "Скидка",
   'badge.new': "Новинка",
 }; 
