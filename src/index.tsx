@@ -3,6 +3,11 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { HomePage } from "./screens/HomePage";
+import AboutSag from "./pages/AboutSag";
+import Videos from "./pages/Videos";
+import VideoDetail from "./pages/VideoDetail";
+import Catalog from "./pages/Catalog";
+import MethodSag from "./pages/MethodSag";
 
 createRoot(document.getElementById("app") as HTMLElement).render(
   <StrictMode>
@@ -10,6 +15,11 @@ createRoot(document.getElementById("app") as HTMLElement).render(
       <Router>
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="about/" element={<AboutSag/>} />
+          <Route path="videos/" element={<Videos/>} />
+          <Route path="videos/:id" element={<VideoDetail/>} />
+          <Route path="catalog/" element={<Catalog/>} />
+          <Route path="methods/" element={<MethodSag/>} />
         </Routes>
       </Router>
     </LanguageProvider>
