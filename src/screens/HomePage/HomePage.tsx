@@ -12,7 +12,7 @@ export const HomePage = () => {
     <div className="min-h-screen w-full">
       {/* Hero-блок с фоном */}
       <div
-        className="relative w-full h-[95vh] bg-cover bg-center"
+        className="relative w-full h-[100vh] bg-cover bg-center"
         style={{ backgroundImage: `url(${hero})` }}
       >
         <Navbar />

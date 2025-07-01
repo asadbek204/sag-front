@@ -26,6 +26,7 @@ createRoot(document.getElementById("app") as HTMLElement).render(
           <Route path="methods/" element={<MethodSag/>} />
           <Route path="sales/" element={<Sales/>} />
           <Route path="product/:id" element={<ProductDetail/>}/>
+           <Route path="*" element={<HomePage />} />
         </Routes>
       </Router>
     </LanguageProvider>
