@@ -136,7 +136,7 @@ export const en = {
   'catalog.all': 'All',
   'catalog.new': 'New',
   'catalog.bestseller': 'Bestsellers',
-  'catalog.discount': 'Discount',
+  'catalog.sale': 'Sale',
   'catalog.noProducts': 'No products found. Try changing the filters.',
   'filter.apply': "Apply filters",
   'filter.clear': "Clear filters",
@@ -146,6 +146,6 @@ export const en = {
   'filter.colors': "Color",
   'filter.shapes': "Shape",
   'filter.price': "Price",
-  'badge.discount': "Discount",
+  'badge.sale': "Sale",
   'badge.new': "New",
 }; 
