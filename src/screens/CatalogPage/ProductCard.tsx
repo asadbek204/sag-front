@@ -11,41 +11,46 @@ interface ProductCardProps {
 
 const ProductCard = ({ id, name, isNew, isOnSale }: ProductCardProps) => {
   return (
-    <Link to={`/product/${id}`} className="group">
-      <div className="bg-white border border-gray-200 overflow-hidden transition-shadow hover:shadow-md">
-        <div className="relative bg-gray-100 aspect-square">
-          <img 
-            src="https://api.cabinet.smart-market.uz/uploads/images/ff8081818b1036f7316dffe3" 
-            alt={name}
-            className="w-full h-full object-cover"
-          />
+<Link to={`/product/${id}`} className="group">
+  <div className="bg-white shadow-sm  border-gray-200 overflow-hidden transition-shadow hover:shadow-md">
+    <div className="relative bg-gray-100">
+      <img
+        src="https://www.sagexpress.uz/media/images/products/LU5238_BS73.png"
+        alt={name}
+        className="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105"
+      />
 
-      
+          {isNew && (
+            <div className="absolute top-0 right-0 w-[60px] h-[60px]">
+              <div className="absolute top-0 right-0 w-0 h-0 border-t-[70px] border-t-white border-l-[70px] border-l-transparent z-10" />
 
-           {isNew && (
-            <div className="absolute top-0 right-0 w-0 h-0 border-t-green-500 border-l-[60px] border-l-transparent">
-              <span className="absolute top-[-42px] right-[2px] rotate-[45deg] text-white text-[11px] font-bold">
+              <div className="absolute top-0 right-0 w-0 h-0 border-t-[70px] border-t-green-600 border-l-[70px] border-l-transparent z-20 rotate-180" />
+
+              <span className="absolute top-[45px] right-[33px]  text-white text-[10px] font-bold z-30">
                 Yangi
               </span>
             </div>
           )}
 
-          
-          {/* Chegirma label (o‘ng yuqori) */}
-          {isOnSale && (
-            <div className="absolute top-0 right-0 w-0 h-0 border-t-[60px] border-t-red-500 border-l-[60px] border-l-transparent">
-              <span className="absolute top-[-42px] right-[2px] rotate-[45deg] text-white text-[11px] font-bold">
+            {isOnSale && (
+            <div className="absolute top-0 right-0 w-[60px] h-[60px]">
+              <div className="absolute top-0 right-0 w-0 h-0 border-t-[70px] border-t-white border-l-[70px] border-l-transparent z-10" />
+
+              <div className="absolute top-0 right-0 w-0 h-0 border-t-[70px] border-t-red-500 border-l-[70px] border-l-transparent z-20 rotate-180" />
+
+              <span className="absolute top-[45px] right-[20px]  text-white text-[10px] font-bold z-30">
                 Chegirma
               </span>
             </div>
           )}
+
         </div>
 
         <div className="p-4">
-          <h3 className="font-medium text-gray-800 mb-2 group-hover:text-[#D7CCC8] transition-colors">
+          <h3 className="font-medium text-gray-800 mb-2 group-hover:text-gray-500 transition-colors">
             {name}
           </h3>
-         
+
         </div>
       </div>
     </Link>

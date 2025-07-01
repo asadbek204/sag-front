@@ -7,6 +7,7 @@ import video4 from "../assets/video2.mp4";
 import video5 from "../assets/video.mp4";
 import video6 from "../assets/video2.mp4";
 import { Footer } from "../components/ui/Footer";
+import { ContactInfoSection } from "../screens/HomePage/sections/ContactInfoSection";
 
 const Videos = () => {
   const videoData = [
@@ -19,7 +20,7 @@ const Videos = () => {
   ];
 
   return (
-    <div className="md:mt-28 mt-24 bg-white">
+    <div className="md:mt-28 mt-24 bg-[#FAF9F7]">
       <Navbar />
       <div className="container mx-auto px-4 py-8">
         <h1 className="md:text-3xl text-lg  font-semibold text-gray-800 mb-6 text-center">Videolavhalar</h1>
@@ -41,6 +42,7 @@ const Videos = () => {
           ))}
         </div>
       </div>
+      <ContactInfoSection/>
       <Footer/>
     </div>
   );

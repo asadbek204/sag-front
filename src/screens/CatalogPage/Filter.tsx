@@ -89,7 +89,7 @@ const Filter = ({ filters, onFilterChange, onClearFilters, onClose }) => {
   );
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-sm">
+    <div className="bg-[#FAF9F7] p-6 ">
       <div className="flex items-center justify-between ">
 
       </div>

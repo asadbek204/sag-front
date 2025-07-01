@@ -3,22 +3,26 @@ import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/ui/Footer";
 import Filter from "../screens/CatalogPage/Filter";
 import ProductCard from "../screens/CatalogPage/ProductCard";
-import { Filter as FilterIcon, ChevronLeft  } from 'lucide-react';
+import { Filter as FilterIcon, ChevronLeft } from 'lucide-react';
+import { ContactInfoSection } from "../screens/HomePage/sections/ContactInfoSection";
+import { Link } from "react-router-dom";
 
 const Catalog = () => {
   const rugData = [
-    { id: 1, name: "ANATOLIAN SILK", price: 240000, originalPrice: 325000, shape: "Oval", size: "1 - 100 000 uzs", delivery: "1 - 2 kun oraligi", style: "Klassik dizayn", room: "Mehmonxona", color: "Qizil", isNew: false, isOnSale: true },
-    { id: 2, name: "MOVAROUNNAHR", price: 240000, originalPrice: 325000, shape: "To'rtburchak", size: "100 000 - 200 000 uzs", delivery: "3 - 6 kun oraligi", style: "Neoklassik dizayn", room: "Yotoqxona", color: "Yashil", isNew: false, isOnSale: true },
-    { id: 3, name: "ENIGMA", price: 240000, originalPrice: 325000, shape: "Metril", size: "200 000 - 300 000 uzs", delivery: "7 - 15 kun oraligi", style: "Zamonaviy dizayn", room: "Oshxona", color: "Qora", isNew: true, isOnSale: false },
-    { id: 4, name: "EMOMA", price: 240000, originalPrice: 325000, shape: "Kvadrat", size: "300 000 - 655 000 uzs", delivery: "1 - 2 kun oraligi", style: "Bolalar dizayni", room: "Bolalar xonasi", color: "Kulrang", isNew: false, isOnSale: true },
-    { id: 5, name: "ANATOLIAN SILK", price: 180000, originalPrice: 250000, shape: "Oval", size: "1 - 100 000 uzs", delivery: "3 - 6 kun oraligi", style: "Klassik dizayn", room: "Mehmonxona", color: "Ko'k", isNew: false, isOnSale: false },
-    { id: 6, name: "MOVAROUNNAHR", price: 320000, originalPrice: 420000, shape: "To'rtburchak", size: "200 000 - 300 000 uzs", delivery: "7 - 15 kun oraligi", style: "Neoklassik dizayn", room: "Yotoqxona", color: "Krem rang", isNew: false, isOnSale: true },
-    { id: 7, name: "ENIGMA CLASSIC", price: 150000, originalPrice: null, shape: "Noodatiy", size: "100 000 - 200 000 uzs", delivery: "1 - 2 kun oraligi", style: "Zamonaviy dizayn", room: "Oshxona", color: "Qaymoqrang", isNew: true, isOnSale: true },
-    { id: 8, name: "ANATOLIAN SILK", price: 280000, originalPrice: 350000, shape: "Metril", size: "200 000 - 300 000 uzs", delivery: "3 - 6 kun oraligi", style: "Klassik dizayn", room: "Mehmonxona", color: "Qizil", isNew: false, isOnSale: true },
+    { id: 1, name: "ANATOLIAN SILK", price: 240000, originalPrice: 325000, shape: "Oval", size: "1 - 100 000 uzs", delivery: "1 - 2 kun oraligi", style: "Klassik dizayn", room: "Mehmonxona", color: "Qizil", isNew: false, isOnSale: true, salesCount: 50 },
+    { id: 2, name: "MOVAROUNNAHR", price: 240000, originalPrice: 325000, shape: "To'rtburchak", size: "100 000 - 200 000 uzs", delivery: "3 - 6 kun oraligi", style: "Neoklassik dizayn", room: "Yotoqxona", color: "Yashil", isNew: false, isOnSale: true, salesCount: 30 },
+    { id: 3, name: "ENIGMA", price: 240000, originalPrice: 325000, shape: "Metril", size: "200 000 - 300 000 uzs", delivery: "7 - 15 kun oraligi", style: "Zamonaviy dizayn", room: "Oshxona", color: "Qora", isNew: true, isOnSale: false, salesCount: 10 },
+    { id: 4, name: "EMOMA", price: 240000, originalPrice: 325000, shape: "Kvadrat", size: "300 000 - 655 000 uzs", delivery: "1 - 2 kun oraligi", style: "Bolalar dizayni", room: "Bolalar xonasi", color: "Kulrang", isNew: false, isOnSale: true, salesCount: 70 },
+    { id: 5, name: "ANATOLIAN SILK", price: 180000, originalPrice: 250000, shape: "Oval", size: "1 - 100 000 uzs", delivery: "3 - 6 kun oraligi", style: "Klassik dizayn", room: "Mehmonxona", color: "Ko'k", isNew: false, isOnSale: false, salesCount: 20 },
+    { id: 6, name: "MOVAROUNNAHR", price: 320000, originalPrice: 420000, shape: "To'rtburchak", size: "200 000 - 300 000 uzs", delivery: "7 - 15 kun oraligi", style: "Neoklassik dizayn", room: "Yotoqxona", color: "Krem rang", isNew: false, isOnSale: true, salesCount: 40 },
+    { id: 7, name: "ENIGMA CLASSIC", price: 150000, originalPrice: null, shape: "Noodatiy", size: "100 000 - 200 000 uzs", delivery: "1 - 2 kun oraligi", style: "Zamonaviy dizayn", room: "Oshxona", color: "Qaymoqrang", isNew: true, isOnSale: true, salesCount: 15 },
+    { id: 8, name: "ANATOLIAN SILK", price: 280000, originalPrice: 350000, shape: "Metril", size: "200 000 - 300 000 uzs", delivery: "3 - 6 kun oraligi", style: "Klassik dizayn", room: "Mehmonxona", color: "Qizil", isNew: false, isOnSale: true, salesCount: 60 },
   ];
 
   const [showFilters, setShowFilters] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [sortOption, setSortOption] = useState("barchasi");
+
   const [filters, setFilters] = useState({
     shape: [],
     price: [],
@@ -29,9 +33,9 @@ const Catalog = () => {
     color: []
   });
 
-  const itemsPerPage = 8;
+  const itemsPerPage = 21;
 
-  const handleFilterChange = (newFilters: any) => {
+  const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
     setCurrentPage(1);
   };
@@ -58,22 +62,32 @@ const Catalog = () => {
     return true;
   });
 
-  const totalPages = Math.ceil(filteredRugs.length / itemsPerPage);
+  const sortedRugs = [...filteredRugs].sort((a, b) => {
+    switch (sortOption) {
+      case "yangilik":
+        return b.isNew - a.isNew; 
+      case "chegirma":
+        return b.isOnSale - a.isOnSale; 
+      case "kop":
+        return b.salesCount - a.salesCount;
+      default:
+        return 0; 
+    }
+  });
+
+  const totalPages = Math.ceil(sortedRugs.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentRugs = filteredRugs.slice(startIndex, startIndex + itemsPerPage);
+  const currentRugs = sortedRugs.slice(startIndex, startIndex + itemsPerPage);
 
   return (
-    <div className="bg-white md:mt-28 mt-24 min-h-screen">
+    <div className="bg-[#FAF9F7] md:mt-28 mt-24">
       <Navbar />
       
-      {/* Main Content */}
       <div className="container mx-auto px-4 py-6">
-        {/* Breadcrumb and Filter Toggle */}
         <div className="mb-6">
           <div className="flex items-center text-base text-gray-600 mb-4">
-            <ChevronLeft size={20} className="text-gray-600" /> Bosh sahifa
-       
-            <div className="pl-3">Gilamlar</div>
+            <ChevronLeft size={20} className="text-gray-600" /> <Link to="/">Bosh sahifa</Link>
+            <div className="pl-3 font-semibold">Gilamlar</div>
           </div>
           
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
@@ -86,18 +100,24 @@ const Catalog = () => {
             </button>
             
             <div className="flex overflow-x-auto gap-4 pb-2">
-              <button className="px-4 py-2 text-gray-600 whitespace-nowrap border-b-2 border-transparent hover:border-gray-300">
-                Barchasi
-              </button>
-              <button className="px-4 py-2 text-gray-600 whitespace-nowrap border-b-2 border-transparent hover:border-gray-300">
-                Yangilik
-              </button>
-              <button className="px-4 py-2 text-gray-600 whitespace-nowrap border-b-2 border-transparent hover:border-gray-300">
-                Ko'p sotilgan
-              </button>
-              <button className="px-4 py-2 text-gray-800 font-semibold whitespace-nowrap border-b-2 border-gray-800">
-                Chegirma
-              </button>
+              {[
+                { label: "Barchasi", value: "barchasi" },
+                { label: "Yangilik", value: "yangilik" },
+                { label: "Ko'p sotilgan", value: "kop" },
+                { label: "Chegirma", value: "chegirma" },
+              ].map(({ label, value }) => (
+                <button
+                  key={value}
+                  onClick={() => setSortOption(value)}
+                  className={`px-4 py-2 whitespace-nowrap border-b-2 transition-colors ${
+                    sortOption === value
+                      ? "text-gray-800 font-semibold border-gray-800"
+                      : "text-gray-600 border-transparent hover:border-gray-300"
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
             </div>
           </div>
         </div>
@@ -117,9 +137,9 @@ const Catalog = () => {
           
           {/* Products Grid */}
           <div className={`${showFilters ? 'md:w-[calc(100%-320px)]' : 'w-full'}`}>
-            {filteredRugs.length > 0 ? (
+            {sortedRugs.length > 0 ? (
               <>
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div className={`grid grid-cols-2 sm:grid-cols-2 ${showFilters ? 'lg:grid-cols-3' : 'lg:grid-cols-4'} gap-4`}>
                   {currentRugs.map((rug) => (
                     <ProductCard 
                       key={rug.id}
@@ -144,19 +164,69 @@ const Catalog = () => {
                       ←
                     </button>
                     
-                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-                      <button
-                        key={page}
-                        onClick={() => setCurrentPage(page)}
-                        className={`px-3 py-2 rounded ${
-                          currentPage === page
-                            ? 'bg-[#D7CCC8] text-white'
-                            : 'text-gray-600 hover:bg-gray-100'
-                        }`}
-                      >
-                        {page}
-                      </button>
-                    ))}
+                    {(() => {
+                      const visiblePages = 5;
+                      const halfVisible = Math.floor(visiblePages / 2);
+                      let startPage = Math.max(1, currentPage - halfVisible);
+                      let endPage = Math.min(totalPages, currentPage + halfVisible);
+
+                      if (endPage - startPage < visiblePages - 1) {
+                        startPage = Math.max(1, endPage - (visiblePages - 1));
+                      }
+
+                      const pages = [];
+                      if (startPage > 1) {
+                        pages.push(
+                          <button
+                            key={1}
+                            onClick={() => setCurrentPage(1)}
+                            className={`px-3 py-2 rounded ${
+                              currentPage === 1
+                                ? 'bg-[#D7CCC8] text-white'
+                                : 'text-gray-600 hover:bg-gray-100'
+                            }`}
+                          >
+                            1
+                          </button>
+                        );
+                        if (startPage > 2) pages.push(<span key="start-ellipsis" className="px-2">...</span>);
+                      }
+
+                      for (let i = startPage; i <= endPage; i++) {
+                        pages.push(
+                          <button
+                            key={i}
+                            onClick={() => setCurrentPage(i)}
+                            className={`px-3 py-2 rounded ${
+                              currentPage === i
+                                ? 'bg-[#D7CCC8] text-white'
+                                : 'text-gray-600 hover:bg-gray-100'
+                            }`}
+                          >
+                            {i}
+                          </button>
+                        );
+                      }
+
+                      if (endPage < totalPages) {
+                        if (endPage < totalPages - 1) pages.push(<span key="end-ellipsis" className="px-2">...</span>);
+                        pages.push(
+                          <button
+                            key={totalPages}
+                            onClick={() => setCurrentPage(totalPages)}
+                            className={`px-3 py-2 rounded ${
+                              currentPage === totalPages
+                                ? 'bg-[#D7CCC8] text-white'
+                                : 'text-gray-600 hover:bg-gray-100'
+                            }`}
+                          >
+                            {totalPages}
+                          </button>
+                        );
+                      }
+
+                      return pages;
+                    })()}
                     
                     <button
                       onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
@@ -176,7 +246,7 @@ const Catalog = () => {
           </div>
         </div>
       </div>
-      
+      <ContactInfoSection />
       <Footer />
     </div>
   );

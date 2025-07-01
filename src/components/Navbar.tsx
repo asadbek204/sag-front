@@ -70,7 +70,7 @@ export const Navbar = (): JSX.Element => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 md:py-5 py-3 w-full z-20 transition-colors duration-300 ${
+      className={`fixed top-0 left-0 md:py-5 py-3 w-full  transition-colors z-30 duration-300 ${
         navActive ? "bg-white  text-black shadow" : "bg-transparent text-white"
       }`}
       onMouseEnter={() => setHovered(true)}

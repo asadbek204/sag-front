@@ -42,8 +42,8 @@ export const ContactInfoSection = (): JSX.Element => {
   ];
 
   return (
-    <footer className="w-full flex flex-col items-center bg-transparent py-8">
-      <Card className="border-none shadow-none container w-full">
+    <footer className="w-full bg-white  flex flex-col items-center  py-8">
+      <Card className="border-none shadow-none container mx-auto w-full">
         <CardContent className="p-0">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             {/* Categories Column */}

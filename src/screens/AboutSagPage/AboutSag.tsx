@@ -3,7 +3,7 @@ import img2 from '../../assets/sagAbout.png';
 
 const AboutSagSection = () => {
   return (
-    <div className="min-h-screen md:mt-28 mt-24 bg-gray-50">
+    <div className="min-h-screen md:mt-28 mt-24 ">
       <div className="container mx-auto px-4 py-8">
         <div className="">
           <h1 className="md:text-4xl pb-8 text-xl font-semibold mb-4 text-center">SAG haqida</h1>
