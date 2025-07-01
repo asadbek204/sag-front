@@ -28,7 +28,7 @@ const ProductCard = ({ id, name, isNew, isOnSale }: ProductCardProps) => {
 
               <div className="absolute top-0 right-0 w-0 h-0 border-t-[100px] border-t-green-600 border-l-[100px] border-l-transparent z-20 rotate-180" />
 
-              <span className={`absolute top-[70px] right-[50px] text-white font-bold z-30 text-[13px]`}>
+              <span className={`absolute top-[70px] right-[37px] text-white font-bold z-30 text-[13px]`}>
                 {t ? t('badge.new') : 'Yangi'}
               </span>
             </div>
