@@ -45,7 +45,7 @@ export const ContactInfoSection = (): JSX.Element => {
     <footer className="w-full bg-white  flex flex-col items-center  py-8">
       <Card className="border-none shadow-none container mx-auto w-full">
         <CardContent className="p-0">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 justify-between gap-4">
             {/* Categories Column */}
             <div className="flex flex-col gap-2 p-4">
               <h3 className="font-normal text-[21.8px] text-[#01091c] leading-[33px] font-['Inter',Helvetica]">

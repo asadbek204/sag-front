@@ -8,6 +8,7 @@ import Videos from "./pages/Videos";
 import VideoDetail from "./pages/VideoDetail";
 import Catalog from "./pages/Catalog";
 import MethodSag from "./pages/MethodSag";
+import Sales from "./pages/Sales";
 
 createRoot(document.getElementById("app") as HTMLElement).render(
   <StrictMode>
@@ -20,6 +21,7 @@ createRoot(document.getElementById("app") as HTMLElement).render(
           <Route path="videos/:id" element={<VideoDetail/>} />
           <Route path="catalog/" element={<Catalog/>} />
           <Route path="methods/" element={<MethodSag/>} />
+          <Route path="sales/" element={<Sales/>} />
         </Routes>
       </Router>
     </LanguageProvider>

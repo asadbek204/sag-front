@@ -14,10 +14,10 @@ const MethodSagPage = () => {
                         {t('method.intro')}
                     </p>
 
-                    <div className="md:my-[125px] my-[30px] flex md:flex-row flex-col items-center gap-[50px]">
+                    <div className="md:my-[125px] my-[30px] flex md:flex-row flex-col items-center justify-between">
                         <img className="w-[382px] h-[382px]" src="https://www.sag.uz/static/media/10.1acdd653779216e525bb.png" alt="" />
                         <div>
-                            <h1 className="md:text-3xl text-gray-700 text-3xl max-w-[900px mb-2">
+                            <h1 className="md:text-3xl text-gray-700 text-3xl mb-2">
                                 SAG orginal fiber
                             </h1>
                             <p className="text-base text-[#333333] max-w-xl mb-4">
@@ -27,9 +27,9 @@ const MethodSagPage = () => {
                         </div>
                     </div>
 
-                    <div className="md:my-[125px] my-[30px] flex md:flex-row flex-col-reverse items-center gap-[150px]">
+                    <div className="md:my-[125px] my-[30px] flex md:flex-row flex-col-reverse items-center justify-between">
                         <div>
-                            <h1 className="md:text-3xl text-gray-700 text-3xl max-w-[900px mb-2">
+                            <h1 className="md:text-3xl text-gray-700 text-3xl mb-2">
                                 SAG cotton
                             </h1>
                             <p className="text-base text-[#333333] max-w-xl mb-4">
@@ -48,7 +48,7 @@ const MethodSagPage = () => {
                     <div className="md:my-[125px] my-[30px] flex items-center gap-[50px]">
                         <img className="w-[382px] h-[382px]" src="https://www.sag.uz/static/media/15.8ea79aa5126ef626d96d.png" alt="" />
                         <div>
-                            <h1 className="md:text-3xl text-gray-700 text-3xl max-w-[900px mb-2">
+                            <h1 className="md:text-3xl text-gray-700 text-3xl mb-2">
                                 SAG orginal fiber
                             </h1>
                             <p className="text-base text-[#333333] max-w-xl mb-4">
@@ -71,9 +71,9 @@ const MethodSagPage = () => {
             </div>
 
             <div className="container py-8">
-                <div className="md:my-[125px] my-[30px] flex md:flex-row flex-col items-center gap-[50px]">
+                <div className="md:my-[125px] my-[30px] flex md:flex-row flex-col items-center justify-between">
                     <div>
-                        <h1 className="md:text-3xl text-gray-700 text-3xl max-w-[900px mb-2">
+                        <h1 className="md:text-3xl text-gray-700 text-3xl mb-2">
                             SAG acrylic
                         </h1>
                         <p className="text-base text-[#333333] max-w-xl mb-4">
@@ -85,10 +85,10 @@ const MethodSagPage = () => {
                 </div>
 
 
-                <div className="md:my-[125px] my-[30px] flex md:flex-row flex-col-reverse items-center gap-[150px]">
+                <div className="md:my-[125px] my-[30px] flex md:flex-row flex-col-reverse items-center justify-between">
                     <img className="w-[382px] h-[382px]" src="https://www.sag.uz/static/media/12.05e86c60221835baa600.png" alt="" />
                     <div>
-                        <h1 className="md:text-3xl text-gray-700 text-3xl max-w-[900px mb-2">
+                        <h1 className="md:text-3xl text-gray-700 text-3xl mb-2">
                             SAG polipropilen
                         </h1>
                         <p className="text-base text-[#333333] max-w-xl mb-4">
@@ -98,9 +98,9 @@ const MethodSagPage = () => {
                     </div>
                 </div>
 
-                <div className="md:my-[125px] my-[30px] flex md:flex-row flex-col items-center gap-[50px]">
+                <div className="md:my-[125px] my-[30px] flex md:flex-row flex-col items-center justify-between">
                     <div>
-                        <h1 className="md:text-3xl text-gray-700 text-3xl max-w-[900px mb-2">
+                        <h1 className="md:text-3xl text-gray-700 text-3xl mb-2">
                             SAG eco fiber
                         </h1>
                         <p className="text-base text-[#333333] max-w-xl mb-4">
