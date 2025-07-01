@@ -43,6 +43,7 @@ const posterLinks = [
   '/catalog/top',
   '/sales',
 ];
+
 const videoLinks = [
   '/news/1',
   '/news/2',

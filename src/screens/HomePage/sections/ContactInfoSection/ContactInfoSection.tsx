@@ -45,9 +45,9 @@ export const ContactInfoSection = (): JSX.Element => {
     <footer className="w-full bg-white  flex flex-col items-center  py-8">
       <Card className="border-none shadow-none container mx-auto w-full">
         <CardContent className="p-0">
-          <div className="grid grid-cols-1 md:grid-cols-4 justify-between gap-4">
+          <div className="flex flex-col md:flex-row justify-between gap-6 md:gap-4 text-center md:text-left">
             {/* Categories Column */}
-            <div className="flex flex-col gap-2 p-4">
+            <div className="flex flex-col gap-2 p-4 w-full md:w-auto">
               <h3 className="font-normal text-[21.8px] text-[#01091c] leading-[33px] font-['Inter',Helvetica]">
                 {t('footer.categories')}
               </h3>
@@ -64,7 +64,7 @@ export const ContactInfoSection = (): JSX.Element => {
               </div>
             </div>
             {/* Information Column */}
-            <div className="flex flex-col gap-2 p-4">
+            <div className="flex flex-col gap-2 p-4 w-full md:w-auto">
               <h3 className="font-normal text-[22px] text-[#01091c] leading-[33px] font-['Inter',Helvetica]">
                 {t('footer.information')}
               </h3>
@@ -81,7 +81,7 @@ export const ContactInfoSection = (): JSX.Element => {
               </div>
             </div>
             {/* Call Center Column */}
-            <div className="flex flex-col gap-2 p-4">
+            <div className="flex flex-col gap-2 p-4 w-full md:w-auto items-center md:items-start">
               <h3 className="font-normal text-[21.5px] text-[#01091c] leading-[33px] font-['Inter',Helvetica]">
                 {t('footer.callcenter')}
               </h3>
@@ -98,8 +98,8 @@ export const ContactInfoSection = (): JSX.Element => {
               </div>
             </div>
             {/* Social Media Column */}
-            <div className="flex flex-col p-4">
-              <div className="flex items-center gap-2.5">
+            <div className="flex flex-col p-4 w-full md:w-auto items-center md:items-start">
+              <div className="flex items-center justify-center md:justify-start gap-2.5">
                 {socialMedia.map((social, index) => (
                   <a
                     key={index}
