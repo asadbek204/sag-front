@@ -2,7 +2,7 @@ import { useLanguage } from '../../../../contexts/LanguageContext';
 import gilamImg from '../../../../assets/Gilamlar.png'; // замените на свои пути
 import kovrolinImg from '../../../../assets/Kovrolin.png';
 import lawnImg from '../../../../assets/Gazon.png';
-import runnerImg from '../../../../assets/Gazon.png';
+import runnerImg from '../../../../assets/smth.jpg';
 
 export const InfoSection = () => {
   const { t } = useLanguage();

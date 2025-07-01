@@ -5,6 +5,7 @@ export const uzb = {
   'nav.about': 'SAG haqida',
   'nav.methods': 'SAG metodlari',
   'nav.sales': 'Chegirmalar',
+  'nav.home': 'Bosh sahifa',
   
   // Location
   'location': 'Samarqand viloyati',

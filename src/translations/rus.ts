@@ -5,6 +5,7 @@ export const rus = {
   'nav.about': 'О компании',
   'nav.methods': 'SAG методы',
   'nav.sales': 'Акции',
+  'nav.home': 'Главная',
   
   // Location
   'location': 'Самаркандская область',

@@ -5,6 +5,7 @@ export const en = {
   'nav.about': 'About SAG',
   'nav.methods': 'SAG method',
   'nav.sales': 'Sales',
+  'nav.home': 'Home',
   
   // Location
   'location': 'Samarkand region',
