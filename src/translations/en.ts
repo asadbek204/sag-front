@@ -112,4 +112,17 @@ export const en = {
   'video.new_collections': 'New collections',
   'video.top_collections': 'Top collections',
   'video.sale': 'Sale',
+  // MethodSagPage
+  'method.title': 'SAG Methods',
+  'method.intro': "SAG company uses several advanced yarns and technologies in carpet production. Each type of yarn has its own features and affects the product quality.",
+  'method.original_fiber.title': 'Original fiber yarn',
+  'method.original_fiber.desc': "Original fiber yarns are made from natural raw materials and are used to create high-quality, durable, and long-lasting products.",
+  'method.cotton.title': 'Cotton yarn',
+  'method.cotton.desc': "Cotton yarn is eco-friendly, soft, and hypoallergenic. It makes carpets more comfortable and healthy.",
+  'method.acrylic.title': 'Acrylic yarn',
+  'method.acrylic.desc': "Acrylic yarn is used as a substitute for natural wool. It is distinguished by its strength, durability, and softness.",
+  'method.polypropylene.title': 'Polypropylene yarn',
+  'method.polypropylene.desc': "Polypropylene yarn is flexible, strong, and heat-resistant. It is mainly used in lower and medium quality carpets.",
+  'method.ecofiber.title': 'Eco fiber',
+  'method.ecofiber.desc': "Eco fiber is made from recycled plastic and is used to create environmentally friendly products.",
 }; 

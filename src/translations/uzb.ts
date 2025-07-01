@@ -114,4 +114,17 @@ export const uzb = {
   'video.new_collections': 'Yangi kollektsiyalar',
   'video.top_collections': 'Top kollektsiyalar',
   'video.sale': 'Chegirma',
+  // MethodSagPage
+  'method.title': 'SAG metodlari',
+  'method.intro': "SAG kompaniyasi gilam ishlab chiqarishda bir nechta ilg'or iplar va texnologiyalardan foydalanadi. Har bir ip turi o'ziga xos xususiyatlarga ega va mahsulot sifatiga ta'sir ko'rsatadi.",
+  'method.original_fiber.title': 'Original tolali ip',
+  'method.original_fiber.desc': "Original tolali iplar tabiiy xomashyodan olinadi va yuqori sifatli, mustahkam va uzoq xizmat qiladigan mahsulotlar yaratishda ishlatiladi.",
+  'method.cotton.title': 'Paxta ipi',
+  'method.cotton.desc': "Paxta ipi ekologik toza, yumshoq va hipoallergen xususiyatlarga ega. U gilamlarni yanada qulay va sog'lom qiladi.",
+  'method.acrylic.title': 'Akril ip',
+  'method.acrylic.desc': "Akril ip tabiiy junning o'rniga ishlatiladi. U mustahkamligi, chidamliligi va yumshoqligi bilan ajralib turadi.",
+  'method.polypropylene.title': 'Polipropilen ip',
+  'method.polypropylene.desc': "Polipropilen ipi moslashuvchan, mustahkam va issiqqa chidamli. U asosan quyi va o'rta sifatli gilamlarda ishlatiladi.",
+  'method.ecofiber.title': 'Eco fiber',
+  'method.ecofiber.desc': "Eco fiber qayta ishlangan plastikdan tayyorlanadi va ekologik toza mahsulotlar yaratishda ishlatiladi.",
 }; 

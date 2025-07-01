@@ -38,6 +38,18 @@ const posters = [
       }
 ]
 
+const posterLinks = [
+  '/catalog',
+  '/catalog/top',
+  '/sales',
+];
+const videoLinks = [
+  '/news/1',
+  '/news/2',
+  '/news/3',
+  '/news/4',
+];
+
 export const VideoSection = () => {
   const { t } = useLanguage();
   const [index, setIndex] = useState(0);
@@ -58,40 +70,43 @@ export const VideoSection = () => {
       <div className="container w-full">
       <div className='flex items-center w-full justify-between mb-[30px] flex-col md:flex-row gap-4'>
         {posters.map((img, i) => (
-              <div
-                key={i}
-                className="relative w-full max-w-[400px] h-[250px] lg:h-[350px] rounded overflow-hidden shadow-lg flex-shrink-0 m-auto"
-                style={{ minWidth: 0 }}
-              >
-                <img
-                  src={img.img}
-                  alt={t(img.textKey)}
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-black/30" />
-                <div className="absolute left-0 bottom-0 z-10 p-6">
-                  <div className="text-white text-xl font-semibold drop-shadow-lg">
-                    {t(img.textKey)}
-                  </div>
-                </div>
+          <a
+            key={i}
+            href={posterLinks[i]}
+            className="relative w-full max-w-[400px] h-[350px] lg:h-[250px] rounded overflow-hidden shadow-lg flex-shrink-0 m-auto block group"
+            style={{ minWidth: 0 }}
+            tabIndex={0}
+          >
+            <img
+              src={img.img}
+              alt={t(img.textKey)}
+              className="absolute inset-0 w-full h-full object-cover group-hover:opacity-80 transition"
+            />
+            <div className="absolute inset-0 bg-black/30" />
+            <div className="absolute left-0 bottom-0 z-10 p-6">
+              <div className="text-white text-xl font-semibold drop-shadow-lg">
+                {t(img.textKey)}
               </div>
-            ))}
+            </div>
+          </a>
+        ))}
         </div>
 
         <h2 className="text-4xl font-normal mb-8 text-white text-left">{t('video.title')}</h2>
-        <div className="relative flex items-center w-full">
-          {/* Слайдер */}
-          <div className="flex flex-col md:flex-row gap-8 justify-center items-center w-full flex-wrap">
+        <div className="relative flex items-center w-full overflow-x-hidden">
+          <div className="flex flex-col md:flex-row flex-wrap gap-8 justify-center items-center w-full">
             {visible.map((video, i) => (
-              <div
+              <a
                 key={i}
-                className="relative w-full max-w-[400px] h-[350px] lg:h-[250px] rounded overflow-hidden shadow-lg flex-shrink-0 m-auto"
-                style={{ minWidth: 0 }}
+                href={videoLinks[(index + i) % videoLinks.length]}
+                className="relative flex-1 min-w-0 h-[250px] lg:h-[350px] rounded overflow-hidden shadow-lg flex-shrink block group"
+                style={{ maxWidth: 400 }}
+                tabIndex={0}
               >
                 <img
                   src={video.img}
                   alt={t(video.textKey)}
-                  className="absolute inset-0 w-full h-full object-cover"
+                  className="absolute inset-0 w-full h-full object-cover group-hover:opacity-80 transition"
                 />
                 <div className="absolute inset-0 bg-black/30" />
                 <div className="absolute left-0 bottom-0 z-10 p-6">
@@ -99,7 +114,7 @@ export const VideoSection = () => {
                     {t(video.textKey)}
                   </div>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
         </div>

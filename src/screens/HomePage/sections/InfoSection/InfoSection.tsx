@@ -15,10 +15,10 @@ export const InfoSection = () => {
         <div className="relative z-10 p-6 flex flex-col h-full justify-start">
           <h2 className="text-white text-3xl font-normal mb-6">{t('info.carpets')}</h2>
           <ul className="flex flex-col gap-2">
-            <li><a href="#" className="text-white underline">{t('info.carpets.classic')}</a></li>
-            <li><a href="#" className="text-white underline">{t('info.carpets.neoclassic')}</a></li>
-            <li><a href="#" className="text-white underline">{t('info.carpets.modern')}</a></li>
-            <li><a href="#" className="text-white underline">{t('info.carpets.kids')}</a></li>
+            <li><a href="/catalog?type=classic" className="text-white underline">{t('info.carpets.classic')}</a></li>
+            <li><a href="/catalog?type=neoclassic" className="text-white underline">{t('info.carpets.neoclassic')}</a></li>
+            <li><a href="/catalog?type=modern" className="text-white underline">{t('info.carpets.modern')}</a></li>
+            <li><a href="/catalog?type=kids" className="text-white underline">{t('info.carpets.kids')}</a></li>
           </ul>
         </div>
       </div>

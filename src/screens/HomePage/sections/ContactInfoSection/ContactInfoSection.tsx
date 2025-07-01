@@ -12,33 +12,33 @@ export const ContactInfoSection = (): JSX.Element => {
 
   // Category data
   const categories = [
-    { name: t('footer.categories') },
-    { name: "Kovrolin" },
-    { name: "Gazon" },
+    { name: t('footer.categories'), href: '/catalog' },
+    { name: "Kovrolin", href: '/catalog/kovrolin' },
+    { name: "Gazon", href: '/catalog/gazon' },
   ];
 
   // Information data
   const information = [
-    { name: t('footer.about') },
-    { name: t('footer.stores') },
-    { name: t('footer.blogs') },
-    { name: t('footer.sales') },
+    { name: t('footer.about'), href: '/about' },
+    { name: t('footer.stores'), href: '/stores' },
+    { name: t('footer.blogs'), href: '/blogs' },
+    { name: t('footer.sales'), href: '/sales' },
   ];
 
   // Contact data
   const contactNumbers = [
-    { number: "+ 998 (55) 701-04-04" },
-    { number: "+ 998 (66) 230-40-04" },
+    { number: "+ 998 (55) 701-04-04", href: 'tel:+998557010404' },
+    { number: "+ 998 (66) 230-40-04", href: 'tel:+998662304004' },
   ];
 
   // Social media data
   const socialMedia = [
-    { name: "LinkedIn", icon: linkendin, link: "#" },
-    { name: "Pinterest", icon: pinterest, link: "#" },
-    { name: "YouTube", icon: yt, link: "#" },
-    { name: "Instagram", icon: instagram, link: "#" },
-    { name: "Telegram", icon: telegram, link: "#" },
-    { name: "Facebook", icon: facebook, link: "#" },
+    { name: "LinkedIn", icon: linkendin, link: "https://linkedin.com/" },
+    { name: "Pinterest", icon: pinterest, link: "https://pinterest.com/" },
+    { name: "YouTube", icon: yt, link: "https://youtube.com/" },
+    { name: "Instagram", icon: instagram, link: "https://instagram.com/" },
+    { name: "Telegram", icon: telegram, link: "https://t.me/" },
+    { name: "Facebook", icon: facebook, link: "https://facebook.com/" },
   ];
 
   return (
@@ -55,7 +55,7 @@ export const ContactInfoSection = (): JSX.Element => {
                 {categories.map((category, index) => (
                   <a
                     key={index}
-                    href="#"
+                    href={category.href}
                     className="font-normal text-base text-[#01091c] leading-6 font-['Inter',Helvetica]"
                   >
                     {category.name}
@@ -72,7 +72,7 @@ export const ContactInfoSection = (): JSX.Element => {
                 {information.map((info, index) => (
                   <a
                     key={index}
-                    href="#"
+                    href={info.href}
                     className="font-normal text-base text-[#01091c] leading-6 font-['Inter',Helvetica] whitespace-nowrap"
                   >
                     {info.name}
@@ -89,7 +89,7 @@ export const ContactInfoSection = (): JSX.Element => {
                 {contactNumbers.map((contact, index) => (
                   <a
                     key={index}
-                    href={`tel:${contact.number.replace(/\s+/g, "")}`}
+                    href={contact.href}
                     className="font-normal text-sm text-[#01091c] leading-6 font-['Inter',Helvetica] whitespace-nowrap"
                   >
                     {contact.number}
