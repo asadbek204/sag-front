@@ -107,7 +107,7 @@ export const VideoSection = () => {
             </a>
           ))}
         </div>
-        <h2 className="text-4xl font-normal mb-8 text-white text-center md:text-left">{t('video.title')}</h2>
+        <h2 className="text-4xl font-normal mb-8 text-white text-center md:text-left">{t('nav.video_clips')}</h2>
         <div className="relative flex items-center overflow-x-hidden w-full">
           <div className={`flex ${slidesToShow > 1 ? 'flex-row' : 'flex-col'} gap-8 justify-center items-center w-full transition-all`}>
             {visible.map((video, i) => (

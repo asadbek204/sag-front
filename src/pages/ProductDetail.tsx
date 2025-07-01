@@ -129,25 +129,25 @@ const ProductDetail = () => {
                 <tbody>
                   <tr className="border-b border-gray-100">
                     <td className="py-2">
-                      <input type="checkbox" className="mr-2" /> 300 x 400
+                       300 x 400
                     </td>
                     <td className="py-2 font-bold text-gray-800">4 512 000 uzs</td>
                   </tr>
                   <tr className="border-b border-gray-100">
                     <td className="py-2">
-                      <input type="checkbox" className="mr-2" /> 300 x 600
+                      300 x 600
                     </td>
                     <td className="py-2 font-bold text-gray-800">7 512 000 uzs</td>
                   </tr>
                   <tr className="border-b border-gray-100">
                     <td className="py-2">
-                      <input type="checkbox" className="mr-2" /> 400 x 700
+                      400 x 700
                     </td>
                     <td className="py-2 font-bold text-gray-800">8 512 000 uzs</td>
                   </tr>
                   <tr className="border-b border-gray-100">
                     <td className="py-2">
-                      <input type="checkbox" className="mr-2" /> 500 x 1000
+                      500 x 1000
                     </td>
                     <td className="py-2 font-bold text-gray-800">10 512 000 uzs</td>
                   </tr>
