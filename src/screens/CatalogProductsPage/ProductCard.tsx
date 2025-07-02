@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../../contexts/LanguageContext';
+import { useState } from 'react';
 
 interface ProductCardProps {
   id: number;
@@ -10,49 +11,60 @@ interface ProductCardProps {
   isOnSale?: boolean;
 }
 
-const ProductCard = ({ id, name, isNew, isOnSale }: ProductCardProps) => {
-  const { t, language } = useLanguage();
+const ProductCard = ({ id, name, isNew, isOnSale, price }: ProductCardProps) => {
+  const { t } = useLanguage();
+  const [showPrice, setShowPrice] = useState(false);
+
+  const handlePriceToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault(); // Prevent Link navigation when clicking the button
+    setShowPrice(!showPrice);
+  };
+
   return (
-<Link to={`/product/${id}`} className="group">
-  <div className="bg-white shadow-sm  border-gray-200 overflow-hidden transition-shadow hover:shadow-md">
-    <div className="relative bg-gray-100">
-      <img
+    <Link to={`/product/${id}`} className="group">
+      <div className="bg-white shadow-sm border-gray-200 overflow-hidden transition-shadow hover:shadow-md">
+        <div className="relative bg-gray-100">
+          <img
         src="https://www.sagexpress.uz/media/images/products/LU5238_BS73.png"
         alt={name}
-        className="w-full object-cover transform transition-transform duration-300 h-[372px] group-hover:scale-105"
+        className="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105"
       />
 
           {isNew && (
-            <div className={`absolute top-0 right-0 w-[60px] h-[60px]`}>
+            <div className="absolute top-0 right-0 w-[60px] h-[60px]">
               <div className="absolute top-0 right-0 w-0 h-0 border-t-[100px] border-t-white border-l-[100px] border-l-transparent z-10" />
-
               <div className="absolute top-0 right-0 w-0 h-0 border-t-[100px] border-t-green-600 border-l-[100px] border-l-transparent z-20 rotate-180" />
-
-              <span className={`absolute top-[70px] right-[37px] text-white font-bold z-30 text-[13px]`}>
+              <span className="absolute top-[70px] right-[37px] text-white font-bold z-30 text-[13px]">
                 {t ? t('badge.new') : 'Yangi'}
               </span>
             </div>
           )}
 
-           {isOnSale && (
+          {isOnSale && (
             <div className="absolute top-0 right-0 w-[60px] h-[60px]">
               <div className="absolute top-0 right-0 w-0 h-0 border-t-[100px] border-t-white border-l-[100px] border-l-transparent z-10" />
-
               <div className="absolute top-0 right-0 w-0 h-0 border-t-[100px] border-t-red-500 border-l-[100px] border-l-transparent z-20 rotate-180" />
-
-              <span className="absolute top-[70px] right-[37px]  text-white text-[13px] font-bold z-30">
+              <span className="absolute top-[70px] right-[37px] text-white text-[13px] font-bold z-30">
                 {t('badge.sale')}
               </span>
             </div>
           )}
-
         </div>
 
         <div className="p-4">
           <h3 className="font-medium text-gray-800 mb-2 group-hover:text-gray-500 transition-colors">
             {name}
           </h3>
-
+          {showPrice ? (
+            <button className=" font-semibold  border border-black text-black md:px-4 px-1 md:py-2 py-1 rounded hover:bg-black hover:text-white ">{price} usz</button>
+          ) : (
+            <button
+              onClick={handlePriceToggle}
+              className="bg-transparent border border-black text-black md:px-4 px-1 md:py-2 py-1 rounded hover:bg-black hover:text-white transition-colors"
+            >
+             Narxni ko'rsatish
+            </button>
+          )}
         </div>
       </div>
     </Link>
