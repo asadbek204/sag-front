@@ -9,9 +9,10 @@ interface ProductCardProps {
   originalPrice?: number | null;
   isNew?: boolean;
   isOnSale?: boolean;
+  image?: string;
 }
 
-const ProductCard = ({ id, name, isNew, isOnSale, price }: ProductCardProps) => {
+const ProductCard = ({ id, name, isNew, isOnSale, price, image }: ProductCardProps) => {
   const { t } = useLanguage();
   const [showPrice, setShowPrice] = useState(false);
 
@@ -25,26 +26,26 @@ const ProductCard = ({ id, name, isNew, isOnSale, price }: ProductCardProps) => 
       <div className="bg-white shadow-sm border-gray-200 overflow-hidden transition-shadow hover:shadow-md">
         <div className="relative bg-gray-100">
           <img
-        src="https://www.sagexpress.uz/media/images/products/LU5238_BS73.png"
-        alt={name}
-        className="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105"
-      />
+            src={image || 'https://via.placeholder.com/300x400?text=No+Image'}
+            alt={name}
+            className="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105"
+          />
 
           {isNew && (
-            <div className="absolute top-0 right-0 w-[60px] h-[60px]">
-              <div className="absolute top-0 right-0 w-0 h-0 border-t-[100px] border-t-white border-l-[100px] border-l-transparent z-10" />
-              <div className="absolute top-0 right-0 w-0 h-0 border-t-[100px] border-t-green-600 border-l-[100px] border-l-transparent z-20 rotate-180" />
-              <span className="absolute top-[70px] right-[37px] text-white font-bold z-30 text-[13px]">
-                {t ? t('badge.new') : 'Yangi'}
+            <div className="absolute top-0 right-0 w-[30px] h-[30px] sm:w-[60px] sm:h-[60px]">
+              <div className="absolute top-0 right-0 w-0 h-0 border-t-[60px] border-t-white border-l-[60px] border-l-transparent z-10 sm:border-t-[100px] sm:border-l-[100px]" />
+              <div className="absolute top-0 right-0 w-0 h-0 border-t-[60px] border-t-green-600 border-l-[60px] border-l-transparent z-20 rotate-180 sm:border-t-[100px] sm:border-l-[100px]" />
+              <span className="absolute top-[38px] right-[19px] text-white text-[8px] font-bold z-30 sm:top-[70px] sm:right-[37px] sm:text-[13px]">
+                {t('badge.new')}
               </span>
             </div>
           )}
 
           {isOnSale && (
-            <div className="absolute top-0 right-0 w-[60px] h-[60px]">
-              <div className="absolute top-0 right-0 w-0 h-0 border-t-[100px] border-t-white border-l-[100px] border-l-transparent z-10" />
-              <div className="absolute top-0 right-0 w-0 h-0 border-t-[100px] border-t-red-500 border-l-[100px] border-l-transparent z-20 rotate-180" />
-              <span className="absolute top-[70px] right-[37px] text-white text-[13px] font-bold z-30">
+            <div className="absolute top-0 right-0 w-[30px] h-[30px] sm:w-[60px] sm:h-[60px]">
+              <div className="absolute top-0 right-0 w-0 h-0 border-t-[60px] border-t-white border-l-[60px] border-l-transparent z-10 sm:border-t-[100px] sm:border-l-[100px]" />
+              <div className="absolute top-0 right-0 w-0 h-0 border-t-[60px] border-t-red-500 border-l-[60px] border-l-transparent z-20 rotate-180 sm:border-t-[100px] sm:border-l-[100px]" />
+              <span className="absolute top-[38px] right-[19px] text-white text-[8px] font-bold z-30 sm:top-[70px] sm:right-[37px] sm:text-[13px]">
                 {t('badge.sale')}
               </span>
             </div>
@@ -62,7 +63,7 @@ const ProductCard = ({ id, name, isNew, isOnSale, price }: ProductCardProps) => 
               onClick={handlePriceToggle}
               className="bg-transparent border border-black text-black md:px-4 px-1 md:py-2 py-1 rounded hover:bg-black hover:text-white transition-colors"
             >
-             Narxni ko'rsatish
+              Narxni ko'rsatish
             </button>
           )}
         </div>

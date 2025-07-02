@@ -10,14 +10,14 @@ import { useLanguage } from '../contexts/LanguageContext';
 
 const Catalog = () => {
   const rugData = [
-    { id: 1, name: "ANATOLIAN SILK", price: 240000, originalPrice: 325000, shape: "Oval", size: "1 - 100 000 uzs", delivery: "1 - 2 kun oraligi", style: "Klassik dizayn", room: "Mehmonxona", color: "Qizil", isNew: false, isOnSale: true, salesCount: 50 },
-    { id: 2, name: "MOVAROUNNAHR", price: 240000, originalPrice: 325000, shape: "To'rtburchak", size: "100 000 - 200 000 uzs", delivery: "3 - 6 kun oraligi", style: "Neoklassik dizayn", room: "Yotoqxona", color: "Yashil", isNew: false, isOnSale: true, salesCount: 30 },
-    { id: 3, name: "ENIGMA", price: 240000, originalPrice: 325000, shape: "Metril", size: "200 000 - 300 000 uzs", delivery: "7 - 15 kun oraligi", style: "Zamonaviy dizayn", room: "Oshxona", color: "Qora", isNew: true, isOnSale: false, salesCount: 10 },
-    { id: 4, name: "EMOMA", price: 240000, originalPrice: 325000, shape: "Kvadrat", size: "300 000 - 655 000 uzs", delivery: "1 - 2 kun oraligi", style: "Bolalar dizayni", room: "Bolalar xonasi", color: "Kulrang", isNew: false, isOnSale: true, salesCount: 70 },
-    { id: 5, name: "ANATOLIAN SILK", price: 180000, originalPrice: 250000, shape: "Oval", size: "1 - 100 000 uzs", delivery: "3 - 6 kun oraligi", style: "Klassik dizayn", room: "Mehmonxona", color: "Ko'k", isNew: false, isOnSale: false, salesCount: 20 },
-    { id: 6, name: "MOVAROUNNAHR", price: 320000, originalPrice: 420000, shape: "To'rtburchak", size: "200 000 - 300 000 uzs", delivery: "7 - 15 kun oraligi", style: "Neoklassik dizayn", room: "Yotoqxona", color: "Krem rang", isNew: false, isOnSale: true, salesCount: 40 },
-    { id: 7, name: "ENIGMA CLASSIC", price: 150000, originalPrice: null, shape: "Noodatiy", size: "100 000 - 200 000 uzs", delivery: "1 - 2 kun oraligi", style: "Zamonaviy dizayn", room: "Oshxona", color: "Qaymoqrang", isNew: true, isOnSale: false, salesCount: 15 },
-    { id: 8, name: "ANATOLIAN SILK", price: 280000, originalPrice: 350000, shape: "Metril", size: "200 000 - 300 000 uzs", delivery: "3 - 6 kun oraligi", style: "Klassik dizayn", room: "Mehmonxona", color: "Qizil", isNew: false, isOnSale: true, salesCount: 60 },
+    { id: 1, name: "ANATOLIAN SILK", price: 240000, originalPrice: 325000, shape: "Oval", size: "1 - 100 000 uzs", delivery: "1 - 2 kun oraligi", style: "Klassik dizayn", room: "Mehmonxona", color: "Qizil", isNew: false, isOnSale: true, salesCount: 50, image: "https://www.sagexpress.uz/media/images/anatolian_silk_2.jpg" },
+    { id: 2, name: "MOVAROUNNAHR", price: 240000, originalPrice: 325000, shape: "To'rtburchak", size: "100 000 - 200 000 uzs", delivery: "3 - 6 kun oraligi", style: "Neoklassik dizayn", room: "Yotoqxona", color: "Yashil", isNew: false, isOnSale: true, salesCount: 30, image: "https://www.sagexpress.uz/media/images/movaroun_2.jpg" },
+    { id: 3, name: "ENIGMA", price: 240000, originalPrice: 325000, shape: "Metril", size: "200 000 - 300 000 uzs", delivery: "7 - 15 kun oraligi", style: "Zamonaviy dizayn", room: "Oshxona", color: "Qora", isNew: true, isOnSale: false, salesCount: 10, image: "https://www.sagexpress.uz/media/images/enigma.jpg" },
+    { id: 4, name: "EMOMA", price: 240000, originalPrice: 325000, shape: "Kvadrat", size: "300 000 - 655 000 uzs", delivery: "1 - 2 kun oraligi", style: "Bolalar dizayni", room: "Bolalar xonasi", color: "Kulrang", isNew: false, isOnSale: true, salesCount: 70, image: "https://www.sagexpress.uz/media/images/isfahan.jpg" },
+    { id: 5, name: "ANATOLIAN SILK", price: 180000, originalPrice: 250000, shape: "Oval", size: "1 - 100 000 uzs", delivery: "3 - 6 kun oraligi", style: "Klassik dizayn", room: "Mehmonxona", color: "Ko'k", isNew: false, isOnSale: false, salesCount: 20, image: "https://www.sagexpress.uz/media/images/Tamerlan.jpg" },
+    { id: 6, name: "MOVAROUNNAHR", price: 320000, originalPrice: 420000, shape: "To'rtburchak", size: "200 000 - 300 000 uzs", delivery: "7 - 15 kun oraligi", style: "Neoklassik dizayn", room: "Yotoqxona", color: "Krem rang", isNew: false, isOnSale: true, salesCount: 40, image: "https://www.sagexpress.uz/media/images/7261-2.jpg" },
+    { id: 7, name: "ENIGMA CLASSIC", price: 150000, originalPrice: null, shape: "Noodatiy", size: "100 000 - 200 000 uzs", delivery: "1 - 2 kun oraligi", style: "Zamonaviy dizayn", room: "Oshxona", color: "Qaymoqrang", isNew: true, isOnSale: false, salesCount: 15, image: "https://www.sagexpress.uz/media/images/creante_grey.jpg" },
+    { id: 8, name: "ANATOLIAN SILK", price: 280000, originalPrice: 350000, shape: "Metril", size: "200 000 - 300 000 uzs", delivery: "3 - 6 kun oraligi", style: "Klassik dizayn", room: "Mehmonxona", color: "Qizil", isNew: false, isOnSale: true, salesCount: 60, image: "https://www.sagexpress.uz/media/images/tressor_beige.jpg" },
   ];
 
   const { t } = useLanguage()
@@ -172,6 +172,7 @@ const Catalog = () => {
                       originalPrice={rug.originalPrice}
                       isNew={rug.isNew}
                       isOnSale={rug.isOnSale}
+                      image={rug.image}
                     />
                   ))}
                 </div>
