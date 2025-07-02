@@ -57,7 +57,7 @@ export const Navbar = (): JSX.Element => {
   const navigationItems = [
     {
       key: 'nav.catalog',
-      path: '/catalog',
+      // path: '',
       className: "text-base",
       subItems: [
         { key: 'nav.gilamlar', path: '/catalog', label: 'Gilamlar' },
