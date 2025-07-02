@@ -17,17 +17,17 @@ export const InfoSection = () => {
           <div className="relative z-10 p-6 flex flex-col h-full justify-start">
             <h2 className="text-white text-3xl font-normal mb-6">{t('info.carpets')}</h2>
             <ul className="flex flex-col gap-2">
-              <li><a href="/catalog?type=classic" className="text-white underline">{t('info.carpets.classic')}</a></li>
-              <li><a href="/catalog?type=neoclassic" className="text-white underline">{t('info.carpets.neoclassic')}</a></li>
-              <li><a href="/catalog?type=modern" className="text-white underline">{t('info.carpets.modern')}</a></li>
-              <li><a href="/catalog?type=kids" className="text-white underline">{t('info.carpets.kids')}</a></li>
+              <li><a href="/catalog" className="text-white underline">{t('info.carpets.classic')}</a></li>
+              <li><a href="/catalog" className="text-white underline">{t('info.carpets.neoclassic')}</a></li>
+              <li><a href="/catalog" className="text-white underline">{t('info.carpets.modern')}</a></li>
+              <li><a href="/catalog" className="text-white underline">{t('info.carpets.kids')}</a></li>
             </ul>
           </div>
         </a>
       </div>
       {/* Kovrolin */}
       <div className="relative w-[275px] h-[375px] rounded overflow-hidden shadow group">
-        <a href="/catalog?type=kovrolin">
+        <a href="/catalog">
           <img src={kovrolinImg} alt="" className="absolute inset-0 w-full h-full object-cover" />
           <div className="absolute inset-0 bg-black/20" />
           <div className="relative z-10 p-6 flex flex-col h-full justify-start">
@@ -37,7 +37,7 @@ export const InfoSection = () => {
       </div>
       {/* Gazon */}
       <div className="relative w-[275px] h-[375px] rounded overflow-hidden shadow group">
-        <a href="/catalog?type=gazon">
+        <a href="/catalog">
           <img src={lawnImg} alt="" className="absolute inset-0 w-full h-full object-cover" />
           <div className="absolute inset-0 bg-black/20" />
           <div className="relative z-10 p-6 flex flex-col h-full justify-start">
@@ -47,7 +47,7 @@ export const InfoSection = () => {
       </div>
       {/* Metrlik yo'lak */}
       <div className="relative w-[275px] h-[375px] rounded overflow-hidden shadow group">
-        <a href="/catalog?type=runner">
+        <a href="/catalog">
           <img src={runnerImg} alt="" className="absolute inset-0 w-full h-full object-cover" />
           <div className="absolute inset-0 bg-black/20" />
           <div className="relative z-10 p-6 flex flex-col h-full justify-start">
