@@ -19,7 +19,7 @@ const ProductCard = ({ id, name, isNew, isOnSale }: ProductCardProps) => {
       <img
         src="https://www.sagexpress.uz/media/images/products/LU5238_BS73.png"
         alt={name}
-        className="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105"
+        className="w-full object-cover transform transition-transform duration-300 h-[372px] group-hover:scale-105"
       />
 
           {isNew && (
@@ -28,7 +28,7 @@ const ProductCard = ({ id, name, isNew, isOnSale }: ProductCardProps) => {
 
               <div className="absolute top-0 right-0 w-0 h-0 border-t-[100px] border-t-green-600 border-l-[100px] border-l-transparent z-20 rotate-180" />
 
-              <span className={`absolute top-[70px] right-[50px] text-white font-bold z-30 text-[13px]`}>
+              <span className={`absolute top-[70px] right-[37px] text-white font-bold z-30 text-[13px]`}>
                 {t ? t('badge.new') : 'Yangi'}
               </span>
             </div>
@@ -41,7 +41,7 @@ const ProductCard = ({ id, name, isNew, isOnSale }: ProductCardProps) => {
               <div className="absolute top-0 right-0 w-0 h-0 border-t-[100px] border-t-red-500 border-l-[100px] border-l-transparent z-20 rotate-180" />
 
               <span className="absolute top-[70px] right-[37px]  text-white text-[13px] font-bold z-30">
-                {t('badge.discount')}
+                {t('badge.sale')}
               </span>
             </div>
           )}

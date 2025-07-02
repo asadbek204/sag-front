@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X, ChevronDown, ChevronUp } from 'lucide-react';
 import { useLanguage } from '../../contexts/LanguageContext';
 
@@ -18,23 +18,52 @@ interface FilterCheckboxProps {
 
 const Filter = ({ filters, onFilterChange, onClearFilters, onClose }: FilterProps) => {
   const { t } = useLanguage();
-  const [expandedSections, setExpandedSections] = useState<{
-    shape: boolean;
-    price: boolean;
-    delivery: boolean;
-    style: boolean;
-    room: boolean;
-    size: boolean;
-    color: boolean;
-  }>({
-    shape: false,
-    price: false,
-    delivery: false,
-    style: false,
-    room: false,
-    size: false,
-    color: false
-  });
+
+  const getInitialExpanded = () => {
+    if (typeof window !== 'undefined' && window.innerWidth >= 1024) {
+      return {
+        shape: false,
+        price: false,
+        delivery: false,
+        style: true,
+        room: true,
+        size: false,
+        color: false
+      };
+    }
+    return {
+      shape: false,
+      price: false,
+      delivery: false,
+      style: false,
+      room: false,
+      size: false,
+      color: false
+    };
+  };
+
+  const [expandedSections, setExpandedSections] = useState(getInitialExpanded);
+
+  useEffect(() => {
+    function handleResize() {
+      if (window.innerWidth >= 1024) {
+        setExpandedSections((prev) => ({
+          ...prev,
+          style: true,
+          room: true,
+        }));
+      } else {
+        setExpandedSections((prev) => ({
+          ...prev,
+          style: false,
+          room: false,
+        }));
+      }
+    }
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const toggleSection = (section: keyof typeof expandedSections) => {
     setExpandedSections(prev => ({

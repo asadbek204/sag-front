@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/ui/Footer";
 import Filter from "../screens/CatalogPage/Filter";
@@ -22,7 +22,27 @@ const Catalog = () => {
 
   const { t } = useLanguage()
 
-  const [showFilters, setShowFilters] = useState(true);
+  const getInitialShowFilters = () => {
+    if (typeof window !== 'undefined' && window.innerWidth >= 1024) {
+      return true;
+    }
+    return false;
+  };
+
+  const [showFilters, setShowFilters] = useState(getInitialShowFilters);
+
+  useEffect(() => {
+    function handleResize() {
+      if (window.innerWidth >= 1024) {
+        setShowFilters(true);
+      } else {
+        setShowFilters(false);
+      }
+    }
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOption, setSortOption] = useState("barchasi");
 
@@ -107,7 +127,7 @@ const Catalog = () => {
                 { label: t('catalog.all'), value: "barchasi" },
                 { label: t('catalog.new'), value: "yangilik" },
                 { label: t('catalog.bestseller'), value: "kop" },
-                { label: t('catalog.discount'), value: "chegirma" },
+                { label: t('catalog.sale'), value: "chegirma" },
               ].map(({ label, value }) => (
                 <button
                   key={value}
