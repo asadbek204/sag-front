@@ -3,22 +3,25 @@ import { useLanguage } from '../../../../contexts/LanguageContext';
 import top from '../../../../assets/top.png';
 import neww from '../../../../assets/yangi.png'
 import sales from '../../../../assets/sales.png'
+import vd1 from '../../../../assets/vd1.png'
+import vd2 from '../../../../assets/vd2.png'
+
 
 const videos = [
   {
-    img: 'https://www.sagexpress.uz/media/images/opportunities/Screenshot_5.png',
+    img: vd1,
     textKey: 'video.tashkent_opening',
   },
   {
-    img: 'https://www.sagexpress.uz/media/images/opportunities/sayt_uchun_1.jpg',
+    img: vd2,
     textKey: 'video.silver_mercury',
   },
   {
-    img: 'https://www.sagexpress.uz/media/images/opportunities/6.jpg',
+    img: vd1,
     textKey: 'video.abu_dhabi',
   },
   {
-    img: 'https://www.sagexpress.uz/media/images/opportunities/25_4.png',
+    img: vd2,
     textKey: 'video.sag_win',
   },
 ];
@@ -69,7 +72,7 @@ export const VideoSection = () => {
   const [index, setIndex] = useState(0);
   const slidesToShow = useSlidesToShow();
 
-  // Автослайдер: каждые 3 секунды
+
   useEffect(() => {
     const timer = setInterval(() => {
       setIndex((prev) => (prev + 1) % videos.length);
@@ -77,7 +80,7 @@ export const VideoSection = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // Получаем видимые видео (циклически)
+
   const visible = Array.from({length: slidesToShow}, (_, i) => videos[(index + i) % videos.length]);
 
 
@@ -109,7 +112,7 @@ export const VideoSection = () => {
         </div>
         <h2 className="text-4xl font-normal mb-8 text-white text-center md:text-left">{t('nav.video_clips')}</h2>
         <div className="relative flex items-center overflow-x-hidden w-full">
-          <div className={`flex ${slidesToShow > 1 ? 'flex-row' : 'flex-col'} gap-8 justify-center items-center w-full transition-all`}>
+          <div className={`flex ${slidesToShow > 1 ? 'flex-row' : 'flex-col'} gap-8 justify-between items-center w-full transition-all`}>
             {visible.map((video, i) => (
               <a
                 key={i}

@@ -57,11 +57,11 @@ const ProductCard = ({ id, name, isNew, isOnSale, price, image }: ProductCardPro
             {name}
           </h3>
           {showPrice ? (
-            <button className=" font-semibold  border border-black text-black md:px-4 px-1 md:py-2 py-1 rounded hover:bg-black hover:text-white ">{price} usz</button>
+            <button className=" font-semibold  border border-black text-black md:px-4 px-1 md:py-2 py-1 rounded  ">{price} usz</button>
           ) : (
             <button
               onClick={handlePriceToggle}
-              className="bg-transparent border border-black text-black md:px-4 px-1 md:py-2 py-1 rounded hover:bg-black hover:text-white transition-colors"
+              className="bg-transparent border border-black text-black md:px-4 px-1 md:py-2 py-1 rounded   transition-colors"
             >
               Narxni ko'rsatish
             </button>

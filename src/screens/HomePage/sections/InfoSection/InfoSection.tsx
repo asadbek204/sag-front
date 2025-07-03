@@ -8,9 +8,9 @@ export const InfoSection = () => {
   const { t } = useLanguage();
 
   return (
-    <section className="flex flex-wrap gap-4 py-8 container my-8 justify-center">
+    <section className="flex lg:flex-nowrap flex-wrap gap-4 py-8 container my-8 justify-center ">
       {/* Gilamlar */}
-      <div className="relative w-[275px] h-[375px] rounded overflow-hidden shadow group">
+      <div className="relative w-[315px] h-[385px] rounded overflow-hidden shadow group">
         <a href="/catalog">
           <img src={gilamImg} alt="" className="absolute inset-0 w-full h-full object-cover" />
           <div className="absolute inset-0 bg-black/30" />
@@ -26,7 +26,7 @@ export const InfoSection = () => {
         </a>
       </div>
       {/* Kovrolin */}
-      <div className="relative w-[275px] h-[375px] rounded overflow-hidden shadow group">
+      <div className="relative w-[315px] h-[385px] rounded overflow-hidden shadow group">
         <a href="/catalog">
           <img src={kovrolinImg} alt="" className="absolute inset-0 w-full h-full object-cover" />
           <div className="absolute inset-0 bg-black/20" />
@@ -36,7 +36,7 @@ export const InfoSection = () => {
         </a>
       </div>
       {/* Gazon */}
-      <div className="relative w-[275px] h-[375px] rounded overflow-hidden shadow group">
+      <div className="relative w-[315px] h-[385px] rounded overflow-hidden shadow group">
         <a href="/catalog">
           <img src={lawnImg} alt="" className="absolute inset-0 w-full h-full object-cover" />
           <div className="absolute inset-0 bg-black/20" />
@@ -46,7 +46,7 @@ export const InfoSection = () => {
         </a>
       </div>
       {/* Metrlik yo'lak */}
-      <div className="relative w-[275px] h-[375px] rounded overflow-hidden shadow group">
+      <div className="relative w-[315px] h-[385px] rounded overflow-hidden shadow group">
         <a href="/catalog">
           <img src={runnerImg} alt="" className="absolute inset-0 w-full h-full object-cover" />
           <div className="absolute inset-0 bg-black/20" />

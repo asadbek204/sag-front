@@ -108,9 +108,9 @@ const Catalog = () => {
       
       <div className="container mx-auto px-4 py-6">
         <div className="mb-6">
-          <div className="flex items-center text-base text-gray-600 mb-4">
-            <ChevronLeft size={20} className="text-gray-600" /> <Link to="/">Bosh sahifa</Link>
-            <div className="pl-3 flex items-center font-semibold"> <ChevronLeft size={20} className="text-gray-600" /> Gilamlar</div>
+          <div className="flex md:mb-12 mb-7 items-center text-base text-gray-600 ">
+            <ChevronLeft size={20} className="text-gray-600" /> <Link to="/">{t('nav.home')}</Link>
+            <div className="pl-3 flex items-center font-semibold"> <ChevronLeft size={20} className="text-gray-600" /> {t('product.breadcrumb.carpets')}</div>
           </div>
           
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">

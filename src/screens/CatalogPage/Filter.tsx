@@ -25,8 +25,8 @@ const Filter = ({ filters, onFilterChange, onClearFilters, onClose }: FilterProp
         shape: false,
         price: false,
         delivery: false,
-        style: true,
-        room: true,
+        style: false,
+        room: false,
         size: false,
         color: false
       };
@@ -49,8 +49,8 @@ const Filter = ({ filters, onFilterChange, onClearFilters, onClose }: FilterProp
       if (window.innerWidth >= 1024) {
         setExpandedSections((prev) => ({
           ...prev,
-          style: true,
-          room: true,
+          style: false,
+          room: false,
         }));
       } else {
         setExpandedSections((prev) => ({
@@ -143,9 +143,7 @@ const Filter = ({ filters, onFilterChange, onClearFilters, onClose }: FilterProp
 
   return (
     <div className="bg-[#FAF9F7] p-6 ">
-      <div className="flex items-center justify-between ">
-
-      </div>
+      
         <div className="mb-6 border-b pb-4">
         <button
           onClick={() => toggleSection('style')}

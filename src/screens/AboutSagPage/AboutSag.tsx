@@ -15,7 +15,7 @@ const AboutSagSection = () => {
             <img src={img2} alt="SAG Interior" className="w-full lg:h-[382px] md:w-1/3 " />
             <div className="text-gray-700  text-base md:text-lg">
               <p className='font-semibold md:text-2xl text-xl  pb-4'>SAG haqida qisqacha</p>
-              <p className='max-w-[611px]'>
+              <p className='max-w-[721px]'>
                 SAG qamqor kompaniyasi 2000-yilda asoslangan bo'lib, ushbu o'tgan uzog' yillik davrlar bun oy't mijozlar uchun xizmat ko'rsatib kelmoqda. Kompaniyamiz MDH davlatlari ichida bilim ishlab chiqarish quvvati bo'yicha mutlaq yetakchilik qilmoqda. Shuninigdek, xalqaro standartlarga to'liq javob beruvchi bilimlarimiz dunyoning 15 ga yaqin mamlakatlarda ham o'z mijozlariga xizmat ko'rsatmoqda.
               </p>
             </div>
