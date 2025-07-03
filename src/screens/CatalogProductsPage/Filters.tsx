@@ -22,16 +22,18 @@ const Filter = ({ filters, onFilterChange, onClearFilters, onClose }: FilterProp
   const getInitialExpanded = () => {
     if (typeof window !== 'undefined' && window.innerWidth >= 1024) {
       return {
+        collection: true,
         shape: false,
         price: false,
         delivery: false,
-        style: true,
-        room: true,
+        style: false,
+        room: false,
         size: false,
         color: false
       };
     }
     return {
+      collection:false,
       shape: false,
       price: false,
       delivery: false,
@@ -50,8 +52,8 @@ const Filter = ({ filters, onFilterChange, onClearFilters, onClose }: FilterProp
       if (window.innerWidth >= 1024) {
         setExpandedSections((prev) => ({
           ...prev,
-          style: true,
-          room: true,
+          style: false,
+          room: false,
         }));
       } else {
         setExpandedSections((prev) => ({
@@ -148,20 +150,20 @@ const Filter = ({ filters, onFilterChange, onClearFilters, onClose }: FilterProp
       
        <div className="mb-6 border-b pb-4">
         <button
-          onClick={() => toggleSection('room')}
+          onClick={() => toggleSection('collection')}
           className="flex items-center justify-between w-full text-left font-medium"
         >
           <span>Kolleksiyalar</span>
-          {expandedSections.room ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+          {expandedSections.collection ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
         </button>
-        {expandedSections.room && (
+        {expandedSections.collection && (
           <div className="mt-3 space-y-2">
-            {["ANATOLIAN SILK", "MOVAROUNNAHR", "ENIGMA", "ISFAHAN", "TAMERLAN", "CREANTE BLACK", "CREANTE GREY"].map((room: string) => (
+            {["ANATOLIAN SILK", "MOVAROUNNAHR", "ENIGMA", "ISFAHAN", "TAMERLAN", "CREANTE BLACK", "CREANTE GREY"].map((collection: string) => (
               <FilterCheckbox 
-                key={room} 
+                key={collection} 
                 category="room" 
-                value={room} 
-                label={room} 
+                value={collection} 
+                label={collection} 
               />
             ))}
           </div>

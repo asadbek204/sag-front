@@ -1,10 +1,12 @@
 import { Card, CardContent } from "../../../../components/ui/card";
-import linkendin from '../../../../assets/linkendin.png'
-import yt from '../../../../assets/youtube.png'
-import pinterest from '../../../../assets/pinterest.png'
-import instagram from '../../../../assets/instagram.png'
-import telegram from '../../../../assets/telegram.png'
-import facebook from '../../../../assets/facbook.png'
+import { 
+  Linkedin, 
+  // Pinterest, 
+  Youtube, 
+  Instagram, 
+  MessageCircle, 
+  Facebook 
+} from 'lucide-react';
 import { useLanguage } from '../../../../contexts/LanguageContext';
 
 export const ContactInfoSection = (): JSX.Element => {
@@ -33,17 +35,17 @@ export const ContactInfoSection = (): JSX.Element => {
 
   // Social media data
   const socialMedia = [
-    { name: "LinkedIn", icon: linkendin, link: "https://linkedin.com/" },
-    { name: "Pinterest", icon: pinterest, link: "https://pinterest.com/" },
-    { name: "YouTube", icon: yt, link: "https://youtube.com/" },
-    { name: "Instagram", icon: instagram, link: "https://instagram.com/" },
-    { name: "Telegram", icon: telegram, link: "https://t.me/" },
-    { name: "Facebook", icon: facebook, link: "https://facebook.com/" },
+    { name: "LinkedIn", icon: <Linkedin className="w-[20px] h-[20px] text-black" />, link: "https://linkedin.com/" },
+    // { name: "Pinterest", icon: <Pinterest className="w-[30px] h-[30px] text-black" />, link: "https://pinterest.com/" },
+    { name: "YouTube", icon: <Youtube className="w-[20px] h-[20px] text-black" />, link: "https://youtube.com/" },
+    { name: "Instagram", icon: <Instagram className="w-[20px] h-[20px] text-black" />, link: "https://instagram.com/" },
+    { name: "Telegram", icon: <MessageCircle className="w-[20px] h-[20px] text-black" />, link: "https://t.me/" },
+    { name: "Facebook", icon: <Facebook className="w-[20px] h-[20px] text-black" />, link: "https://facebook.com/" },
   ];
 
   return (
-    <footer className="w-full bg-white  flex flex-col items-center  py-8">
-      <Card className="border-none shadow-none container mx-auto w-full">
+    <footer className=" bg-white  py-8">
+      <Card className="border-none shadow-none container mx-auto ">
         <CardContent className="p-0">
           <div className="flex flex-col md:flex-row justify-between gap-6 md:gap-4 text-center md:text-left">
             {/* Categories Column */}
@@ -108,11 +110,7 @@ export const ContactInfoSection = (): JSX.Element => {
                     aria-label={social.name}
                     target="_blank" rel="noopener noreferrer"
                   >
-                    <img
-                      src={social.icon}
-                      alt={social.name}
-                      className="w-[30px] h-[30px] object-cover"
-                    />
+                    {social.icon}
                   </a>
                 ))}
               </div>

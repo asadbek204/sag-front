@@ -9,23 +9,19 @@ import { VideoSection } from './sections/VideoSection';
 
 export const HomePage = () => {
   return (
-    <div className="min-h-screen w-full">
+    <div className="min-h-screen bg-[#FAF9F7] w-full">
       {/* Hero-блок с фоном */}
       <div
         className="relative w-full h-[100vh] bg-cover bg-center"
         style={{ backgroundImage: `url(${hero})` }}
       >
         <Navbar />
-        {/* Здесь можно добавить HeroSection, если нужно */}
       </div>
       <InfoSection/>
       <VideoSection/>
       <FAQSection/>
       <CollectionSection/>
-      {/* ContactInfoSection на обычном фоне */}
-      <div className="bg-white">
         <ContactInfoSection />
-      </div>
       <Footer/>
     </div>
   );

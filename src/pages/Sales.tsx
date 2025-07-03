@@ -28,7 +28,7 @@ const Sales = () => {
   const currentRugs = rugData.slice(startIndex, startIndex + itemsPerPage);
 
   return (
-    <div className="bg-[#FAF9F7] md:mt-28 mt-24">
+    <div className="bg-[#FAF9F7] md:pt-28 pt-24">
       <Navbar />
       
       <div className="container mx-auto px-4 py-6">

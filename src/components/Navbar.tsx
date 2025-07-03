@@ -7,6 +7,7 @@ import {
   NavigationMenuList,
 } from "./ui/navigation-menu";
 import logo from '../assets/logo.png';
+import logo2 from '../assets/sag2.png'
 import { LanguageSelector } from './LanguageSelector';
 import { useLanguage } from "../contexts/LanguageContext";
 
@@ -57,7 +58,6 @@ export const Navbar = (): JSX.Element => {
   const navigationItems = [
     {
       key: 'nav.catalog',
-      // path: '',
       className: "text-base",
       subItems: [
         { key: 'nav.gilamlar', path: '/catalog', label: 'Gilamlar' },
@@ -83,6 +83,33 @@ export const Navbar = (): JSX.Element => {
     }
   };
 
+useEffect(() => {
+  const html = document.documentElement;
+  const body = document.body;
+
+  if (isMenuOpen) {
+    html.style.overflow = 'hidden';
+    body.style.overflow = 'hidden';
+    body.style.position = 'fixed';
+    body.style.width = '100%';
+  } else {
+    html.style.overflow = '';
+    body.style.overflow = '';
+    body.style.position = '';
+    body.style.width = '';
+  }
+
+  return () => {
+    html.style.overflow = '';
+    body.style.overflow = '';
+    body.style.position = '';
+    body.style.width = '';
+  };
+}, [isMenuOpen]);
+
+
+
+
   return (
     <nav
       ref={navRef}
@@ -96,10 +123,14 @@ export const Navbar = (): JSX.Element => {
         <header className="flex items-center justify-between gap-4 py-4">
           {/* Logo */}
           <div className="flex items-center">
-            <Link to="/">
-              <img className="w-[86px] h-[29px]" alt="Logo" src={logo} />
-            </Link>
-          </div>
+  <Link to="/">
+    <img
+      className="w-[86px] h-[29px] transition-all duration-300"
+      alt="Logo"
+      src={navActive ? logo2 : logo}
+    />
+  </Link>
+</div>
 
           {/* Desktop Navigation */}
           <NavigationMenu className="hidden lg:flex max-w-none">
