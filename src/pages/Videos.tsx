@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Navbar } from "../components/Navbar";
 import { Link } from "react-router-dom";
 import video1 from "../assets/video.mp4";
@@ -10,7 +9,6 @@ import video6 from "../assets/video2.mp4";
 import { Footer } from "../components/ui/Footer";
 import { ContactInfoSection } from "../screens/HomePage/sections/ContactInfoSection";
 import { useLanguage } from "../contexts/LanguageContext";
-import { VideoThumbnail } from "../components/VideoThumbnail";
 
 const Videos = () => {
   const { t } = useLanguage();
@@ -32,10 +30,18 @@ const Videos = () => {
         <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
           {videoData.map((video) => (
             <Link to={video.path} key={video.id} className="block">
-              <VideoThumbnail
-                src={video.poster}
-                title={video.title}
-              />
+              <div className="relative overflow-hidden">
+                <video
+                  src={video.poster}
+                  className="w-full md:h-[271px] object-cover"
+                  muted
+                  preload="metadata"
+                  playsInline
+                />
+                <div className="absolute top-3 left-2 text-white p-1 rounded text-sm line-clamp-3 md:text-lg bg-black bg-opacity-50">
+                  {video.title}
+                </div>
+              </div>
             </Link>
           ))}
         </div>

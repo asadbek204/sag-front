@@ -82,18 +82,15 @@ const VideoDetail = () => {
         </div>
 
         <div className="mb-4">
-          <div className="relative bg-gray-200 rounded-lg overflow-hidden">
-            <video
-              src={videoSrc}
-              controls
-              className="w-full h-[300px] md:h-[600px] object-cover"
-              onError={(e) => console.error("Video load error:", e)}
-              playsInline
-              preload="metadata"
-            >
-              Your browser does not support the video tag.
-            </video>
-          </div>
+          <video
+            src={videoSrc}
+            controls
+            className="w-full h-[300px] md:h-[600px] object-cover rounded-lg"
+            onError={(e) => console.error("Video load error:", e)}
+            playsInline
+          >
+            Your browser does not support the video tag.
+          </video>
         </div>
 
         <div className="flex flex-wrap items-center justify-between text-[#8A6E4F] text-sm mb-6">
