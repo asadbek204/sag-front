@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react";
+import { X } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   NavigationMenu,
@@ -240,42 +241,51 @@ useEffect(() => {
         </header>
 
         {/* Mobile Menu */}
-        {isMenuOpen && (
-          <div
-            ref={menuRef}
-            className="lg:hidden fixed top-0 right-0 w-[60%] h-full bg-white text-black shadow-lg transform transition-transform duration-300 ease-in-out z-40"
-            style={{ transform: isMenuOpen ? 'translateX(0)' : 'translateX(100%)' }}
+{isMenuOpen && (
+  <div
+    ref={menuRef}
+    className="lg:hidden fixed top-0 right-0 w-[60%] h-full bg-white text-black shadow-lg transform transition-transform duration-300 ease-in-out z-40"
+    style={{ transform: isMenuOpen ? 'translateX(0)' : 'translateX(100%)' }}
+  >
+    {/* Close button */}
+    <div className="flex justify-end p-4">
+      <button onClick={() => setIsMenuOpen(false)} aria-label="Close menu">
+        <X className="w-6 h-6 text-black" />
+      </button>
+    </div>
+
+    {/* Navigation Items */}
+    <div className="flex flex-col items-center py-4 mt-4">
+      {navigationItems.map((item, index) => (
+        <div key={index} className="w-full text-center">
+          <Link
+            to={item.path}
+            className={`${item.className} font-['Inter'] font-normal tracking-[0] leading-6 py-2 hover:border-b-2 hover:border-black transition-all duration-75 block`}
+            onClick={() => setIsMenuOpen(false)}
           >
-            <div className="flex flex-col items-center py listening to music-4 mt-16">
-              {navigationItems.map((item, index) => (
-                <div key={index} className="w-full text-center">
-                  <Link
-                    to={item.path}
-                    className={`${item.className} font-['Inter'] font-normal tracking-[0] leading-6 py-2 hover:border-b-2 hover:border-black transition-all duration-75 block`}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {t(item.key)}
-                  </Link>
-                  {item.key === 'nav.catalog' && (
-                    <div className="flex flex-col items-center">
-                      {item.subItems?.map((subItem) => (
-                        <Link
-                          key={subItem.key}
-                          to={subItem.path}
-                          className="py-2 text-sm hover:bg-gray-100 w-full"
-                          onClick={() => setIsMenuOpen(false)}
-                        >
-                          {t(subItem.label)}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </div>
+            {t(item.key)}
+          </Link>
+          {item.key === 'nav.catalog' && (
+            <div className="flex flex-col items-center">
+              {item.subItems?.map((subItem) => (
+                <Link
+                  key={subItem.key}
+                  to={subItem.path}
+                  className="py-2 text-sm hover:bg-gray-100 w-full"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {t(subItem.label)}
+                </Link>
               ))}
-            <LanguageSelector navActive={true} />
             </div>
-          </div>
-        )}
+          )}
+        </div>
+      ))}
+      <LanguageSelector navActive={true} />
+    </div>
+  </div>
+)}
+
       </div>
     </nav>
   );

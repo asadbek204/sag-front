@@ -1,4 +1,5 @@
-import { useParams } from "react-router-dom";
+import { useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/ui/Footer";
 import video1 from "../assets/video.mp4";
@@ -9,11 +10,15 @@ import {
   Clock,
    Send ,
   Link as LinkIcon,
+  ArrowLeft,
 } from "lucide-react";
 import { ContactInfoSection } from "../screens/HomePage/sections/ContactInfoSection";
+import { useLanguage } from "../contexts/LanguageContext";
 
 const VideoDetail = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const { t } = useLanguage();
 
   const videoMap: { [key: string]: string } = {
     "1": video1,
@@ -40,22 +45,55 @@ const VideoDetail = () => {
   const date = "2025-06-19";
   const views = 668;
 
+  // Handle browser back button
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      // Optional: Add any cleanup here if needed
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, []);
+
   return (
     <div className="md:pt-28 pt-24 bg-[#FAF9F7] min-h-screen flex flex-col">
       <Navbar />
 
       <div className="container mx-auto px-4 py-8 flex-1">
-        <h1 className="md:text-3xl text-xl  font-semibold text-gray-800 mb-6">{title}</h1>
+        {/* Back Button - Mobile Only */}
+        <button
+          onClick={() => navigate('/videos')}
+          className="md:hidden flex items-center gap-2 text-gray-600 hover:text-gray-800 mb-4 transition-colors"
+        >
+          <ArrowLeft size={20} />
+          <span className="text-sm">{t('video.back')}</span>
+        </button>
 
-        <div className=" mb-4">
-          <video
-            src={videoSrc}
-            controls
-            className="w-full h-[600px] object-cover rounded-lg"
-            onError={(e) => console.error("Video load error:", e)}
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="md:text-3xl text-xl font-semibold text-gray-800">{title}</h1>
+          {/* Back Button - Desktop */}
+          <button
+            onClick={() => navigate('/videos')}
+            className="hidden md:flex items-center gap-2 text-gray-600 hover:text-gray-800 transition-colors px-3 py-2 rounded-lg hover:bg-gray-100"
           >
-            Your browser does not support the video tag.
-          </video>
+            <ArrowLeft size={18} />
+            <span className="text-sm">{t('video.back_to_videos')}</span>
+          </button>
+        </div>
+
+        <div className="mb-4">
+          <div className="relative bg-gray-200 rounded-lg overflow-hidden">
+            <video
+              src={videoSrc}
+              controls
+              className="w-full h-[300px] md:h-[600px] object-cover"
+              onError={(e) => console.error("Video load error:", e)}
+              playsInline
+              preload="metadata"
+            >
+              Your browser does not support the video tag.
+            </video>
+          </div>
         </div>
 
         <div className="flex flex-wrap items-center justify-between text-[#8A6E4F] text-sm mb-6">

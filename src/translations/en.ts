@@ -148,4 +148,7 @@ export const en = {
   'filter.price': "Price",
   'badge.sale': "Sale",
   'badge.new': "New",
+
+  'video.back': "Back",
+  'video.back_to_videos': "Back to videos",
 }; 
