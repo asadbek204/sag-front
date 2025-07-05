@@ -2,6 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "./contexts/LanguageContext";
+import { ScrollToTop } from "./components/ScrollToTop";
 import { HomePage } from "./screens/HomePage";
 import AboutSag from "./pages/AboutSag";
 import Videos from "./pages/Videos";
@@ -17,6 +18,7 @@ createRoot(document.getElementById("app") as HTMLElement).render(
   <StrictMode>
     <LanguageProvider>
       <Router>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="about/" element={<AboutSag/>} />

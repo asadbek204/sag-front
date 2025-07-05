@@ -148,4 +148,8 @@ export const rus = {
   'filter.price': "Цена",
   'badge.sale': "Скидка",
   'badge.new': "Новинка",
+  
+  // Video detail page
+  'video.back': "Назад",
+  'video.back_to_videos': "Вернуться к видеороликам",
 }; 

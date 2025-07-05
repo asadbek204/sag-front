@@ -150,4 +150,8 @@ export const uzb = {
   'filter.price': "Narxi",
   'badge.sale': "Chegirma",
   'badge.new': "Yangi",
+  
+  // Video detail page
+  'video.back': "Orqaga",
+  'video.back_to_videos': "Videolavhalarga qaytish",
 }; 

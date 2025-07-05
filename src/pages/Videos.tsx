@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Navbar } from "../components/Navbar";
 import { Link } from "react-router-dom";
 import video1 from "../assets/video.mp4";
@@ -8,8 +9,12 @@ import video5 from "../assets/video.mp4";
 import video6 from "../assets/video2.mp4";
 import { Footer } from "../components/ui/Footer";
 import { ContactInfoSection } from "../screens/HomePage/sections/ContactInfoSection";
+import { useLanguage } from "../contexts/LanguageContext";
+import { VideoThumbnail } from "../components/VideoThumbnail";
 
 const Videos = () => {
+  const { t } = useLanguage();
+
   const videoData = [
     { id: 1, title: "SAG XL kengashi", poster: video1, path: "/videos/1" },
     { id: 2, title: "Silver Mercury va White Square Festivalda uchta g'oliba", poster: video2, path: "/videos/2" },
@@ -23,21 +28,14 @@ const Videos = () => {
     <div className="md:pt-28 pt-24 bg-[#FAF9F7]">
       <Navbar />
       <div className="container mx-auto px-4 py-8">
-        <h1 className="md:text-3xl text-lg  font-semibold text-gray-800 mb-6 text-center">Videolavhalar</h1>
-        <div className="grid  sm:grid-cols-2 md:grid-cols-4 gap-4">
+        <h1 className="md:text-3xl text-lg font-semibold text-gray-800 mb-6 text-center">{t('video.title')}</h1>
+        <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
           {videoData.map((video) => (
             <Link to={video.path} key={video.id} className="block">
-              <div className="relative overflow-hidden ">
-                <video
-                  src={video.poster}
-                  className="w-full md:h-[271px] object-cover"
-                  muted
-                  preload="metadata"
-                />
-                <div className="absolute top-3 left-2  text-white p-1 rounded text-sm line-clamp-3 md:text-lg">
-                  {video.title}
-                </div>
-              </div>
+              <VideoThumbnail
+                src={video.poster}
+                title={video.title}
+              />
             </Link>
           ))}
         </div>
