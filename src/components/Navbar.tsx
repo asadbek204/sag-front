@@ -64,12 +64,15 @@ export const Navbar = (): JSX.Element => {
         { key: 'nav.gilamlar', path: '/catalog', label: 'Gilamlar' },
         { key: 'nav.kovrolin', path: '/catalog', label: 'Kovrolin' },
         { key: 'nav.gazon', path: '/catalog', label: 'Gazon' },
+        { key: 'nav.metrlik', path: '/catalog', label: "Metrlik yo'lak " },
+
       ],
     },
+    { key: 'nav.rooms', path: '/rooms', className: "text-[15.9px]" },
     { key: 'nav.video_clips', path: '/videos', className: "text-[15.9px]" },
+    { key: 'nav.sales', path: '/sales', className: "text-[15.4px]" },
     { key: 'nav.about', path: '/about', className: "text-base" },
     { key: 'nav.methods', path: '/methods', className: "text-[15.8px]" },
-    { key: 'nav.sales', path: '/sales', className: "text-[15.4px]" },
   ];
 
   const navActive = scrolled || hovered || location.pathname !== "/";
@@ -150,12 +153,12 @@ useEffect(() => {
                     <Link to={item.path}>{t(item.key)}</Link>
                   </NavigationMenuLink>
                   {item.key === 'nav.catalog' && isCatalogDropdownOpen && (
-                    <div className="absolute top-full left-0 bg-white text-black shadow-lg z-40">
+                    <div className="absolute w-32 top-full left-0 bg-white text-black shadow-lg z-40">
                       {item.subItems?.map((subItem) => (
                         <Link
                           key={subItem.key}
                           to={subItem.path}
-                          className="block px-4 py-2 hover:bg-gray-200"
+                          className="block px-3 py-2 w-full   hover:bg-gray-200"
                           onClick={() => setIsCatalogDropdownOpen(false)}
                         >
                           {t(subItem.label)}

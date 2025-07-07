@@ -6,6 +6,7 @@ export const uzb = {
   'nav.methods': 'SAG metodlari',
   'nav.sales': 'Chegirmalar',
   'nav.home': 'Bosh sahifa',
+  'nav.rooms': 'Xonadonlar',
   
   // Location
   'location': 'Samarqand viloyati',
@@ -134,6 +135,7 @@ export const uzb = {
   'product.sizes': "O'lchamlar",
   'product.price': 'Narxi',
   'product.shape.rectangle': "To'rtburchak",
+  'product.shape.oval': "Oval",
   'catalog.filter': 'Filtr',
   'catalog.all': 'Barchasi',
   'catalog.new': 'Yangilik',

@@ -6,6 +6,8 @@ export const rus = {
   'nav.methods': 'SAG методы',
   'nav.sales': 'Акции',
   'nav.home': 'Главная',
+  'nav.rooms': 'Квартиры',
+
   
   // Location
   'location': 'Самаркандская область',
@@ -132,6 +134,7 @@ export const rus = {
   'product.sizes': 'Размеры',
   'product.price': 'Цена',
   'product.shape.rectangle': 'Прямоугольник',
+  'product.shape.oval': "Овальный",
   'catalog.filter': 'Фильтр',
   'catalog.all': 'Все',
   'catalog.new': 'Новинки',
