@@ -13,6 +13,8 @@ import CatalogProducts from "./pages/CatalogProducts";
 import Sales from "./pages/Sales";
 import ProductDetail from "./pages/ProductDetail";
 import SalesDetail from "./pages/SalesDetail";
+import Appartments from "./pages/Appartments";
+import AppartmentDetail from "./pages/AppartmentDetail";
 
 createRoot(document.getElementById("app") as HTMLElement).render(
   <StrictMode>
@@ -21,6 +23,7 @@ createRoot(document.getElementById("app") as HTMLElement).render(
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="rooms/" element={<Appartments/>} />
           <Route path="about/" element={<AboutSag/>} />
           <Route path="videos/" element={<Videos/>} />
           <Route path="videos/:id" element={<VideoDetail/>} />
@@ -29,6 +32,7 @@ createRoot(document.getElementById("app") as HTMLElement).render(
           <Route path="methods/" element={<MethodSag/>} />
           <Route path="sales/" element={<Sales/>} />
           <Route path="product-sales/:id" element={<SalesDetail/>} />
+          <Route path="product-rooms/:id" element={<AppartmentDetail/>} />
           <Route path="product/:id" element={<ProductDetail/>}/>
            <Route path="*" element={<HomePage />} />
         </Routes>

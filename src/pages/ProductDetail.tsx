@@ -17,6 +17,7 @@ const images = [
 const ProductDetail = () => {
   const [selectedImage, setSelectedImage] = useState(images[0]);
   const location = useLocation();
+  const [selectedShape, setSelectedShape] = useState<'rectangle' | 'oval'>('rectangle');
   const fromSales = location.state?.from === 'sales';
   const { t } = useLanguage();
 
@@ -115,44 +116,72 @@ const ProductDetail = () => {
               <h1 className="text-xl font-semibold text-gray-800 mb-2">TRESOR BEIGE #7203</h1>
               <p className="text-sm text-gray-500 mb-4">#JG7203_PE32</p>
 
-              <div className="bg-[#CDAA7D] text-white font-semibold text-center py-2 rounded mb-4">
-                {t('product.shape.rectangle')}
-              </div>
+             <div className="flex gap-4 mb-4">
+  <button
+    className={`flex-1 py-2 rounded text-white font-semibold text-center transition-colors ${
+      selectedShape === 'rectangle' ? 'bg-[#CDAA7D]' : 'bg-gray-400'
+    }`}
+    onClick={() => setSelectedShape('rectangle')}
+  >
+    {t('product.shape.rectangle')}
+  </button>
 
-              <table className="w-full text-sm text-left mb-4">
-                <thead>
-                  <tr className="border-b border-gray-300">
-                    <th className="py-2">{t('product.sizes')}</th>
-                    <th className="py-2">{t('product.price')}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="border-b border-gray-100">
-                    <td className="py-2">
-                       300 x 400
-                    </td>
-                    <td className="py-2 font-bold text-gray-800">4 512 000 uzs</td>
-                  </tr>
-                  <tr className="border-b border-gray-100">
-                    <td className="py-2">
-                      300 x 600
-                    </td>
-                    <td className="py-2 font-bold text-gray-800">7 512 000 uzs</td>
-                  </tr>
-                  <tr className="border-b border-gray-100">
-                    <td className="py-2">
-                      400 x 700
-                    </td>
-                    <td className="py-2 font-bold text-gray-800">8 512 000 uzs</td>
-                  </tr>
-                  <tr className="border-b border-gray-100">
-                    <td className="py-2">
-                      500 x 1000
-                    </td>
-                    <td className="py-2 font-bold text-gray-800">10 512 000 uzs</td>
-                  </tr>
-                </tbody>
-              </table>
+  <button
+    className={`flex-1 py-2 rounded text-white font-semibold text-center transition-colors ${
+      selectedShape === 'oval' ? 'bg-[#CDAA7D]' : 'bg-gray-400'
+    }`}
+    onClick={() => setSelectedShape('oval')}
+  >
+    {t('product.shape.oval')}
+  </button>
+</div>
+
+            <table className="w-full text-sm text-left mb-4">
+  <thead>
+    <tr className="border-b border-gray-300">
+      <th className="py-2">{t('product.sizes')}</th>
+      <th className="py-2">{t('product.price')}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {selectedShape === 'rectangle' ? (
+      <>
+        <tr className="border-b border-gray-100">
+          <td className="py-2">300 x 400</td>
+          <td className="py-2 font-bold text-gray-800">4 512 000 uzs</td>
+        </tr>
+        <tr className="border-b border-gray-100">
+          <td className="py-2">300 x 600</td>
+          <td className="py-2 font-bold text-gray-800">7 512 000 uzs</td>
+        </tr>
+        <tr className="border-b border-gray-100">
+          <td className="py-2">400 x 700</td>
+          <td className="py-2 font-bold text-gray-800">8 512 000 uzs</td>
+        </tr>
+        <tr className="border-b border-gray-100">
+          <td className="py-2">500 x 1000</td>
+          <td className="py-2 font-bold text-gray-800">10 512 000 uzs</td>
+        </tr>
+      </>
+    ) : (
+      <>
+        <tr className="border-b border-gray-100">
+          <td className="py-2">250 x 350 (oval)</td>
+          <td className="py-2 font-bold text-gray-800">3 900 000 uzs</td>
+        </tr>
+        <tr className="border-b border-gray-100">
+          <td className="py-2">350 x 500 (oval)</td>
+          <td className="py-2 font-bold text-gray-800">6 900 000 uzs</td>
+        </tr>
+        <tr className="border-b border-gray-100">
+          <td className="py-2">450 x 650 (oval)</td>
+          <td className="py-2 font-bold text-gray-800">9 300 000 uzs</td>
+        </tr>
+      </>
+    )}
+  </tbody>
+</table>
+
             </div>
           </div>
         </div>

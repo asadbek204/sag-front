@@ -6,6 +6,8 @@ export const en = {
   'nav.methods': 'SAG method',
   'nav.sales': 'Sales',
   'nav.home': 'Home',
+  'nav.rooms': 'Apartments',
+
   
   // Location
   'location': 'Samarkand region',
@@ -132,6 +134,7 @@ export const en = {
   'product.sizes': 'Sizes',
   'product.price': 'Price',
   'product.shape.rectangle': 'Rectangle',
+  'product.shape.oval': "Oval",
   'catalog.filter': 'Filter',
   'catalog.all': 'All',
   'catalog.new': 'New',
