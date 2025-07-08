@@ -7,8 +7,8 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "./ui/navigation-menu";
-import logo from '../assets/logo.png';
-import logo2 from '../assets/sag2.png'
+import logo from '../assets/imgSag.png';
+import logo2 from '../assets/imgSag.png'
 import { LanguageSelector } from './LanguageSelector';
 import { useLanguage } from "../contexts/LanguageContext";
 
@@ -124,12 +124,12 @@ useEffect(() => {
       onMouseLeave={() => setHovered(false)}
     >
       <div className="container mx-auto px-4">
-        <header className="flex items-center justify-between gap-4 py-4">
+        <header className="flex items-center justify-between gap-4 ">
           {/* Logo */}
           <div className="flex items-center">
   <Link to="/">
     <img
-      className="w-[86px] h-[29px] transition-all duration-300"
+      className="w-[78px] transition-all duration-300"
       alt="Logo"
       src={navActive ? logo2 : logo}
     />
