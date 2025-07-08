@@ -110,14 +110,14 @@ export const VideoSection = () => {
             </a>
           ))}
         </div>
-        <h2 className="text-4xl font-normal mb-8 text-white text-center md:text-left">{t('nav.video_clips')}</h2>
+        <h2 className="text-4xl pl-2 font-normal mb-8 text-white text-center lg:text-left">{t('nav.video_clips')}</h2>
         <div className="relative flex items-center overflow-x-hidden w-full">
           <div className={`flex ${slidesToShow > 1 ? 'flex-row' : 'flex-col'} gap-8 justify-between items-center w-full transition-all`}>
             {visible.map((video, i) => (
               <a
                 key={i}
                 href={videoLinks[(index + i) % videoLinks.length]}
-                className="relative w-full max-w-[400px] h-[350px] rounded overflow-hidden shadow-lg flex-shrink-0 m-auto block group"
+                className="relative w-full max-w-[400px] h-[350px] rounded  shadow-lg m-auto block group"
                 style={{ minWidth: 0 }}
                 tabIndex={0}
               >

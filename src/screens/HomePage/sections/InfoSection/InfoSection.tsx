@@ -8,7 +8,7 @@ export const InfoSection = () => {
   const { t } = useLanguage();
 
   return (
-    <section className="flex lg:flex-nowrap flex-wrap gap-4 py-8 container my-8 justify-center ">
+    <section className="flex lg:flex-nowrap flex-wrap gap-5 py-8 container my-8 justify-center ">
       {/* Gilamlar */}
       <div className="relative w-[315px] h-[385px] rounded overflow-hidden shadow group">
         <a href="/catalog">
