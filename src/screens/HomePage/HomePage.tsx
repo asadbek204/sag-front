@@ -6,6 +6,7 @@ import { InfoSection } from './sections/InfoSection';
 import { FAQSection } from './sections/FAQSection';
 import { CollectionSection } from './sections/CollectionSection';
 import { VideoSection } from './sections/VideoSection';
+import NewsSection from './sections/NewsSection/NewsSction';
 
 export const HomePage = () => {
   return (
@@ -17,6 +18,7 @@ export const HomePage = () => {
       >
         <Navbar />
       </div>
+      <NewsSection/>
       <InfoSection/>
       <VideoSection/>
       <FAQSection/>
