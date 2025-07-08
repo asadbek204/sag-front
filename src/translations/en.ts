@@ -3,7 +3,7 @@ export const en = {
   'nav.catalog': 'Catalog',
   'nav.video_clips': 'Video clips',
   'nav.about': 'About SAG',
-  'nav.methods': 'SAG method',
+  'nav.methods': 'News',
   'nav.sales': 'Sales',
   'nav.home': 'Home',
   'nav.rooms': 'Apartments',

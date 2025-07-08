@@ -3,7 +3,7 @@ export const uzb = {
   'nav.catalog': 'Katalog',
   'nav.video_clips': 'Video lavhalar',
   'nav.about': 'SAG haqida',
-  'nav.methods': 'SAG metodlari',
+  'nav.methods': 'Yangiliklar',
   'nav.sales': 'Chegirmalar',
   'nav.home': 'Bosh sahifa',
   'nav.rooms': 'Xonadonlar',
@@ -154,6 +154,6 @@ export const uzb = {
   'badge.new': "Yangi",
   
   // Video detail page
-  'video.back': "Orqaga",
+  'video.back': "Ortga",
   'video.back_to_videos': "Videolavhalarga qaytish",
 }; 

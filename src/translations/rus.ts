@@ -3,7 +3,7 @@ export const rus = {
   'nav.catalog': 'Каталог',
   'nav.video_clips': 'Видеоролики',
   'nav.about': 'О компании',
-  'nav.methods': 'SAG методы',
+  'nav.methods': 'Новости',
   'nav.sales': 'Акции',
   'nav.home': 'Главная',
   'nav.rooms': 'Квартиры',
