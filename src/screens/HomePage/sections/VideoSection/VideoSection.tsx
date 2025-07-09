@@ -85,7 +85,7 @@ export const VideoSection = () => {
 
 
   return (
-    <section className="w-full bg-[#cab6a3] py-8 my-[100px]">
+    <section className="w-full main_color py-8 my-[100px]">
       <div className="container w-full">
         <div className='flex items-center overflow-x-hidden w-full justify-between mb-[30px] flex-col lg:flex-row gap-4'>
           {posters.map((img, i) => (

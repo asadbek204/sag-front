@@ -7,7 +7,7 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "./ui/navigation-menu";
-import logo from '../assets/imgSag.png';
+import logo from '../assets/imgSag2.png';
 import logo2 from '../assets/imgSag.png'
 import { LanguageSelector } from './LanguageSelector';
 import { useLanguage } from "../contexts/LanguageContext";

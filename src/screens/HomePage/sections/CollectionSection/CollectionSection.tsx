@@ -41,7 +41,7 @@ export const CollectionSection = () => {
 
   const visible = Array.from({length: slidesToShow}, (_, i) => collections[(index + i) % collections.length]);
   return (
-    <section className="w-full bg-[#cab6a3] py-8 my-[100px]">
+    <section className="w-full main_color py-8 my-[100px]">
       <div className="container w-full">
         <div className="relative overflow-hidden flex items-center w-full">
           <div className={`flex ${slidesToShow > 1 ? 'flex-row' : 'flex-col'} gap-8 justify-center items-center w-full transition-all`}>

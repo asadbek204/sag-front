@@ -4,7 +4,7 @@ export const Footer = () => {
   const { t } = useLanguage();
 
   return (
-    <footer className="w-full bg-[#cab6a3] py-4">
+    <footer className="w-full main_color py-4">
       <div className="container text-white text-base font-normal font-['Inter',Helvetica]">
         {t('footer.copyright')}
       </div>
