@@ -5,7 +5,7 @@ const ProductionSection = () => {
     <div className=" md:mt-[80px]">
       <div className=" py-8">
         {/* Production Volume Header */}
-        <div className="bg-[#C6B3A3] w-full text-white   mb-8 ">
+        <div className="main_color w-full text-white   mb-8 ">
          <div className="container pt-10 pb-16 mx-auto">
              <h1 className="text-3xl font-bold mb-4">Ishlab chiqarish hajmi</h1>
           <div className="md:flex md:gap-56 justify-between">

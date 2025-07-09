@@ -6,7 +6,7 @@ import img5 from "../../assets/about5.png";
 
 const Gallery = () => {
   return (
-    <div className="mb-20 bg-[#C6B3A3]">
+    <div className="mb-20 main_color ">
       <div className="container mx-auto px-4  py-16 space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           <img src={img1} alt="Gallery Image 1" className="w-full  lg:h-[372px]" />
