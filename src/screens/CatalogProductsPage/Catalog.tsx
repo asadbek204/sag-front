@@ -99,7 +99,7 @@ const Catalog = () => {
     const currentRugs = sortedRugs.slice(startIndex, startIndex + itemsPerPage);
 
     return (
-        <div className="bg-[#FAF9F7] md:pt-28 pt-24">
+        <div className="bg-[#FFFCE0] md:pt-28 pt-24">
             <div className="container mx-auto px-4 py-6">
                 <div className="mb-6">
                     <div className="flex md:mb-12 mb-7 items-center text-base text-gray-600  ">

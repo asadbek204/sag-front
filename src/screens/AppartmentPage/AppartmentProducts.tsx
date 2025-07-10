@@ -25,7 +25,7 @@ const AppartmentProducts = ({ id, name }: AppartmentProductsProps) => {
   return (
     <>
       <div className="group cursor-pointer" onClick={handleCardClick}>
-        <div className="bg-white shadow-sm border-gray-200 overflow-hidden transition-shadow hover:shadow-md">
+        <div className=" shadow-md border-gray-200 overflow-hidden transition-shadow hover:shadow-md">
           <div className="relative bg-gray-100">
             <img
               src="https://www.sagexpress.uz/media/product/c5c71e93-5878-4687-a3df-04bfa2157717.jpg"

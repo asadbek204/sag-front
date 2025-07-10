@@ -9,7 +9,7 @@ import { ContactInfoSection } from "../screens/HomePage/sections/ContactInfoSect
 
 const AboutSag = () => {
   return (
-    <div className="bg-[#FAF9F7]">
+    <div className="bg-[#FFFCE0]">
         <Navbar/>
          <AboutSagSection/>
          <ProductionSection/>

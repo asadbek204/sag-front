@@ -14,7 +14,7 @@ const AppartmentCategory = ({ id, name, isOnSale }: ProductCardProps) => {
   const { t } = useLanguage();
   return (
 <Link to={`/product-rooms/${id}`} state={{ from: 'sales' }} className="group">
-  <div className="bg-white shadow-sm  border-gray-200 overflow-hidden transition-shadow hover:shadow-md">
+  <div className=" shadow-md  border-gray-200 overflow-hidden transition-shadow hover:shadow-md">
     <div className="relative bg-gray-100">
       <img
         src="https://www.sagexpress.uz/media/images/products/LU5238_BS73.png"

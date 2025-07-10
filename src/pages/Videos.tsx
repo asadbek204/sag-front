@@ -23,7 +23,7 @@ const Videos = () => {
   ];
 
   return (
-    <div className="md:pt-28 pt-24 bg-[#FAF9F7]">
+    <div className="md:pt-28 pt-24 bg-[#FFFCE0]">
       <Navbar />
       <div className="container mx-auto px-4 py-8">
         <h1 className="md:text-3xl text-lg font-semibold text-gray-800 mb-6 text-center">{t('video.title')}</h1>

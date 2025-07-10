@@ -44,7 +44,7 @@ export const ContactInfoSection = (): JSX.Element => {
   ];
 
   return (
-    <footer className=" bg-white  py-8">
+    <footer className=" bg-[#FFFCE0]  py-8">
       <Card className="border-none shadow-none container mx-auto ">
         <CardContent className="p-0">
           <div className="flex flex-col md:flex-row justify-between gap-6 md:gap-4 text-center md:text-left">

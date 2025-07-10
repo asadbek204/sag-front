@@ -118,7 +118,7 @@ useEffect(() => {
     <nav
       ref={navRef}
       className={`fixed top-0 left-0 md:py-5 py-3 w-full transition-colors z-30 duration-300 ${
-        navActive ? "bg-white text-black shadow" : "bg-transparent text-white"
+        navActive ? "bg-[#FFFCE0] text-black shadow" : "bg-transparent text-white"
       }`}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -153,7 +153,7 @@ useEffect(() => {
                     <Link to={item.path}>{t(item.key)}</Link>
                   </NavigationMenuLink>
                   {item.key === 'nav.catalog' && isCatalogDropdownOpen && (
-                    <div className="absolute w-32 top-full left-0 bg-white text-black shadow-lg z-40">
+                    <div className="absolute w-32 top-full left-0 bg-[#FFFCE0] text-black shadow-lg z-40">
                       {item.subItems?.map((subItem) => (
                         <Link
                           key={subItem.key}

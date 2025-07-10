@@ -142,7 +142,7 @@ const Filter = ({ filters, onFilterChange, onClearFilters, onClose }: FilterProp
   );
 
   return (
-    <div className="bg-[#FAF9F7] p-6 ">
+    <div className="bg-[#FFFCE0] p-6 ">
       
         <div className="mb-6 border-b pb-4">
         <button
