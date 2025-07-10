@@ -23,7 +23,7 @@ const ProductCard = ({ id, name, isNew, isOnSale, price, image }: ProductCardPro
 
   return (
     <Link to={`/product/${id}`} className="group">
-      <div className="bg-white shadow-sm border-gray-200 overflow-hidden transition-shadow hover:shadow-md">
+      <div className=" shadow-md border-gray-200 overflow-hidden transition-shadow hover:shadow-md">
         <div className="relative bg-gray-100">
           <img
             src={image || 'https://via.placeholder.com/300x400?text=No+Image'}
@@ -33,7 +33,7 @@ const ProductCard = ({ id, name, isNew, isOnSale, price, image }: ProductCardPro
 
           {isNew && (
             <div className="absolute top-0 right-0 w-[30px] h-[30px] sm:w-[60px] sm:h-[60px]">
-              <div className="absolute top-0 right-0 w-0 h-0 border-t-[60px] border-t-white border-l-[60px] border-l-transparent z-10 sm:border-t-[100px] sm:border-l-[100px]" />
+              <div className="absolute top-0 right-0 w-0 h-0 border-t-[60px] border-t-[#FFFCE0] border-l-[60px] border-l-transparent z-10 sm:border-t-[100px] sm:border-l-[100px]" />
               <div className="absolute top-0 right-0 w-0 h-0 border-t-[60px] border-t-green-600 border-l-[60px] border-l-transparent z-20 rotate-180 sm:border-t-[100px] sm:border-l-[100px]" />
               <span className="absolute top-[38px] right-[19px] text-white text-[8px] font-bold z-30 sm:top-[70px] sm:right-[37px] sm:text-[13px]">
                 {t('badge.new')}
@@ -43,7 +43,7 @@ const ProductCard = ({ id, name, isNew, isOnSale, price, image }: ProductCardPro
 
           {isOnSale && (
             <div className="absolute top-0 right-0 w-[30px] h-[30px] sm:w-[60px] sm:h-[60px]">
-              <div className="absolute top-0 right-0 w-0 h-0 border-t-[60px] border-t-white border-l-[60px] border-l-transparent z-10 sm:border-t-[100px] sm:border-l-[100px]" />
+              <div className="absolute top-0 right-0 w-0 h-0 border-t-[60px] border-t-[#FFFCE0] border-l-[60px] border-l-transparent z-10 sm:border-t-[100px] sm:border-l-[100px]" />
               <div className="absolute top-0 right-0 w-0 h-0 border-t-[60px] border-t-red-500 border-l-[60px] border-l-transparent z-20 rotate-180 sm:border-t-[100px] sm:border-l-[100px]" />
               <span className="absolute top-[38px] right-[19px] text-white text-[8px] font-bold z-30 sm:top-[70px] sm:right-[37px] sm:text-[13px]">
                 {t('badge.sale')}

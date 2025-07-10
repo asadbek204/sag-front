@@ -52,7 +52,7 @@ const NewsDetail = () => {
   }, []);
 
   return (
-    <div className="md:pt-28 pt-24 bg-[#FAF9F7] min-h-screen flex flex-col">
+    <div className="md:pt-28 pt-24 bg-[#FFFCE0] min-h-screen flex flex-col">
       <Navbar />
 
       <div className="container mx-auto px-4 py-8 flex-1">

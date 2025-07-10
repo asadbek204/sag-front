@@ -38,7 +38,7 @@ const ProductDetail = () => {
   }, []);
 
   return (
-    <div className="bg-[#FAF9F7] md:pt-32 pt-28">
+    <div className="bg-[#FFFCE0] md:pt-32 pt-28">
       <Navbar />
 
       <div className="flex flex-wrap  items-center container mx-auto text-base text-gray-600 mb-4 px-4">

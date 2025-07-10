@@ -85,6 +85,7 @@
   }
 
   body {
+    background-color: #FFFCE0;
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
@@ -93,7 +94,7 @@
 
 
 .main_color{
-  background-color: #1f2937;
+  background-color: #CCA57A;
 }
 
 /* .main_color{

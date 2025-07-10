@@ -6,7 +6,7 @@ import MethodSagPage from "../screens/VideosPage/NewsPage";
 const MethodSag = () => {
 
   return (
-    <div className="md:pt-28 pt-24 bg-[#FAF9F7]">
+    <div className="md:pt-28 pt-24 bg-[#FFFCE0]">
       <Navbar />
        <MethodSagPage/>
       <ContactInfoSection />

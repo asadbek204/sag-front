@@ -1,4 +1,4 @@
-import img1 from '../../assets/sag.png';
+import img1 from '../../assets/sag.jpeg';
 import img2 from '../../assets/sagAbout.png';
 
 const AboutSagSection = () => {

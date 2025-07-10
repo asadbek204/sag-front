@@ -36,7 +36,7 @@ export const RegionModal = ({
         onClick={onCloseSelect}
       >
         <div
-          className="bg-white rounded shadow-lg p-6 min-w-[400px] max-w-[95vw] max-h-[90vh] overflow-y-auto relative"
+          className="bg-[#FFFCE0] rounded shadow-lg p-6 min-w-[400px] max-w-[95vw] max-h-[90vh] overflow-y-auto relative"
           onClick={e => e.stopPropagation()}
         >
           <button

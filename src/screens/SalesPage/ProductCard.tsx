@@ -14,7 +14,7 @@ const ProductCard = ({ id, name, isOnSale }: ProductCardProps) => {
   const { t } = useLanguage();
   return (
 <Link to={`/product-sales/${id}`} state={{ from: 'sales' }} className="group">
-  <div className="bg-white shadow-sm  border-gray-200 overflow-hidden transition-shadow hover:shadow-md">
+  <div className=" shadow-md  border-gray-200 overflow-hidden transition-shadow hover:shadow-md">
     <div className="relative bg-gray-100">
       <img
         src="https://www.sagexpress.uz/media/images/products/LU5238_BS73.png"
@@ -24,7 +24,7 @@ const ProductCard = ({ id, name, isOnSale }: ProductCardProps) => {
 
            {isOnSale && (
             <div className="absolute top-0 right-0 w-[60px] h-[60px]">
-              <div className="absolute top-0 right-0 w-0 h-0 border-t-[100px] border-t-white border-l-[100px] border-l-transparent z-10" />
+              <div className="absolute top-0 right-0 w-0 h-0 border-t-[100px] border-t-[#FFFCE0] border-l-[100px] border-l-transparent z-10" />
 
               <div className="absolute top-0 right-0 w-0 h-0 border-t-[100px] border-t-red-500 border-l-[100px] border-l-transparent z-20 rotate-180" />
 

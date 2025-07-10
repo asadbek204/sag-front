@@ -10,7 +10,7 @@ import NewsSection from './sections/NewsSection/NewsSction';
 
 export const HomePage = () => {
   return (
-    <div className="min-h-screen bg-[#FAF9F7] w-full">
+    <div className="min-h-screen bg-[#FFFCE0] w-full">
       {/* Hero-блок с фоном */}
       <div
         className="relative w-full h-[100vh] bg-cover bg-center"
