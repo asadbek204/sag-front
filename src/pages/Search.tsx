@@ -163,19 +163,20 @@ const SearchResults = () => {
         setLoading(true);
         setError(null);
         const lang = mapLang(language);
-        const queryParams = qs.stringify(
-          {
-            search: query || undefined,
-            sort_by: sort_by !== "4" ? sort_by : undefined,
-            styles: filters.styles.length > 0 ? filters.styles.join(",") : undefined,
-            collections: filters.collections.length > 0 ? filters.collections.join(",") : undefined,
-            rooms: filters.rooms.length > 0 ? filters.rooms.join(",") : undefined,
-            colors: filters.colors.length > 0 ? filters.colors.join(",") : undefined,
-            shapes: filters.shapes.length > 0 ? filters.shapes.join(",") : undefined,
-            prizes: filters.prizes.length > 0 ? filters.prizes.join(",") : undefined,
-          },
-          { skipNull: true, skipEmptyString: true }
-        );
+    const queryParams = qs.stringify(
+  {
+    search: filters.query || undefined,
+    sort_by: filters.sort_by !== "4" ? filters.sort_by : undefined,
+    styles: filters.styles.length > 0 ? filters.styles.join(",") : undefined,
+    collections: filters.collections.length > 0 ? filters.collections.join(",") : undefined,
+    rooms: filters.rooms.length > 0 ? filters.rooms.join(",") : undefined,
+    colors: filters.colors.length > 0 ? filters.colors.join(",") : undefined,
+    shapes: filters.shapes.length > 0 ? filters.shapes.join(",") : undefined,
+    prizes: filters.prizes.length > 0 ? filters.prizes.join(",") : undefined,
+  },
+  { skipNull: true, skipEmptyString: true }
+);
+
 
         const response = await client.get(
           `/${lang}/api/v1/home/filter_and_sort_carpet_model_for_search/?${queryParams}`
@@ -271,12 +272,12 @@ const SearchResults = () => {
 
         <div className="flex flex-col md:flex-row gap-6">
           
-          <div className={`${showFilters ? "md:w-[calc(100%-320px)]" : "w-full"}`}>
+          <div className="w-full">
             {loading ? (
               <p className="text-center py-12">{t("catalog.loading") || "Yuklanmoqda..."}</p>
             ) : results.length > 0 ? (
               <>
-                <div className={`grid grid-cols-4 sm:grid-cols-2 ${showFilters ? "lg:grid-cols-3" : "lg:grid-cols-4"} gap-8`}>
+                <div className={`grid grid-cols-4 sm:grid-cols-2 ${showFilters ? "lg:grid-cols-4" : "lg:grid-cols-4"} gap-8`}>
                   {currentResults.map((product) => (
                     <ProductCard
                       key={product.id}
