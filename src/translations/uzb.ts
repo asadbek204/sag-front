@@ -7,6 +7,9 @@ export const uzb = {
   'nav.sales': 'Chegirmalar',
   'nav.home': 'Bosh sahifa',
   'nav.rooms': 'Xonadonlar',
+   "year": "yil",
+  "mln": "mln. m²",
+  "productionVolume": "Ishlab chiqarish hajmi",
   
   // Location
   'location': 'Samarqand viloyati',

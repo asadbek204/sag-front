@@ -1,115 +1,128 @@
-import { useState, useEffect } from 'react';
-import { X, ChevronDown, ChevronUp } from 'lucide-react';
-import { useLanguage } from '../../contexts/LanguageContext';
+import { useState, useEffect } from "react";
+import { ChevronDown, ChevronUp } from "lucide-react";
+import { useLanguage } from "../../contexts/LanguageContext";
+
+interface FilterOption {
+  id: number;
+  name: string;
+}
+
+interface FilterLabels {
+  catalog: string;
+  collections: string;
+  styles: string;
+  rooms: string;
+  colors: string;
+  shapes: string;
+}
+
+interface FilterOptions {
+  catalog: { id: number; name: string } | null;
+  collections: FilterOption[];
+  styles: FilterOption[];
+  rooms: FilterOption[];
+  colors: FilterOption[];
+  shapes: FilterOption[];
+  labels: FilterLabels;
+}
+
+interface Filters {
+  collection: number[];
+  style: number[];
+  room: number[];
+  color: number[];
+  shape: number[];
+}
 
 interface FilterProps {
-  filters: any;
-  onFilterChange: (filters: any) => void;
+  filters: Filters;
+  onFilterChange: (filters: Filters) => void;
   onClearFilters: () => void;
-  onClose?: () => void;
+  filterOptions: FilterOptions;
 }
 
-interface FilterCheckboxProps {
-  category: string;
-  value: string;
-  label: string;
-  type?: string;
-}
+type FilterCategory = keyof Filters;
 
-const Filter = ({ filters, onFilterChange, onClearFilters, onClose }: FilterProps) => {
+const Filter = ({ filters, onFilterChange, onClearFilters, filterOptions }: FilterProps) => {
   const { t } = useLanguage();
 
+  console.log("Filtr opsiyalari:", filterOptions);
+
   const getInitialExpanded = () => {
-    if (typeof window !== 'undefined' && window.innerWidth >= 1024) {
+    if (typeof window !== "undefined" && window.innerWidth >= 1024) {
       return {
         collection: true,
-        shape: false,
-        price: false,
-        delivery: false,
         style: false,
         room: false,
-        size: false,
-        color: false
+        color: false,
+        shape: false,
       };
     }
     return {
-      collection:false,
-      shape: false,
-      price: false,
-      delivery: false,
+      collection: false,
       style: false,
       room: false,
-      size: false,
-      color: false
+      color: false,
+      shape: false,
     };
   };
 
   const [expandedSections, setExpandedSections] = useState(getInitialExpanded);
 
-  // Открывать style и room на desktop, закрывать на планшете/мобиле
   useEffect(() => {
-    function handleResize() {
-      if (window.innerWidth >= 1024) {
-        setExpandedSections((prev) => ({
-          ...prev,
-          style: false,
-          room: false,
-        }));
-      } else {
-        setExpandedSections((prev) => ({
-          ...prev,
-          style: false,
-          room: false,
-        }));
-      }
-    }
+    const handleResize = () => {
+      setExpandedSections((prev) => ({
+        ...prev,
+        collection: window.innerWidth >= 1024,
+        style: false,
+        room: false,
+        color: false,
+        shape: false,
+      }));
+    };
     handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const toggleSection = (section: keyof typeof expandedSections) => {
-    setExpandedSections(prev => ({
+    setExpandedSections((prev) => ({
       ...prev,
-      [section]: !prev[section]
+      [section]: !prev[section],
     }));
   };
 
-  const handleCheckboxChange = (category: string, value: string) => {
+  const handleCheckboxChange = (category: FilterCategory, value: number) => {
     const newFilters = { ...filters };
     if (newFilters[category].includes(value)) {
-      newFilters[category] = newFilters[category].filter((item: string) => item !== value);
+      newFilters[category] = newFilters[category].filter((item) => item !== value);
     } else {
       newFilters[category] = [...newFilters[category], value];
     }
+    console.log(`Checkbox o‘zgardi: ${category}=${value}, Yangi filtrlar:`, newFilters);
     onFilterChange(newFilters);
   };
 
-  const handleSizeChange = (field: string, value: string) => {
-    const newFilters = {
-      ...filters,
-      size: {
-        ...filters.size,
-        [field]: value
-      }
-    };
-    onFilterChange(newFilters);
-  };
-
-  const getColorClass = (color: string) => {
+  const getColorClass = (colorName: string) => {
     const colorMap: { [key: string]: string } = {
-      "Ko'k": 'bg-blue-500',
-      "Krem rang": 'bg-amber-100',
-      "Kulrang": 'bg-gray-400',
-      "Qaymoqrang": 'bg-amber-50',
-      "Qizil": 'bg-red-500',
-      "Qora": 'bg-black',
-      "Yashil": 'bg-green-500'
+      Red: "bg-red-500",
+      White: "bg-white",
+      Blue: "bg-blue-500",
+      Brown: "bg-brown-500",
+      Black: "bg-black",
+      Qizil: "bg-red-500",
+      Oq: "bg-white",
+      Ko_k: "bg-blue-500",
+      Krem_rang: "bg-amber-100",
+      Kulrang: "bg-gray-400",
+      Qaymoqrang: "bg-amber-50",
+      Qora: "bg-black",
+      Yashil: "bg-green-500",
     };
-    return colorMap[color] || 'bg-gray-300';
+    return colorMap[colorName.replace(" ", "_")] || "bg-gray-300";
   };
 
-  const FilterCheckbox = ({ category, value, label, type = 'default' }: FilterCheckboxProps) => (
+  const FilterCheckbox = ({ category, value, label, type = "default" }: { category: FilterCategory; value: number; label: string; type?: string }) => (
     <label className="flex items-center gap-3 py-1 cursor-pointer">
       <input
         type="checkbox"
@@ -117,26 +130,26 @@ const Filter = ({ filters, onFilterChange, onClearFilters, onClose }: FilterProp
         onChange={() => handleCheckboxChange(category, value)}
         className="hidden"
       />
-      {type === 'color' ? (
+      {type === "color" ? (
         <>
-          <div className={`w-4 h-4 border-2 rounded-sm flex items-center justify-center ${
-            filters[category].includes(value) ? 'border-blue-500' : 'border-gray-300'
-          }`}>
-            {filters[category].includes(value) && (
-              <div className="w-2 h-2 bg-blue-500"></div>
-            )}
+          <div
+            className={`w-4 h-4 border-2 rounded-sm flex items-center justify-center ${
+              filters[category].includes(value) ? "border-blue-500" : "border-gray-300"
+            }`}
+          >
+            {filters[category].includes(value) && <div className="w-2 h-2 bg-blue-500"></div>}
           </div>
-          <div className={`w-4 h-4 rounded-sm ${getColorClass(value)}`}></div>
+          <div className={`w-4 h-4 rounded-sm ${getColorClass(label)}`}></div>
           <span className="text-sm">{label}</span>
         </>
       ) : (
         <>
-          <div className={`w-4 h-4 border-2 rounded-sm flex items-center justify-center ${
-            filters[category].includes(value) ? 'border-blue-500' : 'border-gray-300'
-          }`}>
-            {filters[category].includes(value) && (
-              <div className="w-2 h-2 bg-blue-500"></div>
-            )}
+          <div
+            className={`w-4 h-4 border-2 rounded-sm flex items-center justify-center ${
+              filters[category].includes(value) ? "border-blue-500" : "border-gray-300"
+            }`}
+          >
+            {filters[category].includes(value) && <div className="w-2 h-2 bg-blue-500"></div>}
           </div>
           <span className="text-sm">{label}</span>
         </>
@@ -144,195 +157,47 @@ const Filter = ({ filters, onFilterChange, onClearFilters, onClose }: FilterProp
     </label>
   );
 
+  const renderCheckboxSection = (
+    label: string,
+    sectionKey: keyof typeof expandedSections,
+    options: FilterOption[] | undefined,
+    category: FilterCategory,
+    type?: string
+  ) => (
+    <div className="mb-6 border-b pb-4">
+      <button onClick={() => toggleSection(sectionKey)} className="flex items-center justify-between w-full text-left font-medium">
+        <span>{label}</span>
+        {expandedSections[sectionKey] ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+      </button>
+      {expandedSections[sectionKey] && (
+        <div className={`mt-3 ${type === "color" ? "grid grid-cols-2 gap-2" : "space-y-2"}`}>
+          {options && options.length > 0 ? (
+            options.map((option) => (
+              <FilterCheckbox key={option.id} category={category} value={option.id} label={option.name} type={type} />
+            ))
+          ) : (
+            <p className="text-sm text-gray-500">{t("filter.noOptions") || "Hech qanday opsiya mavjud emas"}</p>
+          )}
+        </div>
+      )}
+    </div>
+  );
+
+  if (!filterOptions) {
+    return <p className="text-sm text-gray-500">{t("filter.noOptions") || "Filtr opsiyalari mavjud emas"}</p>;
+  }
+
   return (
-    <div className="bg-[#FFFCE0] p-6 ">
-     
-      
-       <div className="mb-6 border-b pb-4">
-        <button
-          onClick={() => toggleSection('collection')}
-          className="flex items-center justify-between w-full text-left font-medium"
-        >
-          <span>Kolleksiyalar</span>
-          {expandedSections.collection ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-        </button>
-        {expandedSections.collection && (
-          <div className="mt-3 space-y-2">
-            {["ANATOLIAN SILK", "MOVAROUNNAHR", "ENIGMA", "ISFAHAN", "TAMERLAN", "CREANTE BLACK", "CREANTE GREY"].map((collection: string) => (
-              <FilterCheckbox 
-                key={collection} 
-                category="room" 
-                value={collection} 
-                label={collection} 
-              />
-            ))}
-          </div>
-        )}
-      </div>
-
-      <div className="mb-6 border-b pb-4">
-        <button
-          onClick={() => toggleSection('style')}
-          className="flex items-center justify-between w-full text-left font-medium"
-        >
-          <span>{t('filter.styles')}</span>
-          {expandedSections.style ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-        </button>
-        {expandedSections.style && (
-          <div className="mt-3 space-y-2">
-            {["Klassik dizayn", "Neoklassik dizayn", "Zamonaviy dizayn", "Bolalar dizayni"].map((style: string) => (
-              <FilterCheckbox 
-                key={style} 
-                category="style" 
-                value={style} 
-                label={style} 
-              />
-            ))}
-          </div>
-        )}
-      </div>
-
-      <div className="mb-6 border-b pb-4">
-        <button
-          onClick={() => toggleSection('room')}
-          className="flex items-center justify-between w-full text-left font-medium"
-        >
-          <span>{t('filter.rooms')}</span>
-          {expandedSections.room ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-        </button>
-        {expandedSections.room && (
-          <div className="mt-3 space-y-2">
-            {["Mehmonxona", "Yotoqxona", "Oshxona", "Bolalar xonasi"].map((room: string) => (
-              <FilterCheckbox 
-                key={room} 
-                category="room" 
-                value={room} 
-                label={room} 
-              />
-            ))}
-          </div>
-        )}
-      </div>
-
-      <div className="mb-6 border-b pb-4">
-        <button
-          onClick={() => toggleSection('size')}
-          className="flex items-center justify-between w-full text-left font-medium"
-        >
-          <span>{t('filter.sizes')}</span>
-          {expandedSections.size ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-        </button>
-        {expandedSections.size && (
-          <div className="mt-3 space-y-3">
-            <div>
-              <label className="block text-sm mb-1">Eni:</label>
-              <div className="flex items-center">
-                <input
-                  type="text"
-                  value={filters.size.width}
-                  onChange={(e) => handleSizeChange('width', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded bg-gray-50"
-                  placeholder="sm"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm mb-1">Uzunligi:</label>
-              <div className="flex items-center">
-                <input
-                  type="text"
-                  value={filters.size.height}
-                  onChange={(e) => handleSizeChange('height', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded bg-gray-50"
-                  placeholder="sm"
-                />
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-
-      <div className="mb-6 border-b pb-4">
-        <button
-          onClick={() => toggleSection('color')}
-          className="flex items-center justify-between w-full text-left font-medium"
-        >
-          <span>{t('filter.colors')}</span>
-          {expandedSections.color ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-        </button>
-        {expandedSections.color && (
-          <div className="mt-3 grid grid-cols-2 gap-2">
-            {["Ko'k", "Krem rang", "Kulrang", "Qaymoqrang", "Qizil", "Qora", "Yashil"].map((color: string) => (
-              <FilterCheckbox 
-                key={color} 
-                category="color" 
-                value={color} 
-                label={color} 
-                type="color"
-              />
-            ))}
-          </div>
-        )}
-      </div>
-
-      <div className="mb-6 border-b pb-4">
-        <button
-          onClick={() => toggleSection('shape')}
-          className="flex items-center justify-between w-full text-left font-medium"
-        >
-          <span>{t('filter.shapes')}</span>
-          {expandedSections.shape ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-        </button>
-        {expandedSections.shape && (
-          <div className="mt-3 space-y-2">
-            {["Oval", "To'rtburchak", "Metril", "Kvadrat", "Noodatiy"].map((shape: string) => (
-              <FilterCheckbox 
-                key={shape} 
-                category="shape" 
-                value={shape} 
-                label={shape} 
-              />
-            ))}
-          </div>
-        )}
-      </div>
-
-      <div className="mb-6 border-b pb-4">
-        <button
-          onClick={() => toggleSection('price')}
-          className="flex items-center justify-between w-full text-left font-medium"
-        >
-          <span>{t('filter.price')}</span>
-          {expandedSections.price ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-        </button>
-        {expandedSections.price && (
-          <div className="mt-3 space-y-2">
-            {["1 - 100 000 uzs", "100 000 - 200 000 uzs", "200 000 - 300 000 uzs", "300 000 - 655 000 uzs"].map((price: string) => (
-              <FilterCheckbox 
-                key={price} 
-                category="price" 
-                value={price} 
-                label={price} 
-              />
-            ))}
-          </div>
-        )}
-      </div>
-
-     
+    <div className="bg-[#FFFCE0] p-6">
+      {renderCheckboxSection(filterOptions.labels.collections, "collection", filterOptions.collections, "collection")}
+      {renderCheckboxSection(filterOptions.labels.styles, "style", filterOptions.styles, "style")}
+      {renderCheckboxSection(filterOptions.labels.rooms, "room", filterOptions.rooms, "room")}
+      {renderCheckboxSection(filterOptions.labels.colors, "color", filterOptions.colors, "color", "color")}
+      {renderCheckboxSection(filterOptions.labels.shapes, "shape", filterOptions.shapes, "shape")}
 
       <div className="flex flex-col space-y-3">
-        <button
-          onClick={() => onFilterChange(filters)}
-          className="w-full py-3 bg-[#C89B71] text-white hover:bg-[#BCAAA4]"
-        >
-          {t('filter.apply')}
-        </button>
-        <button
-          onClick={onClearFilters}
-          className="w-full py-3 bg-gray-200 text-gray-700 hover:bg-gray-300"
-        >
-          {t('filter.clear')}
+        <button onClick={onClearFilters} className="w-full py-3 bg-gray-200 text-gray-700 hover:bg-gray-300">
+          {t("filter.clear") || "Tozalash"}
         </button>
       </div>
     </div>

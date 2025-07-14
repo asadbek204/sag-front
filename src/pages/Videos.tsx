@@ -1,39 +1,52 @@
-import { Navbar } from "../components/Navbar";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import video1 from "../assets/video.mp4";
-import video2 from "../assets/video2.mp4";
-import video3 from "../assets/video.mp4";
-import video4 from "../assets/video2.mp4";
-import video5 from "../assets/video.mp4";
-import video6 from "../assets/video2.mp4";
+import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/ui/Footer";
 import { ContactInfoSection } from "../screens/HomePage/sections/ContactInfoSection";
 import { useLanguage } from "../contexts/LanguageContext";
+import { client } from "../services";
+
+interface BlogVideo {
+  id: number;
+  title: string;
+  content: string; // video URL
+}
 
 const Videos = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const [videoData, setVideoData] = useState<BlogVideo[]>([]);
 
-  const videoData = [
-    { id: 1, title: "SAG XL kengashi", poster: video1, path: "/videos/1" },
-    { id: 2, title: "Silver Mercury va White Square Festivalda uchta g'oliba", poster: video2, path: "/videos/2" },
-    { id: 3, title: "SAG 25 yillik munozabati, tumanlar orasida hamkorlik", poster: video3, path: "/videos/3" },
-    { id: 4, title: "SAG darajasi — bu shubhasiz g'alaba", poster: video4, path: "/videos/4" },
-    { id: 5, title: "SAG darajasi — madaniyat bilan hamkorlik zaminayuvlik", poster: video5, path: "/videos/5" },
-    { id: 6, title: "SAG darajasi — bu ishonchli yag'dirajsi", poster: video6, path: "/videos/6" },
-  ];
+  const mapLang = (lang: string) =>
+    lang === "rus" ? "ru" : lang === "uzb" ? "uz" : "en";
+
+  useEffect(() => {
+    const fetchVideos = async () => {
+      try {
+        const lang = mapLang(language);
+        const res = await client.get(`/${lang}/api/v1/blog/get_all_blogs/`);
+        setVideoData(res.data);
+      } catch (error) {
+        console.error("Error fetching videos:", error);
+      }
+    };
+
+    fetchVideos();
+  }, [language]);
 
   return (
-    <div className="md:pt-28 pt-24 bg-[#FFFCE0]">
+    <div className="md:pt-28 pt-24 min-h-screen bg-[#FFFCE0]">
       <Navbar />
       <div className="container mx-auto px-4 py-8">
-        <h1 className="md:text-3xl text-lg font-semibold text-gray-800 mb-6 text-center">{t('video.title')}</h1>
-        <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
+        <h1 className="md:text-3xl text-lg font-semibold text-gray-800 mb-6 text-center">
+          {t("video.title")}
+        </h1>
+        <div className="grid sm:grid-cols-2 md:grid-cols-4  min-h-[500px] gap-4">
           {videoData.map((video) => (
-            <Link to={video.path} key={video.id} className="block">
+            <Link to={`/videos/${video.id}`} key={video.id} className="block">
               <div className="relative overflow-hidden">
                 <video
-                  src={video.poster}
-                  className="w-full md:h-[271px] object-cover"
+                  src={video.content}
+                  className="w-full h-[271px] object-cover"
                   muted
                   preload="metadata"
                   playsInline
@@ -46,8 +59,8 @@ const Videos = () => {
           ))}
         </div>
       </div>
-      <ContactInfoSection/>
-      <Footer/>
+      <ContactInfoSection />
+      <Footer />
     </div>
   );
 };

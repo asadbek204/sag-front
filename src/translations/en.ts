@@ -7,6 +7,9 @@ export const en = {
   'nav.sales': 'Sales',
   'nav.home': 'Home',
   'nav.rooms': 'Apartments',
+   "year": "year",
+  "mln": "mln. m²",
+  "productionVolume": "Production volume",
 
   
   // Location

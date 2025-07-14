@@ -1,27 +1,47 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLanguage } from '../../../../contexts/LanguageContext';
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { client } from '../../../../services';
 
+interface FAQItem {
+  id: number;
+  question: string;
+  answer: string;
+}
 
 export const FAQSection = () => {
-  const { t } = useLanguage();
-  
+  const { t, language } = useLanguage();
 
-  const questions = [
-    { q: t('faq.q1'), a: t('faq.a1') },
-    { q: t('faq.q2'), a: t('faq.a2') },
-    { q: t('faq.q3'), a: t('faq.a3') },
-    { q: t('faq.q4'), a: t('faq.a4') },
-    { q: t('faq.q5'), a: t('faq.a5') },
-    { q: t('faq.q6'), a: t('faq.a6') },
-  ];
-
-
-  const left = questions.slice(0, 3);
-  const right = questions.slice(3);
-
-
+  const [faqData, setFaqData] = useState<FAQItem[]>([]);
   const [open, setOpen] = useState<number | null>(null);
+
+  // language nomini URL uchun mos formatga o‘zgartirish
+  const mapLangToPrefix = (lang: string): string => {
+    switch (lang) {
+      case "uzb": return "uz";
+      case "rus": return "ru";
+      case "en": return "en";
+      default: return "uz";
+    }
+  };
+
+  useEffect(() => {
+    const fetchFaqs = async () => {
+      try {
+        const langPrefix = mapLangToPrefix(language);
+        const res = await client.get(`/${langPrefix}/api/v1/home/get_questions/`);
+        setFaqData(res.data);
+      } catch (error) {
+        console.error("Error fetching FAQs:", error);
+      }
+    };
+
+    fetchFaqs();
+  }, [language]);
+
+  // Har 3 tadan ikkiga bo‘lish
+  const left = faqData.slice(0, 3);
+  const right = faqData.slice(3);
 
   return (
     <section className="container mx-auto py-12">
@@ -32,10 +52,7 @@ export const FAQSection = () => {
             {col.map((item, i) => {
               const idx = colIdx * 3 + i;
               return (
-                <div
-                  key={idx}
-                  className="border-b border-[#E6E6E6] py-4"
-                >
+                <div key={item.id} className="border-b border-[#E6E6E6] py-4">
                   <button
                     className="w-full flex items-center justify-between focus:outline-none group"
                     onClick={() => setOpen(open === idx ? null : idx)}
@@ -43,15 +60,16 @@ export const FAQSection = () => {
                     <span className={`text-[20px] font-normal text-left transition-colors
                       ${open === idx ? 'text-[#0057FF]' : 'text-[#23272F]'}
                       group-hover:text-[#0057FF]`}>
-                      {item.q}
+                      {item.question}
                     </span>
-                  <span className="text-xl ml-4 transition-transform text-[#23272F]">
-  {open === idx ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
-</span>
-
+                    <span className="text-xl ml-4 transition-transform text-[#23272F]">
+                      {open === idx ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
+                    </span>
                   </button>
                   {open === idx && (
-                    <div className="mt-2 text-sm text-[#23272F]">{item.a}</div>
+                    <div className="mt-2 text-sm text-[#23272F]">
+                      {item.answer}
+                    </div>
                   )}
                 </div>
               );

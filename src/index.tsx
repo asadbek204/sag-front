@@ -16,6 +16,7 @@ import SalesDetail from "./pages/SalesDetail";
 import Appartments from "./pages/Appartments";
 import AppartmentDetail from "./pages/AppartmentDetail";
 import NewsDetail from "./screens/VideosPage/NewsDetailPage";
+import SearchResults from "./pages/Search";
 
 createRoot(document.getElementById("app") as HTMLElement).render(
   <StrictMode>
@@ -29,14 +30,15 @@ createRoot(document.getElementById("app") as HTMLElement).render(
           <Route path="videos/" element={<Videos/>} />
           <Route path="videos/:id" element={<VideoDetail/>} />
           <Route path="news/:id" element={<NewsDetail/>} />
-          <Route path="catalog/" element={<Catalog/>} />
-          <Route path="catalog/:id" element={<CatalogProducts/>} />
+          <Route path="catalog/:id" element={<Catalog/>} />
+          <Route path="catalog/:categoryId/product/:id" element={<CatalogProducts/>} />
           <Route path="methods/" element={<MethodSag/>} />
           <Route path="sales/" element={<Sales/>} />
           <Route path="product-sales/:id" element={<SalesDetail/>} />
           <Route path="product-rooms/:id" element={<AppartmentDetail/>} />
           <Route path="product/:id" element={<ProductDetail/>}/>
            <Route path="*" element={<HomePage />} />
+           <Route path="/search" element={<SearchResults/>} />
         </Routes>
       </Router>
     </LanguageProvider>
