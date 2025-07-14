@@ -1,116 +1,174 @@
+import { useEffect, useState } from "react";
 import { Card, CardContent } from "../../../../components/ui/card";
-import { 
-  Linkedin, 
-  // Pinterest, 
-  Youtube, 
-  Instagram, 
-  MessageCircle, 
-  Facebook 
-} from 'lucide-react';
-import { useLanguage } from '../../../../contexts/LanguageContext';
+import { useLanguage } from "../../../../contexts/LanguageContext";
+import { client } from "../../../../services";
+
+interface PhoneData {
+  id: number;
+  phone_number: string;
+}
+
+interface SocialData {
+  id: number;
+  image: string; // URL
+  url: string;
+}
+
+interface Category {
+  id: number;
+  name: string;
+}
 
 export const ContactInfoSection = (): JSX.Element => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const [phones, setPhones] = useState<PhoneData[]>([]);
+  const [socials, setSocials] = useState<SocialData[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
 
-  // Category data
-  const categories = [
-    { name: t('footer.categories'), href: '/catalog' },
-    { name: "Kovrolin", href: '/catalog/kovrolin' },
-    { name: "Gazon", href: '/catalog/gazon' },
-  ];
+  const mapLang = (lang: string) =>
+    lang === "rus" ? "ru" : lang === "uzb" ? "uz" : "en";
 
-  // Information data
+  useEffect(() => {
+    const lang = mapLang(language);
+
+    // Fetch phone numbers
+    const fetchPhones = async () => {
+      try {
+        const res = await client.get(`/${lang}/api/v1/footer/get_phone_number/`);
+        setPhones(res.data);
+      } catch (err) {
+        console.error("Error fetching phone numbers:", err);
+      }
+    };
+
+    // Fetch social media
+    const fetchSocials = async () => {
+      try {
+        const res = await client.get(`/${lang}/api/v1/footer/get_social_media/`);
+        setSocials(res.data);
+      } catch (err) {
+        console.error("Error fetching social media:", err);
+      }
+    };
+
+    // Fetch categories
+    const fetchCategories = async () => {
+      try {
+        const res = await client.get(`/${lang}/api/v1/catalog/get_catalogs/`);
+        console.log("Categories API response:", res.data);
+        setCategories(res.data);
+      } catch (err) {
+        console.error("Error fetching categories:", err);
+        // Fallback static categories in case of error
+        setCategories([
+          { id: 1, name: t("footer.categories") || "Kategoriyalar" },
+          { id: 2, name: "Kovrolin" },
+          { id: 3, name: "Gazon" },
+        ]);
+      }
+    };
+
+    fetchPhones();
+    fetchSocials();
+    fetchCategories();
+  }, [language, t]);
+
   const information = [
-    { name: t('footer.about'), href: '/about' },
-    { name: t('nav.methods'), href: '/methods' },
-    { name: t('nav.video_clips'), href: '/videos' },
-    { name: t('footer.sales'), href: '/sales' },
+    { name: t("footer.about") || "Biz haqimizda", href: "/about" },
+    { name: t("nav.methods") || "Usullar", href: "/methods" },
+    { name: t("nav.video_clips") || "Video kliplar", href: "/videos" },
+    { name: t("footer.sales") || "Aksiyalar", href: "/sales" },
   ];
 
-  // Contact data
-  const contactNumbers = [
-    { number: "+ 998 (55) 701-04-04", href: 'tel:+998557010404' },
-    { number: "+ 998 (66) 230-40-04", href: 'tel:+998662304004' },
-  ];
-
-  // Social media data
-  const socialMedia = [
-    { name: "LinkedIn", icon: <Linkedin className="w-[20px] h-[20px] text-black" />, link: "https://linkedin.com/" },
-    // { name: "Pinterest", icon: <Pinterest className="w-[30px] h-[30px] text-black" />, link: "https://pinterest.com/" },
-    { name: "YouTube", icon: <Youtube className="w-[20px] h-[20px] text-black" />, link: "https://youtube.com/" },
-    { name: "Instagram", icon: <Instagram className="w-[20px] h-[20px] text-black" />, link: "https://instagram.com/" },
-    { name: "Telegram", icon: <MessageCircle className="w-[20px] h-[20px] text-black" />, link: "https://t.me/" },
-    { name: "Facebook", icon: <Facebook className="w-[20px] h-[20px] text-black" />, link: "https://facebook.com/" },
-  ];
+  const formatPhone = (phone: string): string => {
+    // Misol: +998662304004 → + 998 (66) 230-40-04
+    const cleaned = phone.replace(/[^\d]/g, "");
+    if (cleaned.length === 12 && cleaned.startsWith("998")) {
+      const code = cleaned.slice(3, 5); // 66
+      const part1 = cleaned.slice(5, 8); // 230
+      const part2 = cleaned.slice(8, 10); // 40
+      const part3 = cleaned.slice(10, 12); // 04
+      return `+ 998 (${code}) ${part1}-${part2}-${part3}`;
+    }
+    return phone; // fallback
+  };
 
   return (
-    <footer className=" bg-[#FFFCE0]  py-8">
-      <Card className="border-none shadow-none container mx-auto ">
+    <footer className="bg-[#FFFCE0] py-8">
+      <Card className="border-none shadow-none container mx-auto">
         <CardContent className="p-0">
           <div className="flex flex-col md:flex-row justify-between gap-6 md:gap-4 text-center md:text-left">
-            {/* Categories Column */}
+            {/* Categories */}
             <div className="flex flex-col gap-2 p-4 w-full md:w-auto">
-              <h3 className="font-normal text-[21.8px] text-[#01091c] leading-[33px] font-['Inter',Helvetica]">
-                {t('footer.categories')}
+              <h3 className="text-[21.8px] text-[#01091c] leading-[33px] font-semibold">
+                {t("footer.categories") || "Kategoriyalar"}
               </h3>
               <div className="flex flex-col gap-1">
-                {categories.map((category, index) => (
+                {categories.map((category) => (
                   <a
-                    key={index}
-                    href={category.href}
-                    className="font-normal text-base text-[#01091c] leading-6 font-['Inter',Helvetica]"
+                    key={category.id}
+                    href={`/catalog/${category.id}`}
+                    className="text-base text-[#01091c] leading-6"
                   >
                     {category.name}
                   </a>
                 ))}
               </div>
             </div>
-            {/* Information Column */}
+
+            {/* Information */}
             <div className="flex flex-col gap-2 p-4 w-full md:w-auto">
-              <h3 className="font-normal text-[22px] text-[#01091c] leading-[33px] font-['Inter',Helvetica]">
-                {t('footer.information')}
+              <h3 className="text-[22px] text-[#01091c] leading-[33px] font-semibold">
+                {t("footer.information") || "Ma'lumot"}
               </h3>
               <div className="flex flex-col gap-1">
                 {information.map((info, index) => (
                   <a
                     key={index}
                     href={info.href}
-                    className="font-normal text-base text-[#01091c] leading-6 font-['Inter',Helvetica] whitespace-nowrap"
+                    className="text-base text-[#01091c] leading-6 whitespace-nowrap"
                   >
                     {info.name}
                   </a>
                 ))}
               </div>
             </div>
-            {/* Call Center Column */}
+
+            {/* Call Center */}
             <div className="flex flex-col gap-2 p-4 w-full md:w-auto items-center md:items-start">
-              <h3 className="font-normal text-[21.5px] text-[#01091c] leading-[33px] font-['Inter',Helvetica]">
-                {t('footer.callcenter')}
+              <h3 className="text-[21.5px] text-[#01091c] leading-[33px] font-semibold">
+                {t("footer.callcenter") || "Call-markaz"}
               </h3>
               <div className="flex flex-col gap-1">
-                {contactNumbers.map((contact, index) => (
+                {phones.map((phone) => (
                   <a
-                    key={index}
-                    href={contact.href}
-                    className="font-normal text-sm text-[#01091c] leading-6 font-['Inter',Helvetica] whitespace-nowrap"
+                    key={phone.id}
+                    href={`tel:${phone.phone_number}`}
+                    className="text-sm text-[#01091c] leading-6 whitespace-nowrap"
                   >
-                    {contact.number}
+                    {formatPhone(phone.phone_number)}
                   </a>
                 ))}
               </div>
             </div>
-            {/* Social Media Column */}
+
+            {/* Social Media */}
             <div className="flex flex-col p-4 w-full md:w-auto items-center md:items-start">
-              <div className="flex items-center justify-center md:justify-start gap-2.5">
-                {socialMedia.map((social, index) => (
+              <div className="flex items-center justify-center md:justify-start gap-2.5 flex-wrap">
+                {socials.map((social) => (
                   <a
-                    key={index}
-                    href={social.link}
-                    className="inline-flex flex-col items-start pt-[4.08px] pb-[1.92px]"
-                    aria-label={social.name}
-                    target="_blank" rel="noopener noreferrer"
+                    key={social.id}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="social-icon"
+                    className="inline-flex"
                   >
-                    {social.icon}
+                    <img
+                      src={social.image}
+                      alt="social"
+                      className="w-[20px] h-[20px] object-contain"
+                    />
                   </a>
                 ))}
               </div>

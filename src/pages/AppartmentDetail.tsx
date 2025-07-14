@@ -1,54 +1,106 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/ui/Footer";
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft } from "lucide-react";
+import { useLocation } from "react-router-dom";
 import { ContactInfoSection } from "../screens/HomePage/sections/ContactInfoSection";
-import { Link } from "react-router-dom";
-import { useLanguage } from '../contexts/LanguageContext';
+import { useLanguage } from "../contexts/LanguageContext";
 import AppartmentProducts from "../screens/AppartmentPage/AppartmentProducts";
+import { client } from "../services";
+
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  originalPrice?: number | null;
+  isNew?: boolean;
+  isOnSale?: boolean;
+  image: string;
+}
 
 const AppartmentDetail = () => {
-  const { t } = useLanguage();
-  const rugData = [
-    { id: 1, name: "YOTOQXONA 1", price: 240000, originalPrice: 325000, shape: "Oval", size: "1 - 100 000 uzs", delivery: "1 - 2 kun oraligi", style: "Klassik dizayn", room: "Mehmonxona", color: "Qizil", isNew: false, isOnSale: true, AppartmentDetailCount: 50 },
-    { id: 2, name: "YOTOQXONA 2", price: 240000, originalPrice: 325000, shape: "To'rtburchak", size: "100 000 - 200 000 uzs", delivery: "3 - 6 kun oraligi", style: "Neoklassik dizayn", room: "Yotoqxona", color: "Yashil", isNew: false, isOnSale: true, AppartmentDetailCount: 30 },
-    { id: 3, name: "YOTOQXONA 3", price: 240000, originalPrice: 325000, shape: "Metril", size: "200 000 - 300 000 uzs", delivery: "7 - 15 kun oraligi", style: "Zamonaviy dizayn", room: "Oshxona", color: "Qora", isNew: false, isOnSale: true, AppartmentDetailCount: 10 },
-    { id: 4, name: "YOTOQXONA 4", price: 240000, originalPrice: 325000, shape: "Kvadrat", size: "300 000 - 655 000 uzs", delivery: "1 - 2 kun oraligi", style: "Bolalar dizayni", room: "Bolalar xonasi", color: "Kulrang", isNew: false, isOnSale: true, AppartmentDetailCount: 70 },
-    { id: 5, name: "YOTOQXONA 5", price: 180000, originalPrice: 250000, shape: "Oval", size: "1 - 100 000 uzs", delivery: "3 - 6 kun oraligi", style: "Klassik dizayn", room: "Mehmonxona", color: "Ko'k", isNew: false, isOnSale: true, AppartmentDetailCount: 20 },
-    { id: 6, name: "YOTOQXONA 6", price: 320000, originalPrice: 420000, shape: "To'rtburchak", size: "200 000 - 300 000 uzs", delivery: "7 - 15 kun oraligi", style: "Neoklassik dizayn", room: "Yotoqxona", color: "Krem rang", isNew: false, isOnSale: true, AppartmentDetailCount: 40 },
-    { id: 7, name: "YOTOQXONA 7", price: 150000, originalPrice: null, shape: "Noodatiy", size: "100 000 - 200 000 uzs", delivery: "1 - 2 kun oraligi", style: "Zamonaviy dizayn", room: "Oshxona", color: "Qaymoqrang", isNew: false, isOnSale: true, AppartmentDetailCount: 15 },
-    { id: 8, name: "YOTOQXONA 8", price: 280000, originalPrice: 350000, shape: "Metril", size: "200 000 - 300 000 uzs", delivery: "3 - 6 kun oraligi", style: "Klassik dizayn", room: "Mehmonxona", color: "Qizil", isNew: false, isOnSale: true, AppartmentDetailCount: 60 },
-  ];
-
+  const { id } = useParams<{ id: string }>();
+  const { t, language } = useLanguage();
+  const [products, setProducts] = useState<Product[]>([]);
+  const [roomName, setRoomName] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const location = useLocation();
   const itemsPerPage = 21;
 
-  const totalPages = Math.ceil(rugData.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentRugs = rugData.slice(startIndex, startIndex + itemsPerPage);
+  const mapLang = (lang: string) =>
+    lang === "rus" ? "ru" : lang === "uzb" ? "uz" : "en";
+
+  useEffect(() => {
+    const lang = mapLang(language);
+
+    const fetchRoomDetails = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await client.get(`/${lang}/api/v1/rooms/get_rooms_images_by_room_id/${id}/`);
+        setProducts(response.data);
+
+        setRoomName(
+          location.state?.name ||
+          t("noName") || 
+          "Xona nomi mavjud emas" 
+        );
+      } catch (err) {
+        console.error("Ma'lumotlarni yuklashda xatolik:", err);
+        setError(t("errors.fetchData") || "Ma'lumotlarni yuklashda xatolik yuz berdi");
+        setRoomName(location.state?.name || t("noName") || "Xona nomi mavjud emas");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) fetchRoomDetails();
+  }, [id, language, t]);
+
+  const totalPages = Math.ceil(products.length / itemsPerPage);
+  const currentRugs = products.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   return (
     <div className="bg-[#FFFCE0] md:pt-28 pt-24">
       <Navbar />
-      
       <div className="container mx-auto px-4 py-6">
         <div className="mb-6">
           <div className="flex items-center text-base text-gray-600 mb-4">
-            <ChevronLeft size={20} className="text-gray-600" /> <Link to="/">{t('nav.home')}</Link>
-            <Link to="/rooms" className="pl-3 flex items-center "> <ChevronLeft size={20} className="text-gray-600" />{t('nav.rooms')}</Link>
-            <div className="pl-3 flex items-center font-semibold"> <ChevronLeft size={20} className="text-gray-600 " />Yotoqxona</div>
+            <ChevronLeft size={20} className="text-gray-600" />
+            <Link to="/">{t("nav.home") || "Bosh sahifa"}</Link>
+            <Link to="/rooms" className="pl-3 flex items-center">
+              <ChevronLeft size={20} className="text-gray-600" />
+              {t("nav.rooms") || "Xonalar"}
+            </Link>
+            <div className="pl-3 flex items-center font-semibold">
+              <ChevronLeft size={20} className="text-gray-600" />
+              {roomName}
+            </div>
           </div>
         </div>
 
         <div className="w-full">
-          {rugData.length > 0 ? (
+          {loading ? (
+            <div className="text-center py-12">
+              <p className="text-gray-500">{t("loading") || "Yuklanmoqda..."}</p>
+            </div>
+          ) : error ? (
+            <div className="text-center py-12 text-red-500">{error}</div>
+          ) : products.length > 0 ? (
             <>
-              <div className={`grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4`}>
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {currentRugs.map((rug) => (
-                  <AppartmentProducts 
+                  <AppartmentProducts
                     key={rug.id}
                     id={rug.id}
                     name={rug.name}
+                    image={rug.image}
                     price={rug.price}
                     originalPrice={rug.originalPrice}
                     isNew={rug.isNew}
@@ -67,71 +119,24 @@ const AppartmentDetail = () => {
                   >
                     ←
                   </button>
-                  
-                  {(() => {
-                    const visiblePages = 5;
-                    const halfVisible = Math.floor(visiblePages / 2);
-                    let startPage = Math.max(1, currentPage - halfVisible);
-                    let endPage = Math.min(totalPages, currentPage + halfVisible);
 
-                    if (endPage - startPage < visiblePages - 1) {
-                      startPage = Math.max(1, endPage - (visiblePages - 1));
-                    }
+                  {[...Array(totalPages)].map((_, i) => {
+                    const page = i + 1;
+                    return (
+                      <button
+                        key={page}
+                        onClick={() => setCurrentPage(page)}
+                        className={`px-3 py-2 rounded ${
+                          currentPage === page
+                            ? "bg-[#D7CCC8] text-white"
+                            : "text-gray-600 hover:bg-gray-100"
+                        }`}
+                      >
+                        {page}
+                      </button>
+                    );
+                  })}
 
-                    const pages = [];
-                    if (startPage > 1) {
-                      pages.push(
-                        <button
-                          key={1}
-                          onClick={() => setCurrentPage(1)}
-                          className={`px-3 py-2 rounded ${
-                            currentPage === 1
-                              ? 'bg-[#D7CCC8] text-white'
-                              : 'text-gray-600 hover:bg-gray-100'
-                          }`}
-                        >
-                          1
-                        </button>
-                      );
-                      if (startPage > 2) pages.push(<span key="start-ellipsis" className="px-2">...</span>);
-                    }
-
-                    for (let i = startPage; i <= endPage; i++) {
-                      pages.push(
-                        <button
-                          key={i}
-                          onClick={() => setCurrentPage(i)}
-                          className={`px-3 py-2 rounded ${
-                            currentPage === i
-                              ? 'bg-[#D7CCC8] text-white'
-                              : 'text-gray-600 hover:bg-gray-100'
-                          }`}
-                        >
-                          {i}
-                        </button>
-                      );
-                    }
-
-                    if (endPage < totalPages) {
-                      if (endPage < totalPages - 1) pages.push(<span key="end-ellipsis" className="px-2">...</span>);
-                      pages.push(
-                        <button
-                          key={totalPages}
-                          onClick={() => setCurrentPage(totalPages)}
-                          className={`px-3 py-2 rounded ${
-                            currentPage === totalPages
-                              ? 'bg-[#D7CCC8] text-white'
-                              : 'text-gray-600 hover:bg-gray-100'
-                          }`}
-                        >
-                          {totalPages}
-                        </button>
-                      );
-                    }
-
-                    return pages;
-                  })()}
-                  
                   <button
                     onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
                     disabled={currentPage === totalPages}
@@ -144,7 +149,7 @@ const AppartmentDetail = () => {
             </>
           ) : (
             <div className="text-center py-12">
-              <p className="text-gray-500">Hech qanday mahsulot topilmadi.</p>
+              <p className="text-gray-500"></p>
             </div>
           )}
         </div>

@@ -1,60 +1,78 @@
+import { useEffect, useState } from 'react';
 import { useLanguage } from '../../../../contexts/LanguageContext';
-import gilamImg from '../../../../assets/Gilamlar.png'; // замените на свои пути
-import kovrolinImg from '../../../../assets/Kovrolin.png';
-import lawnImg from '../../../../assets/Gazon.png';
-import runnerImg from '../../../../assets/smth.jpg';
+import { client } from '../../../../services';
+import { Link } from 'react-router-dom';
+
+interface Style {
+  id: number;
+  name: string;
+}
+
+interface Catalog {
+  id: number;
+  name: string;
+  image: string;
+  styles: Style[];
+}
 
 export const InfoSection = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
+  const [catalogs, setCatalogs] = useState<Catalog[]>([]);
+
+  const mapLang = (lang: string) =>
+    lang === 'rus' ? 'ru' : lang === 'uzb' ? 'uz' : 'en';
+
+  useEffect(() => {
+    const lang = mapLang(language);
+
+    const fetchCatalogs = async () => {
+      try {
+        const res = await client.get(`/${lang}/api/v1/home/get_catalogs/`);
+        setCatalogs(res.data);
+      } catch (error) {
+        console.error('Kataloglarni yuklashda xatolik:', error);
+      }
+    };
+
+    fetchCatalogs();
+  }, [language]);
 
   return (
-    <section className="flex lg:flex-nowrap flex-wrap gap-5 py-8 container my-8 justify-center ">
-      {/* Gilamlar */}
-      <div className="relative w-[315px] h-[385px] rounded overflow-hidden shadow group">
-        <a href="/catalog">
-          <img src={gilamImg} alt="" className="absolute inset-0 w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-black/30" />
-          <div className="relative z-10 p-6 flex flex-col h-full justify-start">
-            <h2 className="text-white text-3xl font-normal mb-6">{t('info.carpets')}</h2>
-            <ul className="flex flex-col gap-2">
-              <li><a href="/catalog" className="text-white underline">{t('info.carpets.classic')}</a></li>
-              <li><a href="/catalog" className="text-white underline">{t('info.carpets.neoclassic')}</a></li>
-              <li><a href="/catalog" className="text-white underline">{t('info.carpets.modern')}</a></li>
-              <li><a href="/catalog" className="text-white underline">{t('info.carpets.kids')}</a></li>
-            </ul>
-          </div>
-        </a>
-      </div>
-      {/* Kovrolin */}
-      <div className="relative w-[315px] h-[385px] rounded overflow-hidden shadow group">
-        <a href="/catalog">
-          <img src={kovrolinImg} alt="" className="absolute inset-0 w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-black/20" />
-          <div className="relative z-10 p-6 flex flex-col h-full justify-start">
-            <h2 className="text-white text-3xl font-normal">{t('info.covrolin')}</h2>
-          </div>
-        </a>
-      </div>
-      {/* Gazon */}
-      <div className="relative w-[315px] h-[385px] rounded overflow-hidden shadow group">
-        <a href="/catalog">
-          <img src={lawnImg} alt="" className="absolute inset-0 w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-black/20" />
-          <div className="relative z-10 p-6 flex flex-col h-full justify-start">
-            <h2 className="text-white text-3xl font-normal">{t('info.lawn')}</h2>
-          </div>
-        </a>
-      </div>
-      {/* Metrlik yo'lak */}
-      <div className="relative w-[315px] h-[385px] rounded overflow-hidden shadow group">
-        <a href="/catalog">
-          <img src={runnerImg} alt="" className="absolute inset-0 w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-black/20" />
-          <div className="relative z-10 p-6 flex flex-col h-full justify-start">
-            <h2 className="text-white text-3xl font-normal">{t('info.runner')}</h2>
-          </div>
-        </a>
-      </div>
+    <section className="flex lg:flex-nowrap flex-wrap gap-5 py-8 container my-8 justify-center">
+      {catalogs.map((catalog) => (
+        <div
+          key={catalog.id}
+          className="relative w-[315px] h-[385px] rounded overflow-hidden shadow group"
+        >
+          {/* Katalog rasmi ustiga bosilsa umumiy catalog sahifasiga o'tadi */}
+          <Link to={`/catalog/${catalog.id}`}>
+            <img
+              src={catalog.image}
+              alt={catalog.name}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-black/30" />
+            <div className="relative z-10 p-6 flex flex-col h-full justify-start">
+              <h2 className="text-white capitalize text-3xl font-normal mb-6">
+                {catalog.name.toLowerCase()}
+              </h2>
+              <ul className="flex flex-col gap-2">
+                {/* Har bir style ustiga bosilganda styles query bilan redirect bo'ladi */}
+                {catalog.styles?.map((style) => (
+                  <li className="underline" key={style.id}>
+                    <Link
+                      to={`/catalog/${catalog.id}?styles=${style.id}`}
+                      className="text-white capitalize"
+                    >
+                      {style.name.toLowerCase()}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Link>
+        </div>
+      ))}
     </section>
   );
 };

@@ -3,48 +3,66 @@ import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/ui/Footer";
 import Filter from "../screens/CatalogPage/Filter";
 import ProductCard from "../screens/CatalogPage/ProductCard";
-import { Filter as FilterIcon, ChevronLeft } from 'lucide-react';
+import { Filter as FilterIcon, ChevronLeft } from "lucide-react";
 import { ContactInfoSection } from "../screens/HomePage/sections/ContactInfoSection";
-import { Link } from "react-router-dom";
-import { useLanguage } from '../contexts/LanguageContext';
+import { Link, useParams } from "react-router-dom";
+import { useLanguage } from "../contexts/LanguageContext";
+import { client } from "../services";
+
+interface Rug {
+  id: number;
+  catalog: number;
+  name: string;
+  image: string;
+  collection_type: string;
+}
+
+interface FilterOption {
+  id: number;
+  name: string;
+}
+
+interface FilterOptions {
+  rooms: FilterOption[];
+  colors: FilterOption[];
+  shapes: FilterOption[];
+  styles: FilterOption[] | FilterOption[][];
+  labels: {
+    catalog: string;
+    rooms: string;
+    colors: string;
+    shapes: string;
+    styles: string;
+  };
+}
 
 const Catalog = () => {
-  const rugData = [
-    { id: 1, name: "ANATOLIAN SILK", price: 240000, originalPrice: 325000, shape: "Oval", size: "1 - 100 000 uzs", delivery: "1 - 2 kun oraligi", style: "Klassik dizayn", room: "Mehmonxona", color: "Qizil", isNew: false, isOnSale: true, salesCount: 50, image: "https://www.sagexpress.uz/media/images/anatolian_silk_2.jpg" },
-    { id: 2, name: "MOVAROUNNAHR", price: 240000, originalPrice: 325000, shape: "To'rtburchak", size: "100 000 - 200 000 uzs", delivery: "3 - 6 kun oraligi", style: "Neoklassik dizayn", room: "Yotoqxona", color: "Yashil", isNew: false, isOnSale: true, salesCount: 30, image: "https://www.sagexpress.uz/media/images/movaroun_2.jpg" },
-    { id: 3, name: "ENIGMA", price: 240000, originalPrice: 325000, shape: "Metril", size: "200 000 - 300 000 uzs", delivery: "7 - 15 kun oraligi", style: "Zamonaviy dizayn", room: "Oshxona", color: "Qora", isNew: true, isOnSale: false, salesCount: 10, image: "https://www.sagexpress.uz/media/images/enigma.jpg" },
-    { id: 4, name: "EMOMA", price: 240000, originalPrice: 325000, shape: "Kvadrat", size: "300 000 - 655 000 uzs", delivery: "1 - 2 kun oraligi", style: "Bolalar dizayni", room: "Bolalar xonasi", color: "Kulrang", isNew: false, isOnSale: true, salesCount: 70, image: "https://www.sagexpress.uz/media/images/isfahan.jpg" },
-    { id: 5, name: "ANATOLIAN SILK", price: 180000, originalPrice: 250000, shape: "Oval", size: "1 - 100 000 uzs", delivery: "3 - 6 kun oraligi", style: "Klassik dizayn", room: "Mehmonxona", color: "Ko'k", isNew: false, isOnSale: false, salesCount: 20, image: "https://www.sagexpress.uz/media/images/Tamerlan.jpg" },
-    { id: 6, name: "MOVAROUNNAHR", price: 320000, originalPrice: 420000, shape: "To'rtburchak", size: "200 000 - 300 000 uzs", delivery: "7 - 15 kun oraligi", style: "Neoklassik dizayn", room: "Yotoqxona", color: "Krem rang", isNew: false, isOnSale: true, salesCount: 40, image: "https://www.sagexpress.uz/media/images/7261-2.jpg" },
-    { id: 7, name: "ENIGMA CLASSIC", price: 150000, originalPrice: null, shape: "Noodatiy", size: "100 000 - 200 000 uzs", delivery: "1 - 2 kun oraligi", style: "Zamonaviy dizayn", room: "Oshxona", color: "Qaymoqrang", isNew: true, isOnSale: false, salesCount: 15, image: "https://www.sagexpress.uz/media/images/creante_grey.jpg" },
-    { id: 8, name: "ANATOLIAN SILK", price: 280000, originalPrice: 350000, shape: "Metril", size: "200 000 - 300 000 uzs", delivery: "3 - 6 kun oraligi", style: "Klassik dizayn", room: "Mehmonxona", color: "Qizil", isNew: false, isOnSale: true, salesCount: 60, image: "https://www.sagexpress.uz/media/images/tressor_beige.jpg" },
-  ];
-
-  const { t } = useLanguage()
-
-  const getInitialShowFilters = () => {
-    if (typeof window !== 'undefined' && window.innerWidth >= 1024) {
-      return true;
-    }
-    return false;
-  };
-
-  const [showFilters, setShowFilters] = useState(getInitialShowFilters);
-
-  useEffect(() => {
-    function handleResize() {
-      if (window.innerWidth >= 1024) {
-        setShowFilters(true);
-      } else {
-        setShowFilters(false);
-      }
-    }
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
+  const { t, language } = useLanguage();
+  const { id } = useParams<{ id: string }>();
+  const [rugData, setRugData] = useState<Rug[]>([]);
+  const [originalRugData, setOriginalRugData] = useState<Rug[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [showFilters, setShowFilters] = useState(() => {
+    return typeof window !== "undefined" && window.innerWidth >= 1024;
+  });
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortOption, setSortOption] = useState("barchasi");
+  const [sortOption, setSortOption] = useState("all");
+  const itemsPerPage = 21;
+
+  const [filterOptions, setFilterOptions] = useState<FilterOptions>({
+    rooms: [],
+    colors: [],
+    shapes: [],
+    styles: [],
+    labels: {
+      catalog: "",
+      rooms: "",
+      colors: "",
+      shapes: "",
+      styles: "",
+    },
+  });
 
   const [filters, setFilters] = useState({
     shape: [],
@@ -53,92 +71,222 @@ const Catalog = () => {
     style: [],
     room: [],
     size: { width: "", height: "" },
-    color: []
+    color: [],
   });
 
-  const itemsPerPage = 21;
+  const mapLang = (lang: string) => (lang === "rus" ? "ru" : lang === "uzb" ? "uz" : "en");
 
-  const handleFilterChange = (newFilters) => {
-    setFilters(newFilters);
-    setCurrentPage(1);
+  // Sort mapping for API
+  const getSortValue = (sortOption: string) => {
+    switch (sortOption) {
+      case "new": return "1";
+      case "bestseller": return "2";
+      case "sale": return "3";
+      default: return null;
+    }
   };
 
-  const clearFilters = () => {
-    setFilters({
+  useEffect(() => {
+    const lang = mapLang(language);
+
+    const fetchInitialCarpets = async () => {
+      try {
+        setLoading(true);
+        const res = await client.get(`/${lang}/api/v1/catalog/get_carpets_by_catalog_id/${id}/`);
+        const data = Array.isArray(res.data) ? res.data : res.data.results || [];
+        setRugData(data);
+        setOriginalRugData(data);
+      } catch (err) {
+        setError(t("common.error") || "Xatolik yuz berdi");
+        setRugData([]);
+        setOriginalRugData([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const fetchFilterOptions = async () => {
+      try {
+        const res = await client.get(`/${lang}/api/v1/catalog/filter_choices/${id}/`);
+        // Process styles if it's array of arrays
+        let processedData = { ...res.data };
+        if (processedData.styles && Array.isArray(processedData.styles) && processedData.styles.length > 0) {
+          if (Array.isArray(processedData.styles[0])) {
+            processedData.styles = processedData.styles[0];
+          }
+        }
+        setFilterOptions(processedData);
+      } catch (err) {
+        console.error("Filter options fetch error:", err);
+      }
+    };
+
+    if (id) {
+      fetchInitialCarpets();
+      fetchFilterOptions();
+    }
+  }, [id, language, t]);
+
+  const handleFilterChange = async (newFilters: any) => {
+    setFilters(newFilters);
+    setCurrentPage(1);
+    const lang = mapLang(language);
+    
+    try {
+      setLoading(true);
+      
+      // Prepare query parameters
+      const params = new URLSearchParams();
+      
+      // Add sort parameter if not "all"
+      const sortValue = getSortValue(sortOption);
+      if (sortValue) {
+        params.append('sort_by', sortValue);
+      }
+      
+      // Add filter parameters as comma-separated strings
+      if (newFilters.room && newFilters.room.length > 0) {
+        params.append('rooms', newFilters.room.join(','));
+      }
+      if (newFilters.color && newFilters.color.length > 0) {
+        params.append('colors', newFilters.color.join(','));
+      }
+      if (newFilters.shape && newFilters.shape.length > 0) {
+        params.append('shapes', newFilters.shape.join(','));
+      }
+      if (newFilters.style && newFilters.style.length > 0) {
+        params.append('styles', newFilters.style.join(','));
+      }
+      
+      const queryString = params.toString();
+      const url = `/${lang}/api/v1/catalog/filter_and_sort_carpets/${id}/${queryString ? `?${queryString}` : ''}`;
+      
+      const res = await client.get(url);
+      setRugData(Array.isArray(res.data) ? res.data : res.data.results || []);
+    } catch (err) {
+      console.error("Filter error:", err);
+      setError(t("common.error") || "Filtrlashda xatolik");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const clearFilters = async () => {
+    const clearedFilters = {
       shape: [],
       price: [],
       delivery: [],
       style: [],
       room: [],
       size: { width: "", height: "" },
-      color: []
-    });
+      color: [],
+    };
+    setFilters(clearedFilters);
+    setCurrentPage(1);
+    
+    // If sort is not "all", apply only sort
+    if (sortOption !== "all") {
+      const lang = mapLang(language);
+      try {
+        setLoading(true);
+        const sortValue = getSortValue(sortOption);
+        const url = `/${lang}/api/v1/catalog/filter_and_sort_carpets/${id}/?sort_by=${sortValue}`;
+        const res = await client.get(url);
+        setRugData(Array.isArray(res.data) ? res.data : res.data.results || []);
+      } catch (err) {
+        console.error("Clear filter error:", err);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      // Reset to original data
+      setRugData(originalRugData);
+    }
   };
 
-  const filteredRugs = rugData.filter(rug => {
-    if (filters.shape.length > 0 && !filters.shape.includes(rug.shape)) return false;
-    if (filters.price.length > 0 && !filters.price.includes(rug.size)) return false;
-    if (filters.delivery.length > 0 && !filters.delivery.includes(rug.delivery)) return false;
-    if (filters.style.length > 0 && !filters.style.includes(rug.style)) return false;
-    if (filters.room.length > 0 && !filters.room.includes(rug.room)) return false;
-    if (filters.color.length > 0 && !filters.color.includes(rug.color)) return false;
-    return true;
-  });
-
-  const sortedRugs = [...filteredRugs].sort((a, b) => {
-    switch (sortOption) {
-      case "yangilik":
-        return b.isNew - a.isNew; 
-      case "chegirma":
-        return b.isOnSale - a.isOnSale; 
-      case "kop":
-        return b.salesCount - a.salesCount;
-      default:
-        return 0; 
+  const handleSortChange = async (newSortOption: string) => {
+    setSortOption(newSortOption);
+    setCurrentPage(1);
+    
+    const lang = mapLang(language);
+    try {
+      setLoading(true);
+      
+      // Prepare query parameters
+      const params = new URLSearchParams();
+      
+      // Add sort parameter if not "all"
+      const sortValue = getSortValue(newSortOption);
+      if (sortValue) {
+        params.append('sort_by', sortValue);
+      }
+      
+      // Add existing filter parameters
+      if (filters.room && filters.room.length > 0) {
+        params.append('rooms', filters.room.join(','));
+      }
+      if (filters.color && filters.color.length > 0) {
+        params.append('colors', filters.color.join(','));
+      }
+      if (filters.shape && filters.shape.length > 0) {
+        params.append('shapes', filters.shape.join(','));
+      }
+      if (filters.style && filters.style.length > 0) {
+        params.append('styles', filters.style.join(','));
+      }
+      
+      const queryString = params.toString();
+      const url = `/${lang}/api/v1/catalog/filter_and_sort_carpets/${id}/${queryString ? `?${queryString}` : ''}`;
+      
+      const res = await client.get(url);
+      setRugData(Array.isArray(res.data) ? res.data : res.data.results || []);
+    } catch (err) {
+      console.error("Sort error:", err);
+      setError(t("common.error") || "Saralashda xatolik");
+    } finally {
+      setLoading(false);
     }
-  });
+  };
 
-  const totalPages = Math.ceil(sortedRugs.length / itemsPerPage);
+  const totalPages = Math.ceil(rugData.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentRugs = sortedRugs.slice(startIndex, startIndex + itemsPerPage);
+  const currentRugs = rugData.slice(startIndex, startIndex + itemsPerPage);
 
   return (
     <div className="bg-[#FFFCE0] md:pt-28 pt-24">
       <Navbar />
-      
       <div className="container mx-auto px-4 py-6">
         <div className="mb-6">
-          <div className="flex md:mb-12 mb-7 items-center text-base text-gray-600 ">
-            <ChevronLeft size={20} className="text-gray-600" /> <Link to="/">{t('nav.home')}</Link>
-            <div className="pl-3 flex items-center font-semibold"> <ChevronLeft size={20} className="text-gray-600" /> {t('product.breadcrumb.carpets')}</div>
+          <div className="flex md:mb-12 mb-7 items-center text-base text-gray-600">
+            <ChevronLeft size={20} className="text-gray-600" />
+            <Link to="/">{t("nav.home") || "Bosh sahifa"}</Link>
+            <div className="pl-3 flex items-center font-semibold">
+              <ChevronLeft size={20} className="text-gray-600" />
+              {t("product.breadcrumb.carpets") || "Gilamlar"}
+            </div>
           </div>
-          
+
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <button
               onClick={() => setShowFilters(!showFilters)}
               className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg w-fit"
             >
               <FilterIcon size={16} />
-              <span>Filtr</span>
+              <span>{t("filter") || "Filtr"}</span>
             </button>
-            
+
             <div className="flex overflow-x-auto gap-4 pb-2">
-              {[
-                { label: t('catalog.all'), value: "barchasi" },
-                { label: t('catalog.new'), value: "yangilik" },
-                { label: t('catalog.bestseller'), value: "kop" },
-                { label: t('catalog.sale'), value: "chegirma" },
-              ].map(({ label, value }) => (
+              {["all", "new", "bestseller", "sale"].map((value) => (
                 <button
                   key={value}
-                  onClick={() => setSortOption(value)}
+                  onClick={() => handleSortChange(value)}
                   className={`px-4 py-2 whitespace-nowrap border-b-2 transition-colors ${
                     sortOption === value
                       ? "text-gray-800 font-semibold border-gray-800"
                       : "text-gray-600 border-transparent hover:border-gray-300"
                   }`}
                 >
-                  {label}
+                  {t(`catalog.${value}`) || value}
                 </button>
               ))}
             </div>
@@ -146,125 +294,70 @@ const Catalog = () => {
         </div>
 
         <div className="flex flex-col md:flex-row gap-6">
-          {/* Filter Sidebar - Only shown when showFilters is true */}
           {showFilters && (
             <div className="md:w-80">
-              <Filter 
-                filters={filters} 
-                onFilterChange={handleFilterChange} 
+              <Filter
+                filters={filters}
+                onFilterChange={handleFilterChange}
                 onClearFilters={clearFilters}
                 onClose={() => setShowFilters(true)}
+                filterOptions={filterOptions}
               />
             </div>
           )}
-          
-          {/* Products Grid */}
-          <div className={`${showFilters ? 'md:w-[calc(100%-320px)]' : 'w-full'}`}>
-            {sortedRugs.length > 0 ? (
+
+          <div className={`${showFilters ? "md:w-[calc(100%-320px)]" : "w-full"}`}>
+            {loading ? (
+              <div className="text-center py-12">
+                <p className="text-gray-500">{t("loading") || "Yuklanmoqda..."}</p>
+              </div>
+            ) : error ? (
+              <div className="text-center py-12 text-red-500">{error}</div>
+            ) : rugData.length > 0 ? (
               <>
-                <div className={`grid grid-cols-2 sm:grid-cols-2 ${showFilters ? 'lg:grid-cols-3' : 'lg:grid-cols-4'} gap-4`}>
+                <div className={`grid grid-cols-2 sm:grid-cols-2 ${showFilters ? "lg:grid-cols-3" : "lg:grid-cols-4"} gap-4`}>
                   {currentRugs.map((rug) => (
-                    <ProductCard 
+                    <ProductCard
                       key={rug.id}
                       id={rug.id}
                       name={rug.name}
-                      price={rug.price}
-                      originalPrice={rug.originalPrice}
-                      isNew={rug.isNew}
-                      isOnSale={rug.isOnSale}
                       image={rug.image}
+                      categoryId={rug.catalog}
+                      collectionType={rug.collection_type}
                     />
                   ))}
                 </div>
-
+                
                 {/* Pagination */}
                 {totalPages > 1 && (
-                  <div className="flex justify-center items-center gap-2 mt-8">
+                  <div className="flex justify-center mt-8 space-x-2">
                     <button
-                      onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                      onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                       disabled={currentPage === 1}
-                      className="px-3 py-2 text-gray-600 hover:bg-gray-100 rounded disabled:opacity-50"
+                      className="px-4 py-2 border border-gray-300 rounded-lg disabled:opacity-50"
                     >
-                      ←
+                      {t("pagination.previous") || "Oldingi"}
                     </button>
                     
-                    {(() => {
-                      const visiblePages = 5;
-                      const halfVisible = Math.floor(visiblePages / 2);
-                      let startPage = Math.max(1, currentPage - halfVisible);
-                      let endPage = Math.min(totalPages, currentPage + halfVisible);
-
-                      if (endPage - startPage < visiblePages - 1) {
-                        startPage = Math.max(1, endPage - (visiblePages - 1));
-                      }
-
-                      const pages = [];
-                      if (startPage > 1) {
-                        pages.push(
-                          <button
-                            key={1}
-                            onClick={() => setCurrentPage(1)}
-                            className={`px-3 py-2 rounded ${
-                              currentPage === 1
-                                ? 'bg-[#D7CCC8] text-white'
-                                : 'text-gray-600 hover:bg-gray-100'
-                            }`}
-                          >
-                            1
-                          </button>
-                        );
-                        if (startPage > 2) pages.push(<span key="start-ellipsis" className="px-2">...</span>);
-                      }
-
-                      for (let i = startPage; i <= endPage; i++) {
-                        pages.push(
-                          <button
-                            key={i}
-                            onClick={() => setCurrentPage(i)}
-                            className={`px-3 py-2 rounded ${
-                              currentPage === i
-                                ? 'bg-[#D7CCC8] text-white'
-                                : 'text-gray-600 hover:bg-gray-100'
-                            }`}
-                          >
-                            {i}
-                          </button>
-                        );
-                      }
-
-                      if (endPage < totalPages) {
-                        if (endPage < totalPages - 1) pages.push(<span key="end-ellipsis" className="px-2">...</span>);
-                        pages.push(
-                          <button
-                            key={totalPages}
-                            onClick={() => setCurrentPage(totalPages)}
-                            className={`px-3 py-2 rounded ${
-                              currentPage === totalPages
-                                ? 'bg-[#D7CCC8] text-white'
-                                : 'text-gray-600 hover:bg-gray-100'
-                            }`}
-                          >
-                            {totalPages}
-                          </button>
-                        );
-                      }
-
-                      return pages;
-                    })()}
+                    <span className="px-4 py-2">
+                      {currentPage} / {totalPages}
+                    </span>
                     
                     <button
-                      onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                      onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                       disabled={currentPage === totalPages}
-                      className="px-3 py-2 text-gray-600 hover:bg-gray-100 rounded disabled:opacity-50"
+                      className="px-4 py-2 border border-gray-300 rounded-lg disabled:opacity-50"
                     >
-                      →
+                      {t("pagination.next") || "Keyingi"}
                     </button>
                   </div>
                 )}
               </>
             ) : (
               <div className="text-center py-12">
-                <p className="text-gray-500">Hech qanday mahsulot topilmadi. Filtrlarni o'zgartirib ko'ring.</p>
+                <p className="text-gray-500">
+                  {t("common.noProducts") || "Hech qanday mahsulot topilmadi. Filtrlarni o'zgartirib ko'ring."}
+                </p>
               </div>
             )}
           </div>

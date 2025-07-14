@@ -1,22 +1,55 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-// import { useLanguage } from "../../contexts/LanguageContext";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useLanguage } from "../../../../contexts/LanguageContext";
-// import { useTransition } from "react";
+import { client } from "../../../../services";
+
+interface NewsItem {
+  id: number;
+  title: string;
+  image: string;
+  path?: string;
+}
+
+const mapLangToPrefix = (lang: string): string => {
+  switch (lang) {
+    case "uzb":
+      return "uz";
+    case "rus":
+      return "ru";
+    case "en":
+      return "en";
+    default:
+      return "uz"; 
+  }
+};
 
 const NewsSection = () => {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage(); 
+  const [newsData, setNewsData] = useState<NewsItem[]>([]);
 
-  const imageData = [
-    { id: 1, title: "SAG XL kengashi", image: "https://www.sagexpress.uz/media/images/anatolian_silk_2.jpg", path: "/news/1" },
-    { id: 2, title: "Silver Mercury va White Square Festivalda uchta g'oliba", image: "https://www.sagexpress.uz/media/images/Tamerlan.jpg", path: "/news/2" },
-    { id: 3, title: "SAG 25 yillik munozabati, tumanlar orasida hamkorlik", image: "https://www.sagexpress.uz/media/images/tressor_beige.jpg", path: "/news/3" },
-    { id: 4, title: "SAG darajasi — bu shubhasiz g'alaba", image: "https://www.sagexpress.uz/media/images/tumaris.jpg", path: "/news/4" },
-    { id: 5, title: "SAG darajasi — madaniyat bilan hamkorlik zaminayuvlik", image: "https://www.sagexpress.uz/media/product/faf698b1-b866-49f2-940c-42e7bf7b1acd.jpg", path: "/news/5" },
-    { id: 6, title: "SAG darajasi — bu ishonchli yag'dirajsi", image: "https://www.sagexpress.uz/media/product/b93a7f94-87ef-4207-ad7a-7132c8bd43dd.png", path: "/news/6" },
-  ];
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        const langPrefix = mapLangToPrefix(language);
+        const res = await client.get(`/${langPrefix}/api/v1/news/get_news/`);
+        const data = res.data;
+
+        const mappedData = data.map((item: any) => ({
+          ...item,
+          path: `/news/${item.id}`,
+        }));
+
+        setNewsData(mappedData);
+      } catch (error) {
+        console.error("Error fetching news:", error);
+      }
+    };
+
+    fetchNews();
+  }, [language]);
 
   const settings = {
     dots: true,
@@ -27,24 +60,9 @@ const NewsSection = () => {
     autoplay: true,
     autoplaySpeed: 2000,
     responsive: [
-      {
-        breakpoint: 1024, // <1024px
-        settings: {
-          slidesToShow: 3,
-        }
-      },
-      {
-        breakpoint: 768, // <768px
-        settings: {
-          slidesToShow: 2,
-        }
-      },
-      {
-        breakpoint: 480, // <480px
-        settings: {
-          slidesToShow: 1,
-        }
-      }
+      { breakpoint: 1024, settings: { slidesToShow: 3 } },
+      { breakpoint: 768, settings: { slidesToShow: 2 } },
+      { breakpoint: 480, settings: { slidesToShow: 1 } },
     ]
   };
 
@@ -54,17 +72,17 @@ const NewsSection = () => {
         {t('nav.methods')}
       </h1>
       <Slider {...settings}>
-        {imageData.map((item) => (
+        {newsData.map((item) => (
           <div key={item.id} className="px-2">
-            <Link to={item.path}>
-              <div className="relative  overflow-hidden">
+            <Link to={item.path || `/news/${item.id}`}>
+              <div className="relative overflow-hidden">
                 <img
                   src={item.image}
                   alt={item.title}
-                  className="w-full h-[250px] object-cover "
+                  className="w-full h-[250px] object-cover"
                   loading="lazy"
                 />
-                <div className="absolute top-0 left-0 w-full p-2 m-2 mr-3 bg-black bg-opacity-50 text-white text-sm md:text-base line-clamp-3">
+                <div className="absolute top-0 left-0 w-full p-2 m-2 bg-black bg-opacity-50 text-white text-sm md:text-base line-clamp-3">
                   {item.title}
                 </div>
               </div>

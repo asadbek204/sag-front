@@ -7,6 +7,9 @@ export const rus = {
   'nav.sales': 'Акции',
   'nav.home': 'Главная',
   'nav.rooms': 'Квартиры',
+  "year": "год",
+  "mln": "млн. м²",
+  "productionVolume": "Объем производства",
 
   
   // Location
