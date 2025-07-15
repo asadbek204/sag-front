@@ -173,7 +173,7 @@ export const en = {
   hit: "Hit",
   show_price: "Show price",
   currency: "UZS",
-  "buy ": "Buy ",
+  "buy": "Buy ",
   share: "Share",
   name: "Your name",
   phone: "Phone number",

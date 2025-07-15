@@ -84,11 +84,15 @@ const Filter = ({ filters, onFilterChange, onClearFilters, filterOptions }: Filt
   };
 
   const renderCheckboxSection = (
-    label: string,
-    sectionKey: keyof typeof expandedSections,
-    options: FilterOption[],
-    categoryKey: string
-  ) => (
+  label: string,
+  sectionKey: keyof typeof expandedSections,
+  options: FilterOption[] = [], // Default qiymat
+  categoryKey: string
+) => {
+  // Agar options undefined yoki bo‘sh bo‘lsa, sectionni render qilmaydi
+  if (!options || !Array.isArray(options) || options.length === 0) return null;
+
+  return (
     <div className="mb-6 border-b pb-4">
       <button 
         onClick={() => toggleSection(sectionKey)} 
@@ -97,19 +101,27 @@ const Filter = ({ filters, onFilterChange, onClearFilters, filterOptions }: Filt
         <span>{label}</span>
         {expandedSections[sectionKey] ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
       </button>
+
       {expandedSections[sectionKey] && (
         <div className="mt-3 space-y-2">
           {options.map((option) => (
-            <label key={option.id} className="flex items-center gap-3 py-1 cursor-pointer">
+            <label
+              key={option.id}
+              className="flex items-center gap-3 py-1 cursor-pointer"
+            >
               <input
                 type="checkbox"
-                checked={(localFilters[categoryKey as keyof typeof localFilters] as number[]).includes(option.id)}
+                checked={
+                  (localFilters[categoryKey as keyof typeof localFilters] as number[]).includes(option.id)
+                }
                 onChange={() => handleCheckboxChange(categoryKey, option.id)}
                 className="hidden"
               />
               <div
                 className={`w-4 h-4 border-2 rounded-sm flex items-center justify-center ${
-                  (localFilters[categoryKey as keyof typeof localFilters] as number[]).includes(option.id) ? "border-blue-500" : "border-gray-300"
+                  (localFilters[categoryKey as keyof typeof localFilters] as number[]).includes(option.id)
+                    ? "border-blue-500"
+                    : "border-gray-300"
                 }`}
               >
                 {(localFilters[categoryKey as keyof typeof localFilters] as number[]).includes(option.id) && (
@@ -123,6 +135,8 @@ const Filter = ({ filters, onFilterChange, onClearFilters, filterOptions }: Filt
       )}
     </div>
   );
+};
+
 
   return (
     <div className="bg-[#FFFCE0] p-6 rounded-lg">
@@ -152,9 +166,10 @@ const Filter = ({ filters, onFilterChange, onClearFilters, filterOptions }: Filt
      {renderCheckboxSection(
   filterOptions.labels.styles || "Uslublar", 
   "style", 
-  Array.isArray(filterOptions.styles?.[0]) 
-    ? (filterOptions.styles[0] as FilterOption[]) 
-    : (filterOptions.styles as FilterOption[]), 
+Array.isArray(filterOptions.styles?.[0]) 
+  ? ((filterOptions.styles?.[0] as FilterOption[]) || [])
+  : ((filterOptions.styles as FilterOption[]) || []),
+
   "style"
 )}
 

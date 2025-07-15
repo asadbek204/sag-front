@@ -4,11 +4,13 @@ import { client } from '../../../../services';
 import { useNavigate } from "react-router-dom";
 
 interface NewsItem {
-  id: number;
-  name: string;
-  model?: string;
-  collection?: string;
   image: string;
+  model: number | {
+    id: number;
+    name: string;
+    catalog: number;
+  };
+  type: "collection" | "detail";
 }
 
 function useSlidesToShow() {
@@ -48,30 +50,6 @@ export const CollectionSection = () => {
     fetchNews();
   }, [language]);
 
-  const normalizeType = (value?: string) => {
-  if (!value) return "";
-
-  const cleaned = value.toLowerCase().trim();
-
-  if (
-    cleaned === "модель ковра" ||
-    cleaned === "carpet_model" ||
-    cleaned === "model"
-  ) {
-    return "carpet_model";
-  }
-
-  if (
-    cleaned === "коллекция" ||
-    cleaned === "collection"
-  ) {
-    return "collection";
-  }
-
-  return "";
-};
-
-
   useEffect(() => {
     const timer = setInterval(() => {
       setIndex((prev) => (prev + 1) % newsData.length);
@@ -86,34 +64,28 @@ export const CollectionSection = () => {
       <div className="container w-full">
         <div className="relative overflow-hidden flex items-center w-full">
           <div className={`flex ${slidesToShow > 1 ? 'flex-row' : 'flex-col'} gap-8 justify-center items-center w-full transition-all`}>
-            {visible.map((item) =>
+            {visible.map((item, i) =>
               item ? (
                 <div
-                  key={item.id}
+                  key={i}
                   className="relative w-full max-w-[600px] h-[260px] group overflow-hidden rounded shadow-lg cursor-pointer"
                  onClick={() => {
-  const type = normalizeType(item.model || item.collection);
-
-  if (type === "carpet_model") {
-    navigate(`/product/${item.id}`);
-  } else if (type === "collection") {
-    navigate(`/catalog/${item.id}/product/${item.id}`);
+  if (item.type === "collection" && typeof item.model === "object") {
+    navigate(`/catalog/${item.model.catalog}/product/${item.model.id}`, {
+      state: { collectionId: item.model.id } // URLda bor, lekin state orqali ham yuboramiz
+    });
+  } else if (item.type === "detail" && typeof item.model === "number") {
+    navigate(`/product/${item.model}`);
   }
 }}
 
                 >
                   <img
                     src={item.image}
-                    alt={item.name}
-                    className="w-full h-full object-cover group-hover:opacity-80 transition"
+                    alt={typeof item.model === "object" ? item.model.name : "Image"}
+                    className="w-full  h-full  group-hover:opacity-80 transition"
                   />
-                  <div className="absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-end pl-6 pb-8 text-white">
-                    <h3 className="text-3xl font-bold">{item.name}</h3>
-                    <div className="text-xl opacity-90 flex gap-4 items-center flex-wrap">
-                      {item.model && <span> {item.model}</span>}
-                      {item.collection && <span>{item.collection}</span>}
-                    </div>
-                  </div>
+                 
                 </div>
               ) : null
             )}

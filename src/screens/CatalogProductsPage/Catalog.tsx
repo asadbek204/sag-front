@@ -5,7 +5,7 @@ import Filter from "./Filters";
 import ProductCard from "./ProductCard";
 import qs from 'query-string'; 
 import { Filter as FilterIcon, ChevronLeft } from "lucide-react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { client } from "../../services";
 import { Navbar } from "../../components/Navbar";
@@ -50,6 +50,8 @@ interface FilterOptions {
 
 const Catalog = () => {
   const { t, language } = useLanguage();
+  const location = useLocation();
+  const collectionId = location.state?.collectionId;
   const { id } = useParams<{ id: string }>();
   const [rugData, setRugData] = useState<Rug[]>([]);
   const [loading, setLoading] = useState(true);
@@ -286,6 +288,7 @@ const mapCollectionType = (type: number | string): string => {
                 onFilterChange={handleFilterChange}
                 onClearFilters={clearFilters}
                 filterOptions={filterOptions}
+                initialCollectionId={collectionId}
               />
             </div>
           )}

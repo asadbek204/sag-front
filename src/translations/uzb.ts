@@ -178,7 +178,7 @@ export const uzb = {
   hit: "Xit",
   show_price: "Narxni ko'rsatish",
   currency: "UZS",
-  "buy ": "Harid qilish ",
+  "buy": "Harid qilish ",
   share: "Ulashish",
   name: "Ismingiz",
   phone: "Telefon raqami",

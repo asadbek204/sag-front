@@ -39,12 +39,23 @@ interface FilterProps {
   onFilterChange: (filters: Filters) => void;
   onClearFilters: () => void;
   filterOptions: FilterOptions;
+   initialCollectionId?: number;
 }
 
 type FilterCategory = keyof Filters;
 
-const Filter = ({ filters, onFilterChange, onClearFilters, filterOptions }: FilterProps) => {
+const Filter = ({ filters, onFilterChange, onClearFilters, filterOptions , initialCollectionId,}: FilterProps) => {
   const { t } = useLanguage();
+
+  useEffect(() => {
+    if (initialCollectionId && !filters.collection.includes(initialCollectionId)) {
+      const newFilters = {
+        ...filters,
+        collection: [...filters.collection, initialCollectionId],
+      };
+      onFilterChange(newFilters);
+    }
+  }, [initialCollectionId]);
 
 
   const getInitialExpanded = () => {
@@ -101,24 +112,24 @@ const Filter = ({ filters, onFilterChange, onClearFilters, filterOptions }: Filt
     onFilterChange(newFilters);
   };
 
-  const getColorClass = (colorName: string) => {
-    const colorMap: { [key: string]: string } = {
-      Red: "bg-red-500",
-      White: "bg-white",
-      Blue: "bg-blue-500",
-      Brown: "bg-brown-500",
-      Black: "bg-black",
-      Qizil: "bg-red-500",
-      Oq: "bg-white",
-      Ko_k: "bg-blue-500",
-      Krem_rang: "bg-amber-100",
-      Kulrang: "bg-gray-400",
-      Qaymoqrang: "bg-amber-50",
-      Qora: "bg-black",
-      Yashil: "bg-green-500",
-    };
-    return colorMap[colorName.replace(" ", "_")] || "bg-gray-300";
-  };
+  // const getColorClass = (colorName: string) => {
+  //   const colorMap: { [key: string]: string } = {
+  //     Red: "bg-red-500",
+  //     White: "bg-white",
+  //     Blue: "bg-blue-500",
+  //     Brown: "bg-brown-500",
+  //     Black: "bg-black",
+  //     Qizil: "bg-red-500",
+  //     Oq: "bg-white",
+  //     Ko_k: "bg-blue-500",
+  //     Krem_rang: "bg-amber-100",
+  //     Kulrang: "bg-gray-400",
+  //     Qaymoqrang: "bg-amber-50",
+  //     Qora: "bg-black",
+  //     Yashil: "bg-green-500",
+  //   };
+  //   return colorMap[colorName.replace(" ", "_")] || "bg-gray-300";
+  // };
 
   const FilterCheckbox = ({ category, value, label, type = "default" }: { category: FilterCategory; value: number; label: string; type?: string }) => (
     <label className="flex items-center gap-3 py-1 cursor-pointer">
@@ -174,7 +185,7 @@ const Filter = ({ filters, onFilterChange, onClearFilters, filterOptions }: Filt
               <FilterCheckbox key={option.id} category={category} value={option.id} label={option.name} type={type} />
             ))
           ) : (
-            <p className="text-sm text-gray-500">{t("common.loading") || "Hech qanday opsiya mavjud emas"}</p>
+            <p className="text-sm text-gray-500">{t("region.no") || "Hech qanday opsiya mavjud emas"}</p>
           )}
         </div>
       )}
