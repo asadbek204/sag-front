@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent } from "../../../../components/ui/card";
 import { useLanguage } from "../../../../contexts/LanguageContext";
 import { client } from "../../../../services";
+import { Link } from "react-router-dom";
 
 interface PhoneData {
   id: number;
@@ -10,7 +11,7 @@ interface PhoneData {
 
 interface SocialData {
   id: number;
-  image: string; // URL
+  image: string;
   url: string;
 }
 
@@ -31,7 +32,6 @@ export const ContactInfoSection = (): JSX.Element => {
   useEffect(() => {
     const lang = mapLang(language);
 
-    // Fetch phone numbers
     const fetchPhones = async () => {
       try {
         const res = await client.get(`/${lang}/api/v1/footer/get_phone_number/`);
@@ -41,7 +41,6 @@ export const ContactInfoSection = (): JSX.Element => {
       }
     };
 
-    // Fetch social media
     const fetchSocials = async () => {
       try {
         const res = await client.get(`/${lang}/api/v1/footer/get_social_media/`);
@@ -51,15 +50,12 @@ export const ContactInfoSection = (): JSX.Element => {
       }
     };
 
-    // Fetch categories
     const fetchCategories = async () => {
       try {
         const res = await client.get(`/${lang}/api/v1/catalog/get_catalogs/`);
-        console.log("Categories API response:", res.data);
         setCategories(res.data);
       } catch (err) {
         console.error("Error fetching categories:", err);
-        // Fallback static categories in case of error
         setCategories([
           { id: 1, name: t("footer.categories") || "Kategoriyalar" },
           { id: 2, name: "Kovrolin" },
@@ -81,16 +77,15 @@ export const ContactInfoSection = (): JSX.Element => {
   ];
 
   const formatPhone = (phone: string): string => {
-    // Misol: +998662304004 → + 998 (66) 230-40-04
     const cleaned = phone.replace(/[^\d]/g, "");
     if (cleaned.length === 12 && cleaned.startsWith("998")) {
-      const code = cleaned.slice(3, 5); // 66
-      const part1 = cleaned.slice(5, 8); // 230
-      const part2 = cleaned.slice(8, 10); // 40
-      const part3 = cleaned.slice(10, 12); // 04
+      const code = cleaned.slice(3, 5);
+      const part1 = cleaned.slice(5, 8);
+      const part2 = cleaned.slice(8, 10);
+      const part3 = cleaned.slice(10, 12);
       return `+ 998 (${code}) ${part1}-${part2}-${part3}`;
     }
-    return phone; // fallback
+    return phone;
   };
 
   return (
@@ -105,13 +100,13 @@ export const ContactInfoSection = (): JSX.Element => {
               </h3>
               <div className="flex flex-col gap-1">
                 {categories.map((category) => (
-                  <a
+                  <Link
                     key={category.id}
-                    href={`/catalog/${category.id}`}
+                    to={`/catalog/${category.id}`}
                     className="text-base text-[#01091c] leading-6"
                   >
                     {category.name}
-                  </a>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -123,13 +118,13 @@ export const ContactInfoSection = (): JSX.Element => {
               </h3>
               <div className="flex flex-col gap-1">
                 {information.map((info, index) => (
-                  <a
+                  <Link
                     key={index}
-                    href={info.href}
+                    to={info.href}
                     className="text-base text-[#01091c] leading-6 whitespace-nowrap"
                   >
                     {info.name}
-                  </a>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -167,7 +162,7 @@ export const ContactInfoSection = (): JSX.Element => {
                     <img
                       src={social.image}
                       alt="social"
-                      className="w-[20px] h-[20px] object-contain"
+                      className="w-[22px] h-[22px] object-contain"
                     />
                   </a>
                 ))}

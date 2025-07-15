@@ -85,10 +85,10 @@ const AppartmentDetail = () => {
           </div>
         </div>
 
-        <div className="w-full">
+        <div className="w-full min-h-[500px]">
           {loading ? (
             <div className="text-center py-12">
-              <p className="text-gray-500">{t("loading") || "Yuklanmoqda..."}</p>
+              <p className="text-gray-500">{t("common.loading") || "Yuklanmoqda..."}</p>
             </div>
           ) : error ? (
             <div className="text-center py-12 text-red-500">{error}</div>

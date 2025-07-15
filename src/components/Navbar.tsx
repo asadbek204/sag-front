@@ -144,8 +144,7 @@ export const Navbar = (): JSX.Element => {
     };
   }, [isMenuOpen]);
 
-  // Qidiruvni boshqarish
-// In Navbar component, update the handleSearchSubmit function:
+
 const handleSearchSubmit = async (e: React.KeyboardEvent<HTMLInputElement>) => {
   if (e.key === "Enter" && searchQuery.trim()) {
     try {
@@ -156,14 +155,7 @@ const handleSearchSubmit = async (e: React.KeyboardEvent<HTMLInputElement>) => {
         {
           params: {
             search: searchQuery,
-            // Agar kerak bo‘lsa, qo‘shimcha query parametrlarga mana bu yerda qiymat qo‘shing:
-            // sort_by: "1",
-            // styles: "2,3",
-            // collections: "4",
-            // rooms: "1,2",
-            // colors: "3",
-            // shapes: "2",
-            // prizes: "1"
+            
           }
         }
       );

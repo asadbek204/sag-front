@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface AppartmentProductsProps {
   id: number;
@@ -16,6 +16,19 @@ const AppartmentProducts = ({ id, name, image }: AppartmentProductsProps) => {
   const handleCardClick = () => setShowImage(true);
   const handleOverlayClick = () => setShowImage(false);
 
+    useEffect(() => {
+    if (showImage) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    // Komponent unmount bo‘lganda scrollni tiklash
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [showImage]);
+  
   return (
     <>
       <div className="group cursor-pointer" onClick={handleCardClick}>
