@@ -45,7 +45,7 @@ const getBadgeColor = (type?: string) => {
     case "sale":
       return "border-t-red-500";
     case "hit":
-      return "border-t-blue-500";
+      return "border-t-orange-500";
     default:
       return "border-t-gray-500";
   }
