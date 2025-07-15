@@ -111,7 +111,7 @@ const Catalog = () => {
       });
     } catch (err) {
       console.error(`Error fetching filter options for catalog ${id}:`, err);
-      setError(t("catalog.error.filterOptions") || "Failed to load filter options");
+      setError(t("") || "");
     }
   };
 
