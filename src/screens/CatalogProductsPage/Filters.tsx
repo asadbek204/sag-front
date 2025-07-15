@@ -137,7 +137,7 @@ const Filter = ({ filters, onFilterChange, onClearFilters, filterOptions }: Filt
           >
             {filters[category].includes(value) && <div className="w-2 h-2 bg-blue-500"></div>}
           </div>
-          <div className={`w-4 h-4 rounded-sm ${getColorClass(label)}`}></div>
+          {/* <div className={`w-4 h-4 rounded-sm ${getColorClass(label)}`}></div> */}
           <span className="text-sm">{label}</span>
         </>
       ) : (
