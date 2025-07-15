@@ -150,9 +150,24 @@ const handleSearchSubmit = async (e: React.KeyboardEvent<HTMLInputElement>) => {
   if (e.key === "Enter" && searchQuery.trim()) {
     try {
       const lang = mapLang(language);
+
       const response = await client.get(
-        `/${lang}/api/v1/home/search/?search=${encodeURIComponent(searchQuery)}`
+        `/${lang}/api/v1/home/filter_and_sort_carpet_model_for_search/`,
+        {
+          params: {
+            search: searchQuery,
+            // Agar kerak bo‘lsa, qo‘shimcha query parametrlarga mana bu yerda qiymat qo‘shing:
+            // sort_by: "1",
+            // styles: "2,3",
+            // collections: "4",
+            // rooms: "1,2",
+            // colors: "3",
+            // shapes: "2",
+            // prizes: "1"
+          }
+        }
       );
+
       const results: SearchResult[] = response.data;
 
       if (results.length === 1) {
@@ -163,11 +178,10 @@ const handleSearchSubmit = async (e: React.KeyboardEvent<HTMLInputElement>) => {
         return;
       }
 
-      // Navigate to search results page with all results
-      navigate(`/search?q=${encodeURIComponent(searchQuery)}`, {
+      navigate(`/search?query=${encodeURIComponent(searchQuery)}`, {
         state: { searchResults: results }
       });
-      
+
       setSearchQuery("");
       setIsSearchOpen(false);
     } catch (error) {
@@ -178,6 +192,7 @@ const handleSearchSubmit = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     }
   }
 };
+
 
   const navActive = scrolled || hovered || location.pathname !== "/";
 

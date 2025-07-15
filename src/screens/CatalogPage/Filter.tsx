@@ -57,7 +57,7 @@ const Filter = ({ filters, onFilterChange, onClearFilters, filterOptions }: Filt
   };
 
   const handleCheckboxChange = (category: string, id: number) => {
-    if (category === 'size') return; // size is not an array
+    if (category === 'size') return;
     
     const updatedFilters = {
       ...localFilters,
@@ -66,7 +66,6 @@ const Filter = ({ filters, onFilterChange, onClearFilters, filterOptions }: Filt
         : [...(localFilters[category as keyof typeof localFilters] as number[]), id]
     };
     setLocalFilters(updatedFilters);
-    // Apply filter immediately
     onFilterChange(updatedFilters);
   };
 

@@ -46,7 +46,6 @@ type FilterCategory = keyof Filters;
 const Filter = ({ filters, onFilterChange, onClearFilters, filterOptions }: FilterProps) => {
   const { t } = useLanguage();
 
-  console.log("Filtr opsiyalari:", filterOptions);
 
   const getInitialExpanded = () => {
     if (typeof window !== "undefined" && window.innerWidth >= 1024) {
@@ -99,7 +98,6 @@ const Filter = ({ filters, onFilterChange, onClearFilters, filterOptions }: Filt
     } else {
       newFilters[category] = [...newFilters[category], value];
     }
-    console.log(`Checkbox o‘zgardi: ${category}=${value}, Yangi filtrlar:`, newFilters);
     onFilterChange(newFilters);
   };
 
@@ -176,7 +174,7 @@ const Filter = ({ filters, onFilterChange, onClearFilters, filterOptions }: Filt
               <FilterCheckbox key={option.id} category={category} value={option.id} label={option.name} type={type} />
             ))
           ) : (
-            <p className="text-sm text-gray-500">{t("filter.noOptions") || "Hech qanday opsiya mavjud emas"}</p>
+            <p className="text-sm text-gray-500">{t("common.loading") || "Hech qanday opsiya mavjud emas"}</p>
           )}
         </div>
       )}
@@ -184,7 +182,7 @@ const Filter = ({ filters, onFilterChange, onClearFilters, filterOptions }: Filt
   );
 
   if (!filterOptions) {
-    return <p className="text-sm text-gray-500">{t("filter.noOptions") || "Filtr opsiyalari mavjud emas"}</p>;
+    return <p className="text-sm text-gray-500">{t("common.loading") || "Filtr opsiyalari mavjud emas"}</p>;
   }
 
   return (

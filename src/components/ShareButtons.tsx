@@ -1,8 +1,10 @@
 import { Send, MessageCircle, Mail, Share2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useLanguage } from "../contexts/LanguageContext";
 
 const ShareButtons = () => {
   const [url, setUrl] = useState("");
+  const { t } = useLanguage();
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
@@ -27,7 +29,7 @@ const ShareButtons = () => {
     <div className="flex flex-col items-center gap-3">
       <div className="flex items-center gap-2">
         <Share2 size={18} className="text-gray-500" />
-        <span className="text-gray-600 font-medium text-sm">Ulashish:</span>
+        <span className="text-gray-600 font-medium text-sm">{t("share")}:</span>
       </div>
 
       <div className="flex items-center gap-3">
@@ -87,7 +89,7 @@ const ShareButtons = () => {
 
       {copied && (
         <div className="text-green-600 text-xs mt-1 animate-fade-in">
-          Link nusxalandi!
+         {t('link_copied')}
         </div>
       )}
     </div>

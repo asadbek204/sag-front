@@ -17,7 +17,7 @@ interface Rug {
   catalog: number;
   name: string;
   image: string;
-  collection_type: number; // Integer as per API response
+  collection_type: number | string;
   style?: number;
   room?: number;
   color?: number;
@@ -201,15 +201,23 @@ const Catalog = () => {
   };
 
   // Map collection_type integer to string for ProductCard
-  const mapCollectionType = (type: number): string => {
-    const collectionMap: { [key: number]: string } = {
-      1: "New",
-      2: "Sale",
-      3: "Hit",
-      4: "Default",
-    };
-    return collectionMap[type] || "";
+const mapCollectionType = (type: number | string): string => {
+  // Agar string kelsa, to'g'ridan-to'g'ri qaytarish
+  if (typeof type === 'string') {
+    return type;
+  }
+  
+  // Agar number kelsa, mapping qilish
+  const collectionMap: { [key: number]: string } = {
+    1: "New",
+    2: "Sale", 
+    3: "Hit",
+    4: "Default",
   };
+  return collectionMap[type] || "";
+};
+
+
 
   const totalPages = Math.ceil(rugData.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -284,20 +292,25 @@ const Catalog = () => {
 
           <div className={`${showFilters ? "md:w-[calc(100%-320px)]" : "w-full"}`}>
             {loading ? (
-              <p className="text-center py-12">{t("catalog.loading") || "Yuklanmoqda..."}</p>
+              <p className="text-center py-12">{t("common.loading") || ""}</p>
             ) : rugData.length > 0 ? (
               <>
                 <div className={`grid grid-cols-2 sm:grid-cols-2 ${showFilters ? "lg:grid-cols-3" : "lg:grid-cols-4"} gap-8`}>
-                  {currentRugs.map((rug) => (
-                    <ProductCard
-                      key={rug.id}
-                      id={rug.id}
-                      name={rug.name}
-                      image={rug.image}
-                      price={rug.price} 
-                      collection_type={mapCollectionType(rug.collection_type)}
-                    />
-                  ))}
+                 {currentRugs.map((rug) => {
+  console.log("Raw collection_type:", rug.collection_type);
+  console.log("Mapped:", mapCollectionType(rug.collection_type));
+  return (
+    <ProductCard
+      key={rug.id}
+      id={rug.id}
+      name={rug.name}
+      image={rug.image}
+      price={rug.price}
+      collection_type={mapCollectionType(rug.collection_type)}
+    />
+  );
+})}
+
                 </div>
 
                 {totalPages > 1 && (

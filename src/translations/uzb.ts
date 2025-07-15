@@ -159,4 +159,32 @@ export const uzb = {
   // Video detail page
   'video.back': "Ortga",
   'video.back_to_videos': "Videolavhalarga qaytish",
+
+  "no_products_found": "Hech qanday mahsulot topilmadi. Filtrlarni o'zgartirib ko'ring.",
+  "previous": "Oldingi",
+  "next": "Keyingi",
+  "hit": "Xit",
+  "show_price": "Narxni ko'rsatish",
+  "currency": "UZS",
+  "buy ": "Harid qilish ",
+  "share": "Ulashish",
+  "name": "Ismingiz",
+  "phone": "Telefon raqami",
+  "region": "Shahar / Viloyat",
+  "select": "Tanlang",
+  "address": "Manzil",
+  "full_address": "To‘liq manzil",
+  "note": "Izoh",
+  "additional_notes": "Qo‘shimcha izohlar",
+  "send": "Yuborish",
+  "fill_required_fields": "Iltimos, barcha majburiy maydonlarni to‘ldiring",
+  "sent_successfully": "Muvaffaqiyatli yuborildi!",
+  "error_occurred": "Xatolik yuz berdi!",
+  "link_copied": "Link nusxalandi!",
+  "please_fill_required": "Iltimos, barcha majburiy maydonlarni to‘ldiring",
+  "name_invalid": "Ismda raqam bo‘lishi mumkin emas",
+  "phone_invalid": "Telefon raqam +998 bilan va to‘liq raqamlardan iborat bo‘lishi kerak",
+  "required_field": "Majburiy maydon",
+
+
 }; 
