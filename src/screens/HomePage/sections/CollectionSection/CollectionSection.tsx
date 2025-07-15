@@ -48,6 +48,30 @@ export const CollectionSection = () => {
     fetchNews();
   }, [language]);
 
+  const normalizeType = (value?: string) => {
+  if (!value) return "";
+
+  const cleaned = value.toLowerCase().trim();
+
+  if (
+    cleaned === "модель ковра" ||
+    cleaned === "carpet_model" ||
+    cleaned === "model"
+  ) {
+    return "carpet_model";
+  }
+
+  if (
+    cleaned === "коллекция" ||
+    cleaned === "collection"
+  ) {
+    return "collection";
+  }
+
+  return "";
+};
+
+
   useEffect(() => {
     const timer = setInterval(() => {
       setIndex((prev) => (prev + 1) % newsData.length);
@@ -67,13 +91,16 @@ export const CollectionSection = () => {
                 <div
                   key={item.id}
                   className="relative w-full max-w-[600px] h-[260px] group overflow-hidden rounded shadow-lg cursor-pointer"
-                  onClick={() => {
-                    if (item.model === "collection") {
-                      navigate(`/catalog/${item.id}/product/${item.id}`);
-                    } else if (item.model === "carpet_model") {
-                      navigate(`/product/${item.id}`);
-                    }
-                  }}
+                 onClick={() => {
+  const type = normalizeType(item.model || item.collection);
+
+  if (type === "carpet_model") {
+    navigate(`/product/${item.id}`);
+  } else if (type === "collection") {
+    navigate(`/catalog/${item.id}/product/${item.id}`);
+  }
+}}
+
                 >
                   <img
                     src={item.image}

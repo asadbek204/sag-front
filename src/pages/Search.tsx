@@ -206,7 +206,7 @@ const SearchResults = () => {
               <p className="text-center py-12">{t("common.loading") || "Yuklanmoqda..."}</p>
             ) : results.length > 0 ? (
               <>
-                <div className={`grid grid-cols-4 sm:grid-cols-2 ${showFilters ? "lg:grid-cols-4" : "lg:grid-cols-4"} gap-8`}>
+                <div className={`grid grid-cols-2 sm:grid-cols-2 ${showFilters ? "lg:grid-cols-4" : "lg:grid-cols-4"} gap-8`}>
                   {currentResults.map((product) => (
                     <ProductCard
                       key={product.id}

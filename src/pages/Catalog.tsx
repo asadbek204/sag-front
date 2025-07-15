@@ -255,7 +255,7 @@ const Catalog = () => {
   return (
     <div className="bg-[#FFFCE0] md:pt-28 pt-24">
       <Navbar />
-      <div className="container mx-auto px-4 py-6">
+      <div className="container min-h-[500px] mx-auto px-4 py-6">
         <div className="mb-6">
           <div className="flex md:mb-12 mb-7 items-center text-base text-gray-600">
             <ChevronLeft size={20} className="text-gray-600" />
