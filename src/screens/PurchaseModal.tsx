@@ -1,5 +1,5 @@
 import { X } from "lucide-react";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { client } from "../services";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
@@ -10,13 +10,8 @@ interface PurchaseModalProps {
   onClose: () => void;
 }
 
-const cities = [
-  "Toshkent", "Toshkent vil", "Andijon", "Buxoro", "Fargʻona", "Jizzax", "Xorazm",
-  "Namangan", "Navoiy", "Qashqadaryo", "Samarqand", "Sirdaryo", "Surxondaryo"
-];
-
 const PurchaseModal: React.FC<PurchaseModalProps> = ({ isOpen, onClose }) => {
-  const {t} = useLanguage()
+  const { t } = useLanguage();
   const [form, setForm] = useState({
     full_name: "",
     phone_number: "",
@@ -25,12 +20,40 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({ isOpen, onClose }) => {
     comment: "",
   });
 
+  const cities = [
+    t("Toshkent"),
+    t("Toshkentvil"),
+    t("Andijon"),
+    t("Buxoro"),
+    t("Fargona"),
+    t("Jizzax"),
+    t("Xorazm"),
+    t("Namangan"),
+    t("Navoiy"),
+    t("Qashqadaryo"),
+    t("Samarqand"),
+    t("Sirdaryo"),
+    t("Surxondaryo"),
+  ];
+
   const [errors, setErrors] = useState({
     full_name: "",
     phone_number: "",
     city: "",
-    address: ""
+    address: "",
   });
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -46,23 +69,23 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({ isOpen, onClose }) => {
     const phoneRegex = /^\+998\d{9}$/;
 
     if (!form.full_name.trim()) {
-      errs.full_name = t('required_field');
+      errs.full_name = t('required_field') || "This field is required";
     } else if (!nameRegex.test(form.full_name)) {
-      errs.full_name = t('name_invalid');
+      errs.full_name = t('name_invalid') || "Name cannot contain numbers";
     }
 
     if (!form.phone_number.trim()) {
-      errs.phone_number = t('required_field');
+      errs.phone_number = t('required_field') || "This field is required";
     } else if (!phoneRegex.test(form.phone_number)) {
-      errs.phone_number = t('phone_invalid');
+      errs.phone_number = t('phone_invalid') || "Invalid phone number format";
     }
 
     if (!form.city.trim()) {
-      errs.city = t('required_field');
+      errs.city = t('required_field') || "This field is required";
     }
 
     if (!form.address.trim()) {
-      errs.address = t('required_field');
+      errs.address = t('required_field') || "This field is required";
     }
 
     setErrors(errs);
@@ -73,25 +96,40 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({ isOpen, onClose }) => {
     e.preventDefault();
 
     if (!validate()) {
-      toast.error(t('please_fill_required'));
+      toast.error(t('please_fill_required') || "Please fill all required fields");
       return;
     }
 
     try {
-      await client.post("/uz/api/v1/contact/contact/", {
+      const response = await client.post("/uz/api/v1/contact/contact/", {
         full_name: form.full_name,
         phone_number: form.phone_number,
         city: cities.indexOf(form.city) + 1 || null,
         address: form.address,
-        comment: form.comment || null
+        comment: form.comment || null,
       });
 
-      toast.success(t('sent_successfully'));
+      console.log("SUCCESS!", response.data); // Debugging to confirm success
+      const successMessage = t('sent_successfully') || "Successfully sent!";
+      toast.success(successMessage, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+
+      // Reset form
       setForm({ full_name: "", phone_number: "", city: "", address: "", comment: "" });
-      onClose();
+
+      // Delay closing the modal to allow toast to display
+      setTimeout(() => {
+        onClose();
+      }, 3500); // Adjust delay as needed (slightly longer than toast autoClose)
     } catch (err) {
-      toast.error(t('error_occurred'));
-      console.error(err);
+      console.error("ERROR!", err);
+      toast.error(t('error_occurred') || "An error occurred");
     }
   };
 
@@ -104,7 +142,17 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({ isOpen, onClose }) => {
       onClick={handleBackgroundClick}
       className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50"
     >
-      <ToastContainer position="top-right" />
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <div className="bg-[#FFFCE0] p-6 rounded-md w-full max-w-2xl relative shadow-lg">
         <button className="absolute top-3 right-3 text-gray-500 hover:text-gray-700" onClick={onClose}>
           <X size={20} />
