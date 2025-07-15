@@ -60,7 +60,7 @@ const Appartments = () => {
         <div className="w-full min-h-[500px]">
           {loading ? (
             <div className="text-center py-12">
-              <p className="text-gray-500"></p>
+              <p className="text-gray-500">{t('common.loading')}</p>
             </div>
           ) : error ? (
             <div className="text-center py-12 text-red-500">{error}</div>

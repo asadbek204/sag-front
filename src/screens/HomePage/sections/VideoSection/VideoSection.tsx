@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLanguage } from '../../../../contexts/LanguageContext';
 import { client } from '../../../../services';
-import { useNavigate } from 'react-router-dom'; // Add useNavigate
+import { Link, useNavigate } from 'react-router-dom'; // Add useNavigate
 
 interface Poster {
   id: number;
@@ -144,9 +144,9 @@ export const VideoSection = () => {
           >
             {visible.length > 0 &&
               visible.map((video) => (
-                <a
+                <Link
                   key={video.id}
-                  href={`/videos/${video.id}`}
+                  to={`/videos/${video.id}`}
                   className="relative w-full max-w-[400px] h-[350px] rounded shadow-lg m-auto block group"
                   style={{ minWidth: 0 }}
                   tabIndex={0}
@@ -165,7 +165,7 @@ export const VideoSection = () => {
                       {video.title}
                     </div>
                   </div>
-                </a>
+                </Link>
               ))}
           </div>
         </div>

@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useLanguage } from '../../../../contexts/LanguageContext';
 import { client } from '../../../../services';
-// import { client } from '../../../services'; // backend ulanishi
-// import { useLanguage } from '../../../contexts/LanguageContext';
+import { useNavigate } from "react-router-dom";
 
 interface NewsItem {
   id: number;
   name: string;
-  model: string;
+  model?: string;
+  collection?: string;
   image: string;
 }
 
@@ -28,6 +28,7 @@ export const CollectionSection = () => {
   const [newsData, setNewsData] = useState<NewsItem[]>([]);
   const [index, setIndex] = useState(0);
   const slidesToShow = useSlidesToShow();
+  const navigate = useNavigate();
   const { language } = useLanguage();
 
   const mapLang = (lang: string) =>
@@ -61,22 +62,34 @@ export const CollectionSection = () => {
       <div className="container w-full">
         <div className="relative overflow-hidden flex items-center w-full">
           <div className={`flex ${slidesToShow > 1 ? 'flex-row' : 'flex-col'} gap-8 justify-center items-center w-full transition-all`}>
-            {visible.map((item, i) =>
-  item ? (
-    <div key={item.id} className="relative w-full max-w-[600px] h-[260px] group overflow-hidden rounded shadow-lg">
-      <img
-        src={item.image}
-        alt={item.name}
-        className="w-full h-full object-cover group-hover:opacity-80 transition"
-      />
-      <div className="absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-end pl-6 pb-8 text-white">
-        <h3 className="text-3xl font-bold">{item.name}</h3>
-        <p className="text-2xl opacity-90">{item.model}</p>
-      </div>
-    </div>
-  ) : null
-)}
-
+            {visible.map((item) =>
+              item ? (
+                <div
+                  key={item.id}
+                  className="relative w-full max-w-[600px] h-[260px] group overflow-hidden rounded shadow-lg cursor-pointer"
+                  onClick={() => {
+                    if (item.model === "collection") {
+                      navigate(`/catalog/${item.id}/product/${item.id}`);
+                    } else if (item.model === "carpet_model") {
+                      navigate(`/product/${item.id}`);
+                    }
+                  }}
+                >
+                  <img
+                    src={item.image}
+                    alt={item.name}
+                    className="w-full h-full object-cover group-hover:opacity-80 transition"
+                  />
+                  <div className="absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-end pl-6 pb-8 text-white">
+                    <h3 className="text-3xl font-bold">{item.name}</h3>
+                    <div className="text-xl opacity-90 flex gap-4 items-center flex-wrap">
+                      {item.model && <span> {item.model}</span>}
+                      {item.collection && <span>{item.collection}</span>}
+                    </div>
+                  </div>
+                </div>
+              ) : null
+            )}
           </div>
         </div>
       </div>
