@@ -149,7 +149,7 @@ const ProductDetail = () => {
       {/* Mahsulot kontenti */}
       <div className="container min-h-[500px] mx-auto px-4 py-8">
         {!product ? (
-          <p className="text-center text-gray-500">{t("loading") || "Yuklanmoqda..."}</p>
+          <p className="text-center text-gray-500">{t("common.loading") || "Yuklanmoqda..."}</p>
         ) : (
           <div className="md:flex gap-4 w-full">
             {/* Thumbnails */}
@@ -194,7 +194,7 @@ const ProductDetail = () => {
             {/* Info */}
             <div className="md:w-[40%] md:pt-0 pt-9">
               <h1 className="text-xl font-semibold text-gray-800 mb-2">{product.name}</h1>
-              <p className="text-sm text-gray-500 mb-4">Rang: {product.color}</p>
+              <p className="text-sm text-gray-500 mb-4">{t('filter.colors')}: {product.color}</p>
 
               {/* Shakl tanlash */}
               {product.shapes && Object.keys(product.shapes).length > 0 && (
@@ -227,7 +227,7 @@ const ProductDetail = () => {
                       <tr key={item.id}>
                         <td className="py-2">{item.size}</td>
                         <td className="py-2 font-bold text-gray-800">
-                          {item.price.toLocaleString()} UZS
+                          {item.price.toLocaleString()}  {t('currency')}
                         </td>
                       </tr>
                     ))}
@@ -249,7 +249,7 @@ const ProductDetail = () => {
           onClick={() => setIsModalOpen(true)}
           className="border mt-5 px-5 py-2 bg-blue-900 hover:bg-blue-800 rounded-md text-white"
         >
-          {t("product.buy")}
+          {t("buy")}
         </button>
 
         <PurchaseModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />

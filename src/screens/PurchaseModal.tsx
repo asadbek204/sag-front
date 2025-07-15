@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { client } from "../services";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import { useLanguage } from "../contexts/LanguageContext";
 
 interface PurchaseModalProps {
   isOpen: boolean;
@@ -15,6 +16,7 @@ const cities = [
 ];
 
 const PurchaseModal: React.FC<PurchaseModalProps> = ({ isOpen, onClose }) => {
+  const {t} = useLanguage()
   const [form, setForm] = useState({
     full_name: "",
     phone_number: "",
@@ -44,23 +46,23 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({ isOpen, onClose }) => {
     const phoneRegex = /^\+998\d{9}$/;
 
     if (!form.full_name.trim()) {
-      errs.full_name = "Ism to‘ldirilishi shart";
+      errs.full_name = t('required_field');
     } else if (!nameRegex.test(form.full_name)) {
-      errs.full_name = "Ismda raqam bo‘lishi mumkin emas";
+      errs.full_name = t('name_invalid');
     }
 
     if (!form.phone_number.trim()) {
-      errs.phone_number = "Telefon raqam to‘ldirilishi shart";
+      errs.phone_number = t('required_field');
     } else if (!phoneRegex.test(form.phone_number)) {
-      errs.phone_number = "Telefon raqam +998 bilan va to‘liq raqamlardan iborat bo‘lishi kerak";
+      errs.phone_number = t('phone_invalid');
     }
 
     if (!form.city.trim()) {
-      errs.city = "Shahar tanlanishi shart";
+      errs.city = t('required_field');
     }
 
     if (!form.address.trim()) {
-      errs.address = "Manzil to‘ldirilishi shart";
+      errs.address = t('required_field');
     }
 
     setErrors(errs);
@@ -71,7 +73,7 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({ isOpen, onClose }) => {
     e.preventDefault();
 
     if (!validate()) {
-      toast.error("Iltimos, barcha majburiy maydonlarni to‘ldiring");
+      toast.error(t('please_fill_required'));
       return;
     }
 
@@ -84,11 +86,11 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({ isOpen, onClose }) => {
         comment: form.comment || null
       });
 
-      toast.success("Muvaffaqiyatli yuborildi!");
+      toast.success(t('sent_successfully'));
       setForm({ full_name: "", phone_number: "", city: "", address: "", comment: "" });
       onClose();
     } catch (err) {
-      toast.error("Xatolik yuz berdi!");
+      toast.error(t('error_occurred'));
       console.error(err);
     }
   };
@@ -108,25 +110,25 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({ isOpen, onClose }) => {
           <X size={20} />
         </button>
 
-        <h2 className="text-xl font-semibold mb-4 text-center">Sotib olish</h2>
+        <h2 className="text-xl font-semibold mb-4 text-center">{t('buy')}</h2>
 
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700">Ism</label>
+              <label className="block text-sm font-medium text-gray-700">{t('name')}</label>
               <input
                 type="text"
                 name="full_name"
                 value={form.full_name}
                 onChange={handleChange}
                 className={`w-full bg-[#FFFCE0] border p-2 rounded ${errors.full_name ? "border-red-500" : "border-gray-300"}`}
-                placeholder="Ismingiz"
+                placeholder={t('name')}
               />
               {errors.full_name && <p className="text-red-500 text-sm mt-1">{errors.full_name}</p>}
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">Telefon raqam</label>
+              <label className="block text-sm font-medium text-gray-700">{t('phone')}</label>
               <input
                 type="tel"
                 name="phone_number"
@@ -139,14 +141,14 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({ isOpen, onClose }) => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">Shahar / Viloyat</label>
+              <label className="block text-sm font-medium text-gray-700">{t('region')}</label>
               <select
                 name="city"
                 value={form.city}
                 onChange={handleChange}
                 className={`w-full bg-[#FFFCE0] border p-2 rounded ${errors.city ? "border-red-500" : "border-gray-300"}`}
               >
-                <option value="">Tanlang</option>
+                <option value="">{t('select')}</option>
                 {cities.map((city, idx) => (
                   <option key={idx} value={city}>{city}</option>
                 ))}
@@ -155,33 +157,33 @@ const PurchaseModal: React.FC<PurchaseModalProps> = ({ isOpen, onClose }) => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">Manzil</label>
+              <label className="block text-sm font-medium text-gray-700">{t('address')}</label>
               <input
                 type="text"
                 name="address"
                 value={form.address}
                 onChange={handleChange}
                 className={`w-full bg-[#FFFCE0] border p-2 rounded ${errors.address ? "border-red-500" : "border-gray-300"}`}
-                placeholder="To‘liq manzil"
+                placeholder={t('full_address')}
               />
               {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address}</p>}
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Izoh</label>
+            <label className="block text-sm font-medium text-gray-700">{t('note')}</label>
             <textarea
               name="comment"
               value={form.comment}
               onChange={handleChange}
               className="w-full border bg-[#FFFCE0] border-gray-300 p-2 rounded"
               rows={3}
-              placeholder="Qo‘shimcha izohlar..."
+              placeholder={t('additional_notes')}
             />
           </div>
 
           <button type="submit" className="w-full bg-blue-900 hover:bg-blue-800 text-white py-2 rounded">
-            Yuborish
+            {t('send')}
           </button>
         </form>
       </div>

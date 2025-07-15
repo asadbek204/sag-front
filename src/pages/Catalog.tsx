@@ -272,7 +272,7 @@ const Catalog = () => {
               className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg w-fit"
             >
               <FilterIcon size={16} />
-              <span>{t("filter") || "Filtr"}</span>
+              <span>{t("catalog.filter") || "Filtr"}</span>
             </button>
 
             <div className="flex overflow-x-auto gap-4 pb-2">
@@ -309,7 +309,7 @@ const Catalog = () => {
           <div className={`${showFilters ? "md:w-[calc(100%-320px)]" : "w-full"}`}>
             {loading ? (
               <div className="text-center py-12">
-                <p className="text-gray-500">{t("loading") || "Yuklanmoqda..."}</p>
+                <p className="text-gray-500">{t("common.loading") || "Yuklanmoqda..."}</p>
               </div>
             ) : error ? (
               <div className="text-center py-12 text-red-500">{error}</div>
@@ -336,7 +336,7 @@ const Catalog = () => {
                       disabled={currentPage === 1}
                       className="px-4 py-2 border border-gray-300 rounded-lg disabled:opacity-50"
                     >
-                      {t("pagination.previous") || "Oldingi"}
+                      {t("previous") || "Oldingi"}
                     </button>
                     
                     <span className="px-4 py-2">
@@ -348,7 +348,7 @@ const Catalog = () => {
                       disabled={currentPage === totalPages}
                       className="px-4 py-2 border border-gray-300 rounded-lg disabled:opacity-50"
                     >
-                      {t("pagination.next") || "Keyingi"}
+                      {t("next") || "Keyingi"}
                     </button>
                   </div>
                 )}
@@ -356,7 +356,7 @@ const Catalog = () => {
             ) : (
               <div className="text-center py-12">
                 <p className="text-gray-500">
-                  {t("common.noProducts") || "Hech qanday mahsulot topilmadi. Filtrlarni o'zgartirib ko'ring."}
+                  {t("no_products_found") || "Hech qanday mahsulot topilmadi. Filtrlarni o'zgartirib ko'ring."}
                 </p>
               </div>
             )}

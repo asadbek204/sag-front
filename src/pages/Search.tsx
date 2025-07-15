@@ -6,45 +6,19 @@ import { Navbar } from "../components/Navbar";
 import ProductCard from "../screens/CatalogProductsPage/ProductCard";
 import { ContactInfoSection } from "../screens/HomePage/sections/ContactInfoSection";
 import { Footer } from "../components/ui/Footer";
-// import Filter from "../components/Filter"; // Adjust path as needed
 import { Filter as FilterIcon, ChevronLeft } from "lucide-react";
 import { Link } from "react-router-dom";
-import qs from 'query-string';
 
 interface SearchResult {
   id: number;
   name: string;
   image: string;
-  collection_type: number;
+  collection_type: number | string;
   price?: number;
   style?: number;
   room?: number;
   color?: number;
   shape?: number;
-}
-
-interface FilterOption {
-  id: number;
-  name: string;
-}
-
-interface FilterLabels {
-  collections: string;
-  styles: string;
-  rooms: string;
-  colors: string;
-  shapes: string;
-  prizes: string;
-}
-
-interface FilterOptions {
-  collections: FilterOption[];
-  styles: FilterOption[];
-  rooms: FilterOption[];
-  colors: FilterOption[];
-  shapes: FilterOption[];
-  prizes: FilterOption[];
-  labels: FilterLabels;
 }
 
 interface FilterParams {
@@ -65,7 +39,7 @@ const SearchResults = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState<FilterParams>({
     query: "",
-    sort_by: "4", // Default to "all"
+    sort_by: "", // Default to empty for "All"
     styles: [],
     collections: [],
     rooms: [],
@@ -78,21 +52,12 @@ const SearchResults = () => {
   const [error, setError] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(() => typeof window !== "undefined" && window.innerWidth >= 1024);
   const [currentPage, setCurrentPage] = useState(1);
-  const [filterOptions, setFilterOptions] = useState<FilterOptions>({
-    collections: [],
-    styles: [],
-    rooms: [],
-    colors: [],
-    shapes: [],
-    prizes: [],
-    labels: { collections: "", styles: "", rooms: "", colors: "", shapes: "", prizes: "" },
-  });
 
   const itemsPerPage = 21;
 
-  const mapLang = (lang: string) =>
-    lang === "rus" ? "ru" : lang === "uzb" ? "uz" : "en";
+  const mapLang = (lang: string) => (lang === "rus" ? "ru" : lang === "uzb" ? "uz" : "en");
 
+  // Consolidated useEffect for window resize
   useEffect(() => {
     const handleResize = () => {
       setShowFilters(window.innerWidth >= 1024);
@@ -102,84 +67,48 @@ const SearchResults = () => {
   }, []);
 
   useEffect(() => {
-   const queryParams = new URLSearchParams(location.search);
-  const query = queryParams.get("q") || "";
-  const sort_by = queryParams.get("sort_by") || "4";
-  const styles = queryParams.get("styles")?.split(",").map(Number).filter(n => !isNaN(n)) || [];
-  const collections = queryParams.get("collections")?.split(",").map(Number).filter(n => !isNaN(n)) || [];
-  const rooms = queryParams.get("rooms")?.split(",").map(Number).filter(n => !isNaN(n)) || [];
-  const colors = queryParams.get("colors")?.split(",").map(Number).filter(n => !isNaN(n)) || [];
-  const shapes = queryParams.get("shapes")?.split(",").map(Number).filter(n => !isNaN(n)) || [];
-  const prizes = queryParams.get("prizes")?.split(",").map(Number).filter(n => !isNaN(n)) || [];
-    const updatedFilters = {
-    query,
-    sort_by,
-    styles,
-    collections,
-    rooms,
-    colors,
-    shapes,
-    prizes,
-  };
+    const queryParams = new URLSearchParams(location.search);
+    const query = queryParams.get("query") || "";
+    const sort_by = queryParams.get("sort_by") || ""; // Default to empty for "All"
+    const styles = queryParams.get("styles")?.split(",").map(Number).filter(n => !isNaN(n)) || [];
+    const collections = queryParams.get("collections")?.split(",").map(Number).filter(n => !isNaN(n)) || [];
+    const rooms = queryParams.get("rooms")?.split(",").map(Number).filter(n => !isNaN(n)) || [];
+    const colors = queryParams.get("colors")?.split(",").map(Number).filter(n => !isNaN(n)) || [];
+    const shapes = queryParams.get("shapes")?.split(",").map(Number).filter(n => !isNaN(n)) || [];
+    const prizes = queryParams.get("prizes")?.split(",").map(Number).filter(n => !isNaN(n)) || [];
 
-  
-  setSearchQuery(query);
+    const updatedFilters = { query, sort_by, styles, collections, rooms, colors, shapes, prizes };
 
-  // 🔐 Cheksiz loop bo‘lmasligi uchun faqat farq bo‘lsa `setFilters` chaqiriladi
-  setFilters((prev) => {
-    const isSame = JSON.stringify(prev) === JSON.stringify(updatedFilters);
-    return isSame ? prev : updatedFilters;
-  });
-
-  setSearchQuery(query);
-    const fetchFilterOptions = async () => {
-      try {
-        const lang = mapLang(language);
-        const res = await client.get(`/${lang}/api/v1/home/filter_choices/`);
-        setFilterOptions({
-          collections: res.data.collections || [],
-          styles: Array.isArray(res.data.styles) ? (Array.isArray(res.data.styles[0]) ? res.data.styles[0] : res.data.styles) : [],
-          rooms: res.data.rooms || [],
-          colors: res.data.colors || [],
-          shapes: res.data.shapes || [],
-          prizes: res.data.prizes || [],
-          labels: res.data.labels || {
-            collections: "",
-            styles: "",
-            rooms: "",
-            colors: "",
-            shapes: "",
-            prizes: "",
-          },
-        });
-      } catch (err) {
-        console.error("Error fetching filter options:", err);
-        setError(t("catalog.error.filterOptions") || "Failed to load filter options");
-      }
-    };
+    setSearchQuery(query);
+    setFilters(updatedFilters); // Simplified state update
 
     const fetchResults = async () => {
       try {
         setLoading(true);
         setError(null);
         const lang = mapLang(language);
-    const queryParams = qs.stringify(
-  {
-    search: filters.query || undefined,
-    sort_by: filters.sort_by !== "4" ? filters.sort_by : undefined,
-    styles: filters.styles.length > 0 ? filters.styles.join(",") : undefined,
-    collections: filters.collections.length > 0 ? filters.collections.join(",") : undefined,
-    rooms: filters.rooms.length > 0 ? filters.rooms.join(",") : undefined,
-    colors: filters.colors.length > 0 ? filters.colors.join(",") : undefined,
-    shapes: filters.shapes.length > 0 ? filters.shapes.join(",") : undefined,
-    prizes: filters.prizes.length > 0 ? filters.prizes.join(",") : undefined,
-  },
-  { skipNull: true, skipEmptyString: true }
-);
 
+        const params = new URLSearchParams();
+
+        // Add query parameter if it exists
+        if (query) params.append("query", query);
+
+        // Add sort_by only if it's not empty or "4" (for "All")
+        if (sort_by && sort_by !== "4") {
+          params.append("sort_by", sort_by);
+        }
+
+        if (styles.length > 0) params.append("styles", styles.join(","));
+        if (collections.length > 0) params.append("collections", collections.join(","));
+        if (rooms.length > 0) params.append("rooms", rooms.join(","));
+        if (colors.length > 0) params.append("colors", colors.join(","));
+        if (shapes.length > 0) params.append("shapes", shapes.join(","));
+        if (prizes.length > 0) params.append("prizes", prizes.join(","));
+
+        console.log("API URL:", `http://api.gilamlardunyosisag.uz/${lang}/api/v1/home/filter_and_sort_carpet_model_for_search/?${params.toString()}`);
 
         const response = await client.get(
-          `/${lang}/api/v1/home/filter_and_sort_carpet_model_for_search/?${queryParams}`
+          `/${lang}/api/v1/home/filter_and_sort_carpet_model_for_search/?${params.toString()}`
         );
         setResults(response.data);
       } catch (err) {
@@ -190,17 +119,17 @@ const SearchResults = () => {
       }
     };
 
-    fetchFilterOptions();
-    if (query || sort_by !== "4" || styles.length > 0 || collections.length > 0 || rooms.length > 0 || colors.length > 0 || shapes.length > 0 || prizes.length > 0) {
-      fetchResults();
-    }
+    fetchResults();
   }, [location.search, language]);
 
-  const mapCollectionType = (type: number): string => {
+  const mapCollectionType = (type: number | string): string => {
+    if (typeof type === "string") {
+      return type;
+    }
     const collectionMap: { [key: number]: string } = {
       1: "New",
-      2: "Hit",
-      3: "Sale",
+      2: "Sale",
+      3: "Hit",
       4: "Default",
     };
     return collectionMap[type] || "";
@@ -209,20 +138,25 @@ const SearchResults = () => {
   const handleFilterChange = (newFilters: typeof filters) => {
     setFilters(newFilters);
     setCurrentPage(1);
-    const params = new URLSearchParams({
-      ...(newFilters.query && { q: newFilters.query }),
-      ...(newFilters.sort_by !== "4" && { sort_by: newFilters.sort_by }),
-      ...(newFilters.styles.length > 0 && { styles: newFilters.styles.join(",") }),
-      ...(newFilters.collections.length > 0 && { collections: newFilters.collections.join(",") }),
-      ...(newFilters.rooms.length > 0 && { rooms: newFilters.rooms.join(",") }),
-      ...(newFilters.colors.length > 0 && { colors: newFilters.colors.join(",") }),
-      ...(newFilters.shapes.length > 0 && { shapes: newFilters.shapes.join(",") }),
-      ...(newFilters.prizes.length > 0 && { prizes: newFilters.prizes.join(",") }),
-    });
+
+    const params = new URLSearchParams();
+
+    if (newFilters.query) params.append("query", newFilters.query);
+
+    // Add sort_by only if it's not empty or "4"
+    if (newFilters.sort_by && newFilters.sort_by !== "4") {
+      params.append("sort_by", newFilters.sort_by);
+    }
+
+    if (newFilters.styles.length > 0) params.append("styles", newFilters.styles.join(","));
+    if (newFilters.collections.length > 0) params.append("collections", newFilters.collections.join(","));
+    if (newFilters.rooms.length > 0) params.append("rooms", newFilters.rooms.join(","));
+    if (newFilters.colors.length > 0) params.append("colors", newFilters.colors.join(","));
+    if (newFilters.shapes.length > 0) params.append("shapes", newFilters.shapes.join(","));
+    if (newFilters.prizes.length > 0) params.append("prizes", newFilters.prizes.join(","));
+
     navigate(`/search?${params.toString()}`, { replace: true });
   };
-
-
 
   const totalPages = Math.ceil(results.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -232,12 +166,10 @@ const SearchResults = () => {
     <div className="bg-[#FFFCE0] md:pt-28 pt-24">
       <Navbar />
       <div className="container mx-auto px-4 py-6">
-       
         <div className="mb-6">
           <div className="flex md:mb-12 mb-7 items-center text-base text-gray-600">
             <ChevronLeft size={20} className="text-gray-600" />
             <Link to="/">{t("nav.home")}</Link>
-           
             <div className="pl-3 flex items-center font-semibold cursor-pointer">
               <ChevronLeft size={20} className="text-gray-600" />
               {searchQuery || mapCollectionType(Number(filters.sort_by)) || t("product.breadcrumb.search")}
@@ -245,11 +177,9 @@ const SearchResults = () => {
           </div>
 
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-           
-
             <div className="flex overflow-x-auto gap-4 pb-2">
               {[
-                // { label: t("catalog.all"), value: "4" },
+                { label: t("catalog.all"), value: "4" },
                 { label: t("catalog.new"), value: "1" },
                 { label: t("catalog.bestseller"), value: "2" },
                 { label: t("catalog.sale"), value: "3" },
@@ -271,10 +201,9 @@ const SearchResults = () => {
         </div>
 
         <div className="flex flex-col md:flex-row gap-6">
-          
-          <div className="w-full">
+          <div className="w-full min-h-[500px]">
             {loading ? (
-              <p className="text-center py-12">{t("catalog.loading") || "Yuklanmoqda..."}</p>
+              <p className="text-center py-12">{t("common.loading") || "Yuklanmoqda..."}</p>
             ) : results.length > 0 ? (
               <>
                 <div className={`grid grid-cols-4 sm:grid-cols-2 ${showFilters ? "lg:grid-cols-4" : "lg:grid-cols-4"} gap-8`}>

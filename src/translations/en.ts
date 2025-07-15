@@ -157,4 +157,33 @@ export const en = {
 
   'video.back': "Back",
   'video.back_to_videos': "Back to videos",
+
+  "no_products_found": "No products found. Try changing the filters.",
+  "previous": "Previous",
+  "next": "Next",
+  "hit": "Hit",
+  "show_price": "Show price",
+  "currency": "UZS",
+  "buy ": "Buy ",
+  "share":  "Share",
+  "name":  "Your name",
+  "phone":"Phone number",
+  "region": "City / Region",
+  "select": "Select",
+  "address":  "Address",
+  "full_address": "Full_address",
+  "note":  "Note",
+  "additional_notes":  "Additional_notes",
+  "send":"Send",
+  "fill_required_fields": "Please fill in all required fields",
+"sent_successfully": "Sent successfully!",
+"error_occurred": "An error occurred!",
+"link_copied": "Link copied!",
+"please_fill_required": "Please fill in all required fields",
+"name_invalid": "Name cannot contain numbers",
+"phone_invalid": "Phone number must start with +998 and contain only digits",
+"required_field": "Required field"
+
+
+
 }; 

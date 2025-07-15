@@ -19,7 +19,6 @@ const ProductCard = ({ id, name, image, collection_type, price, onClick }: Produ
     setShowPrice(!showPrice);
   };
 
-  // 🔧 Kichik harflar bilan yozildi
 const getCollectionTypeLabel = (type?: string) => {
   if (!type) return "";
   switch (type.toLowerCase()) {
@@ -28,11 +27,15 @@ const getCollectionTypeLabel = (type?: string) => {
     case "sale":
       return t("badge.sale") || "Chegirma";
     case "hit":
-      return t("badge.popular") || "Mashhur";
+      return t("hit") || "Mashhur";
     default:
       return "";
   }
 };
+
+console.log("collection_type:", collection_type);
+console.log("Label:", getCollectionTypeLabel(collection_type));
+
 
 const getBadgeColor = (type?: string) => {
   if (!type) return "border-t-gray-500";
@@ -49,7 +52,6 @@ const getBadgeColor = (type?: string) => {
 };
 
 
-  // const badgeText = getCollectionTypeLabel(collection_type);
 
   return (
     <div className="shadow-md border-gray-200 overflow-hidden transition-shadow hover:shadow-md">
@@ -61,15 +63,14 @@ const getBadgeColor = (type?: string) => {
             className="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105"
           />
 
-          {/* 🔧 Badge faqat collection_type mavjud bo‘lsa chiqadi */}
-          {collection_type && getCollectionTypeLabel(collection_type) && (
+         {getCollectionTypeLabel(collection_type) && (
   <div className="absolute top-0 right-0 w-[30px] h-[30px] sm:w-[60px] sm:h-[60px]">
     <div className="absolute top-0 right-0 w-0 h-0 border-t-[60px] border-t-[#FFFCE0] border-l-[60px] border-l-transparent z-10 sm:border-t-[100px] sm:border-l-[100px]" />
     <div
       className={`absolute top-0 right-0 w-0 h-0 border-t-[60px] border-l-[60px] border-l-transparent z-20 rotate-180 sm:border-t-[100px] sm:border-l-[100px] ${getBadgeColor(collection_type)}`}
     />
     <span className="absolute top-[38px] right-[19px] text-white text-[8px] font-bold z-30 sm:top-[70px] sm:right-[37px] sm:text-[13px]">
-      {getCollectionTypeLabel(collection_type)}
+     {getCollectionTypeLabel(collection_type)}
     </span>
   </div>
 )}
@@ -81,16 +82,15 @@ const getBadgeColor = (type?: string) => {
         </div>
       </Link>
 
-      {/* Price Button */}
       <div className="px-4 pb-4">
         {price !== undefined ? (
           showPrice ? (
             <button className="font-semibold border border-black text-black w-full py-2 rounded" onClick={handlePriceToggle}>
-              {price.toLocaleString()} UZS
+              {price.toLocaleString()} {t('currency')}
             </button>
           ) : (
             <button className="bg-transparent border border-black text-black w-full py-2 rounded" onClick={handlePriceToggle}>
-              Narxni ko'rsatish
+              {t('show_price')}
             </button>
           )
         ) : (

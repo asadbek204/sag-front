@@ -1,19 +1,17 @@
 import { Link } from "react-router-dom";
 import { useLanguage } from "../../contexts/LanguageContext";
 
-// ProductCard interfeysi
 interface ProductCardProps {
-  id: number; // Mahsulot ID'si
+  id: number; 
   name: string;
   image: string;
-  categoryId: number; // Kategoriya ID'si
-  collectionType: string; // Catalog.tsx dan keladigan string ("New", "Sale", "Hit", "Default")
+  categoryId: number; 
+  collectionType: string; 
 }
 
 const ProductCard = ({ id, name, image, categoryId, collectionType }: ProductCardProps) => {
   const { t } = useLanguage();
 
-  // Kolleksiya turini tarjimaga moslashtirish
   const getCollectionTypeLabel = (type: string) => {
     switch (type.toLowerCase()) {
       case "new":
@@ -21,7 +19,7 @@ const ProductCard = ({ id, name, image, categoryId, collectionType }: ProductCar
       case "sale":
         return t("badge.sale") || "Chegirma";
       case "hit":
-        return t("badge.popular") || "Mashhur";
+        return t("hit") || "Mashhur";
       case "default":
         return "";
       default:
@@ -29,7 +27,6 @@ const ProductCard = ({ id, name, image, categoryId, collectionType }: ProductCar
     }
   };
 
-  // Badge rangini aniqlash
   const getBadgeColor = (type: string) => {
     switch (type.toLowerCase()) {
       case "new":
@@ -37,7 +34,7 @@ const ProductCard = ({ id, name, image, categoryId, collectionType }: ProductCar
       case "sale":
         return "border-t-red-500";
       case "hit":
-        return "border-t-blue-500";
+        return "border-t-orange-500";
       case "default":
         return "border-t-gray-500";
       default:

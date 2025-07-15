@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useLanguage } from '../contexts/LanguageContext';
 
 interface RegionModalProps {
   showQuestion: boolean;
@@ -27,6 +28,7 @@ export const RegionModal = ({
   t,
   className = '',
 }: RegionModalProps) => {
+  // const {t} = useLanguage()
   if (!showQuestion && !showSelect) return null;
 
   if (showSelect) {
