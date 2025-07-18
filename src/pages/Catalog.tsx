@@ -5,7 +5,7 @@ import Filter from "../screens/CatalogPage/Filter";
 import ProductCard from "../screens/CatalogPage/ProductCard";
 import { Filter as FilterIcon, ChevronLeft } from "lucide-react";
 import { ContactInfoSection } from "../screens/HomePage/sections/ContactInfoSection";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { useLanguage } from "../contexts/LanguageContext";
 import { client } from "../services";
 
@@ -42,11 +42,14 @@ const Catalog = () => {
   const [rugData, setRugData] = useState<Rug[]>([]);
   const [originalRugData, setOriginalRugData] = useState<Rug[]>([]);
   const [loading, setLoading] = useState(true);
+  const location = useLocation();
+  const catalogName = location.state?.catalogKey;
   const [error, setError] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(() => {
     return typeof window !== "undefined" && window.innerWidth >= 1024;
   });
   const [currentPage, setCurrentPage] = useState(1);
+  const [translatedCatalogName, setTranslatedCatalogName] = useState("");
   const [sortOption, setSortOption] = useState("all");
   const itemsPerPage = 21;
 
@@ -74,6 +77,8 @@ const Catalog = () => {
     color: [],
   });
 
+
+  
   const mapLang = (lang: string) => (lang === "rus" ? "ru" : lang === "uzb" ? "uz" : "en");
 
   // Sort mapping for API
@@ -87,45 +92,75 @@ const Catalog = () => {
   };
 
   useEffect(() => {
-    const lang = mapLang(language);
+  if (catalogName) {
+    const key = `catalogNames.${catalogName}`;
+    const translated = t(key);
+    setTranslatedCatalogName(translated !== key ? translated : catalogName);
+  } else {
+    // Fallback if catalogName is not available
+    setTranslatedCatalogName(t("product.breadcrumb.carpets") || "Carpets");
+  }
+}, [catalogName, t, language]);
 
-    const fetchInitialCarpets = async () => {
-      try {
-        setLoading(true);
-        const res = await client.get(`/${lang}/api/v1/catalog/get_carpets_by_catalog_id/${id}/`);
-        const data = Array.isArray(res.data) ? res.data : res.data.results || [];
-        setRugData(data);
-        setOriginalRugData(data);
-      } catch (err) {
-        setError(t("common.error") || "Xatolik yuz berdi");
-        setRugData([]);
-        setOriginalRugData([]);
-      } finally {
-        setLoading(false);
+  useEffect(() => {
+  const lang = mapLang(language);
+
+  const fetchCarpets = async () => {
+    try {
+      setLoading(true);
+
+      const params = new URLSearchParams();
+
+      // Sort
+      const sortValue = getSortValue(sortOption);
+      if (sortValue) {
+        params.append("sort_by", sortValue);
       }
-    };
 
-    const fetchFilterOptions = async () => {
-      try {
-        const res = await client.get(`/${lang}/api/v1/catalog/filter_choices/${id}/`);
-        // Process styles if it's array of arrays
-        let processedData = { ...res.data };
-        if (processedData.styles && Array.isArray(processedData.styles) && processedData.styles.length > 0) {
-          if (Array.isArray(processedData.styles[0])) {
-            processedData.styles = processedData.styles[0];
-          }
-        }
-        setFilterOptions(processedData);
-      } catch (err) {
-        console.error("Filter options fetch error:", err);
-      }
-    };
+      // Filters
+      if (filters.room?.length) params.append("rooms", filters.room.join(","));
+      if (filters.color?.length) params.append("colors", filters.color.join(","));
+      if (filters.shape?.length) params.append("shapes", filters.shape.join(","));
+      if (filters.style?.length) params.append("styles", filters.style.join(","));
 
-    if (id) {
-      fetchInitialCarpets();
-      fetchFilterOptions();
+      const queryString = params.toString();
+      const url = `/${lang}/api/v1/catalog/filter_and_sort_carpets/${id}/${queryString ? `?${queryString}` : ""}`;
+
+      const res = await client.get(url);
+      const data = Array.isArray(res.data) ? res.data : res.data.results || [];
+      setRugData(data);
+      setOriginalRugData(data);
+    } catch (err) {
+      setError(t("common.error") || "Xatolik yuz berdi");
+      setRugData([]);
+      setOriginalRugData([]);
+    } finally {
+      setLoading(false);
     }
-  }, [id, language, t]);
+  };
+
+  const fetchFilterOptions = async () => {
+    try {
+      const res = await client.get(`/${lang}/api/v1/catalog/filter_choices/${id}/`);
+      let processedData = { ...res.data };
+      if (Array.isArray(processedData.styles?.[0])) {
+        processedData.styles = processedData.styles[0];
+      }
+      setFilterOptions(processedData);
+    } catch (err) {
+      console.error("Filter options fetch error:", err);
+    }
+  };
+
+  if (id) {
+    fetchCarpets();        // <<< Filter + sort ni birga yuborish
+    fetchFilterOptions();  // <<< faqat filter variantlarini olib keladi
+  }
+}, [id, language, t, sortOption,translatedCatalogName, catalogName, filters]); // <<< dependencies to'g'rilandi
+
+
+
+
 
   const handleFilterChange = async (newFilters: any) => {
     setFilters(newFilters);
@@ -262,7 +297,7 @@ const Catalog = () => {
             <Link to="/">{t("nav.home") || "Bosh sahifa"}</Link>
             <div className="pl-3 flex items-center font-semibold">
               <ChevronLeft size={20} className="text-gray-600" />
-              {t("product.breadcrumb.carpets") || "Gilamlar"}
+              {translatedCatalogName  || t("product.breadcrumb.carpets") }
             </div>
           </div>
 

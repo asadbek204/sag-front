@@ -54,11 +54,14 @@ const Catalog = () => {
   const collectionId = location.state?.collectionId;
   const { id } = useParams<{ id: string }>();
   const [rugData, setRugData] = useState<Rug[]>([]);
+  const name = location.state?.name;
   const [loading, setLoading] = useState(true);
   const { categoryId} = useParams<{ categoryId: string; id: string }>();
   const [error, setError] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(() => typeof window !== "undefined" && window.innerWidth >= 1024);
   const [currentPage, setCurrentPage] = useState(1);
+  
+
   const [sortOption, setSortOption] = useState("4"); // Default to "all" (sort_by=4)
   const [filterOptions, setFilterOptions] = useState<FilterOptions>({
     catalog: { id: 0, name: "" },
@@ -244,7 +247,7 @@ const mapCollectionType = (type: number | string): string => {
             </div>
             <div className="pl-3 flex items-center font-semibold cursor-pointer">
               <ChevronLeft size={20} className="text-gray-600" />
-              {filterOptions.catalog.name || t("product.breadcrumb.collection")}
+              {name}
             </div>
           </div>
 

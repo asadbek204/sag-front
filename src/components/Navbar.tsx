@@ -227,7 +227,7 @@ const handleSearchSubmit = async (e: React.KeyboardEvent<HTMLInputElement>) => {
                       asChild
                       className={`${item.className} font-['Inter'] font-normal tracking-[0] leading-6 whitespace-nowrap pb-1 hover:border-b-2 hover:border-black transition-all duration-75`}
                     >
-                      <Link to={item.path}>{t(item.key)}</Link>
+                      <Link to={item.path} >{t(item.key)}</Link>
                     </NavigationMenuLink>
                   ) : (
                     <span
@@ -242,6 +242,7 @@ const handleSearchSubmit = async (e: React.KeyboardEvent<HTMLInputElement>) => {
                         <Link
                           key={subItem.key}
                           to={subItem.path}
+                           state={{ catalogKey: subItem.label }}
                           className="block px-3 py-2 w-full hover:bg-gray-200"
                           onClick={() => setIsCatalogDropdownOpen(false)}
                         >
