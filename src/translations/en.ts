@@ -206,4 +206,7 @@ export const en = {
   Samarqand: "Samarkand",
   Sirdaryo: "Sirdarya",
   Surxondaryo: "Surkhandarya",
+  ru: 'Ru',
+  en: 'En',
+  uz: 'Uz',
 };

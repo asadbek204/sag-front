@@ -212,4 +212,7 @@ export const uzb = {
   Samarqand: "Samarqand",
   Sirdaryo: "Sirdaryo",
   Surxondaryo: "Surxondaryo",
+  ru: 'Rus',
+  en: 'Eng',
+  uz: 'Oʻz',
 };

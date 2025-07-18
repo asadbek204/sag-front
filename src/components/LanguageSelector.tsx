@@ -3,11 +3,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 
 type LanguageCode = 'uzb' | 'rus' | 'en';
 
-const languages: { code: LanguageCode; label: string }[] = [
-  { code: 'uzb', label: "O'z" },
-  { code: 'rus', label: 'Ru' },
-  { code: 'en', label: 'En' },
-];
+
 
 interface LanguageSelectorProps {
   className?: string;
@@ -15,9 +11,15 @@ interface LanguageSelectorProps {
 }
 
 export const LanguageSelector = ({ className = "", navActive }: LanguageSelectorProps): JSX.Element => {
-  const { language, setLanguage } = useLanguage();
+  const {t, language, setLanguage } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const languages: { code: LanguageCode; label: string }[] = [
+  { code: 'uzb', label: t('uz') },
+  { code: 'rus', label: t('ru') },
+  { code: 'en', label: t('en') },
+];
 
   // Close on outside click
   useEffect(() => {

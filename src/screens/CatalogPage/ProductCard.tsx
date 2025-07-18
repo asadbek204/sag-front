@@ -49,6 +49,7 @@ const ProductCard = ({ id, name, image, categoryId, collectionType }: ProductCar
           <img
             src={image || "https://via.placeholder.com/300x400?text=Rasm+yok"}
             alt={name}
+            
             className="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105"
           />
 
