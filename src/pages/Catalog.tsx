@@ -11,7 +11,7 @@ import { client } from "../services";
 
 interface Rug {
   id: number;
-  catalog: number;
+  catalog: { id: number };
   name: string;
   image: string;
   collection_type: string;
@@ -357,9 +357,8 @@ const Catalog = () => {
                       id={rug.id}
                       name={rug.name}
                       image={rug.image}
-                      categoryId={rug.catalog}
-                      collectionType={rug.collection_type}
-                    />
+                      collectionType={rug.collection_type} 
+                      categoryId={rug.catalog.id}                    />
                   ))}
                 </div>
                 
