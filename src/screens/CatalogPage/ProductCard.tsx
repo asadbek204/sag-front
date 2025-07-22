@@ -6,10 +6,11 @@ interface ProductCardProps {
   name: string;
   image: string;
   categoryId: number; 
+  collectionId?: number;
   collectionType: string; 
 }
 
-const ProductCard = ({ id, name, image, categoryId, collectionType }: ProductCardProps) => {
+const ProductCard = ({ id, name, image, categoryId, collectionId, collectionType }: ProductCardProps) => {
   const { t } = useLanguage();
 
   const getCollectionTypeLabel = (type: string) => {
@@ -43,7 +44,7 @@ const ProductCard = ({ id, name, image, categoryId, collectionType }: ProductCar
   };
 
   return (
-    <Link to={`/catalog/${categoryId}/product/${id}`} state={{ from: "catalog", name }} className="group">
+    <Link to={`/catalog/${categoryId}/product/${id}`} state={{ from: "catalog", name, collectionId  }} className="group">
       <div className="shadow-md border-gray-200 overflow-hidden transition-shadow hover:shadow-md">
         <div className="relative h-[200px] sm:h-[360px] md:h-[430px] bg-gray-100">
           <img

@@ -11,7 +11,7 @@ import { client } from "../services";
 
 interface Rug {
   id: number;
-  catalog: number;
+  catalog: { id: number; name: string }; // Ensure catalog includes name
   name: string;
   image: string;
   collection_type: string;
@@ -23,6 +23,7 @@ interface FilterOption {
 }
 
 interface FilterOptions {
+  catalog: { id: number; name: string }; // Ensure catalog includes name
   rooms: FilterOption[];
   colors: FilterOption[];
   shapes: FilterOption[];
@@ -49,11 +50,11 @@ const Catalog = () => {
     return typeof window !== "undefined" && window.innerWidth >= 1024;
   });
   const [currentPage, setCurrentPage] = useState(1);
-  const [translatedCatalogName, setTranslatedCatalogName] = useState("");
   const [sortOption, setSortOption] = useState("all");
   const itemsPerPage = 21;
 
   const [filterOptions, setFilterOptions] = useState<FilterOptions>({
+    catalog: { id: 0, name: "" },
     rooms: [],
     colors: [],
     shapes: [],
@@ -77,125 +78,98 @@ const Catalog = () => {
     color: [],
   });
 
-
-  
   const mapLang = (lang: string) => (lang === "rus" ? "ru" : lang === "uzb" ? "uz" : "en");
 
-  // Sort mapping for API
   const getSortValue = (sortOption: string) => {
     switch (sortOption) {
-      case "new": return "1";
-      case "bestseller": return "2";
-      case "sale": return "3";
-      default: return null;
+      case "new":
+        return "1";
+      case "bestseller":
+        return "2";
+      case "sale":
+        return "3";
+      default:
+        return null;
     }
   };
 
   useEffect(() => {
-  if (catalogName) {
-    const key = `catalogNames.${catalogName}`;
-    const translated = t(key);
-    setTranslatedCatalogName(translated !== key ? translated : catalogName);
-  } else {
-    // Fallback if catalogName is not available
-    setTranslatedCatalogName(t("product.breadcrumb.carpets") || "Carpets");
-  }
-}, [catalogName, t, language]);
+    const lang = mapLang(language);
 
-  useEffect(() => {
-  const lang = mapLang(language);
+    const fetchCarpets = async () => {
+      try {
+        setLoading(true);
+        const params = new URLSearchParams();
+        const sortValue = getSortValue(sortOption);
+        if (sortValue) {
+          params.append("sort_by", sortValue);
+        }
+        if (filters.room?.length) params.append("rooms", filters.room.join(","));
+        if (filters.color?.length) params.append("colors", filters.color.join(","));
+        if (filters.shape?.length) params.append("shapes", filters.shape.join(","));
+        if (filters.style?.length) params.append("styles", filters.style.join(","));
 
-  const fetchCarpets = async () => {
-    try {
-      setLoading(true);
-
-      const params = new URLSearchParams();
-
-      // Sort
-      const sortValue = getSortValue(sortOption);
-      if (sortValue) {
-        params.append("sort_by", sortValue);
+        const queryString = params.toString();
+        const url = `/${lang}/api/v1/catalog/filter_and_sort_carpets/${id}/${queryString ? `?${queryString}` : ""}`;
+        const res = await client.get(url);
+        const data = Array.isArray(res.data) ? res.data : res.data.results || [];
+        setRugData(data);
+        setOriginalRugData(data);
+      } catch (err) {
+        setError(t("common.error") || "Xatolik yuz berdi");
+        setRugData([]);
+        setOriginalRugData([]);
+      } finally {
+        setLoading(false);
       }
+    };
 
-      // Filters
-      if (filters.room?.length) params.append("rooms", filters.room.join(","));
-      if (filters.color?.length) params.append("colors", filters.color.join(","));
-      if (filters.shape?.length) params.append("shapes", filters.shape.join(","));
-      if (filters.style?.length) params.append("styles", filters.style.join(","));
-
-      const queryString = params.toString();
-      const url = `/${lang}/api/v1/catalog/filter_and_sort_carpets/${id}/${queryString ? `?${queryString}` : ""}`;
-
-      const res = await client.get(url);
-      const data = Array.isArray(res.data) ? res.data : res.data.results || [];
-      setRugData(data);
-      setOriginalRugData(data);
-    } catch (err) {
-      setError(t("common.error") || "Xatolik yuz berdi");
-      setRugData([]);
-      setOriginalRugData([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchFilterOptions = async () => {
-    try {
-      const res = await client.get(`/${lang}/api/v1/catalog/filter_choices/${id}/`);
-      let processedData = { ...res.data };
-      if (Array.isArray(processedData.styles?.[0])) {
-        processedData.styles = processedData.styles[0];
+    const fetchFilterOptions = async () => {
+      try {
+        const res = await client.get(`/${lang}/api/v1/catalog/filter_choices/${id}/`);
+        let processedData = { ...res.data };
+        if (Array.isArray(processedData.styles?.[0])) {
+          processedData.styles = processedData.styles[0];
+        }
+        setFilterOptions(processedData);
+      } catch (err) {
+        console.error("Filter options fetch error:", err);
       }
-      setFilterOptions(processedData);
-    } catch (err) {
-      console.error("Filter options fetch error:", err);
+    };
+
+    if (id) {
+      fetchCarpets();
+      fetchFilterOptions();
     }
-  };
-
-  if (id) {
-    fetchCarpets();        // <<< Filter + sort ni birga yuborish
-    fetchFilterOptions();  // <<< faqat filter variantlarini olib keladi
-  }
-}, [id, language, t, sortOption,translatedCatalogName, catalogName, filters]); // <<< dependencies to'g'rilandi
-
-
-
-
+  }, [id, language, t, sortOption, filters]);
 
   const handleFilterChange = async (newFilters: any) => {
     setFilters(newFilters);
     setCurrentPage(1);
     const lang = mapLang(language);
-    
+
     try {
       setLoading(true);
-      
-      // Prepare query parameters
       const params = new URLSearchParams();
-      
-      // Add sort parameter if not "all"
       const sortValue = getSortValue(sortOption);
       if (sortValue) {
-        params.append('sort_by', sortValue);
+        params.append("sort_by", sortValue);
       }
-      
-      // Add filter parameters as comma-separated strings
       if (newFilters.room && newFilters.room.length > 0) {
-        params.append('rooms', newFilters.room.join(','));
+        params.append("rooms", newFilters.room.join(","));
       }
       if (newFilters.color && newFilters.color.length > 0) {
-        params.append('colors', newFilters.color.join(','));
+        params.append("colors", newFilters.color.join(","));
       }
       if (newFilters.shape && newFilters.shape.length > 0) {
-        params.append('shapes', newFilters.shape.join(','));
+        params.append("shapes", newFilters.shape.join(","));
       }
       if (newFilters.style && newFilters.style.length > 0) {
-        params.append('styles', newFilters.style.join(','));
+        params.append("styles", newFilters.style.join(","));
       }
-      
+
       const queryString = params.toString();
-      const url = `/${lang}/api/v1/catalog/filter_and_sort_carpets/${id}/${queryString ? `?${queryString}` : ''}`;
-      
+      const url = `/${lang}/api/v1/catalog/filter_and_sort_carpets/${id}/${queryString ? `?${queryString}` : ""}`;
       const res = await client.get(url);
       setRugData(Array.isArray(res.data) ? res.data : res.data.results || []);
     } catch (err) {
@@ -218,8 +192,7 @@ const Catalog = () => {
     };
     setFilters(clearedFilters);
     setCurrentPage(1);
-    
-    // If sort is not "all", apply only sort
+
     if (sortOption !== "all") {
       const lang = mapLang(language);
       try {
@@ -234,7 +207,6 @@ const Catalog = () => {
         setLoading(false);
       }
     } else {
-      // Reset to original data
       setRugData(originalRugData);
     }
   };
@@ -242,37 +214,30 @@ const Catalog = () => {
   const handleSortChange = async (newSortOption: string) => {
     setSortOption(newSortOption);
     setCurrentPage(1);
-    
+
     const lang = mapLang(language);
     try {
       setLoading(true);
-      
-      // Prepare query parameters
       const params = new URLSearchParams();
-      
-      // Add sort parameter if not "all"
       const sortValue = getSortValue(newSortOption);
       if (sortValue) {
-        params.append('sort_by', sortValue);
+        params.append("sort_by", sortValue);
       }
-      
-      // Add existing filter parameters
       if (filters.room && filters.room.length > 0) {
-        params.append('rooms', filters.room.join(','));
+        params.append("rooms", filters.room.join(","));
       }
       if (filters.color && filters.color.length > 0) {
-        params.append('colors', filters.color.join(','));
+        params.append("colors", filters.color.join(","));
       }
       if (filters.shape && filters.shape.length > 0) {
-        params.append('shapes', filters.shape.join(','));
+        params.append("shapes", filters.shape.join(","));
       }
       if (filters.style && filters.style.length > 0) {
-        params.append('styles', filters.style.join(','));
+        params.append("styles", filters.style.join(","));
       }
-      
+
       const queryString = params.toString();
-      const url = `/${lang}/api/v1/catalog/filter_and_sort_carpets/${id}/${queryString ? `?${queryString}` : ''}`;
-      
+      const url = `/${lang}/api/v1/catalog/filter_and_sort_carpets/${id}/${queryString ? `?${queryString}` : ""}`;
       const res = await client.get(url);
       setRugData(Array.isArray(res.data) ? res.data : res.data.results || []);
     } catch (err) {
@@ -297,7 +262,7 @@ const Catalog = () => {
             <Link to="/">{t("nav.home") || "Bosh sahifa"}</Link>
             <div className="pl-3 flex items-center font-semibold">
               <ChevronLeft size={20} className="text-gray-600" />
-              {translatedCatalogName  || t("product.breadcrumb.carpets") }
+              {filterOptions.catalog?.name || t("product.breadcrumb.carpets")}
             </div>
           </div>
 
@@ -357,9 +322,8 @@ const Catalog = () => {
                       id={rug.id}
                       name={rug.name}
                       image={rug.image}
-                      categoryId={rug.catalog}
-                      collectionType={rug.collection_type}
-                    />
+                      collectionType={rug.collection_type} 
+                      categoryId={rug.catalog.id}                    />
                   ))}
                 </div>
                 

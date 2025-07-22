@@ -33,32 +33,32 @@ const AppartmentDetail = () => {
   const mapLang = (lang: string) =>
     lang === "rus" ? "ru" : lang === "uzb" ? "uz" : "en";
 
-  useEffect(() => {
-    const lang = mapLang(language);
+useEffect(() => {
+  const lang = mapLang(language);
 
-    const fetchRoomDetails = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const response = await client.get(`/${lang}/api/v1/rooms/get_rooms_images_by_room_id/${id}/`);
-        setProducts(response.data);
+  const fetchRoomDetails = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await client.get(`/${lang}/api/v1/rooms/get_rooms_images_by_room_id/${id}/`);
+      setProducts(response.data);
 
-        setRoomName(
-          location.state?.name ||
-          t("noName") || 
-          "Xona nomi mavjud emas" 
-        );
-      } catch (err) {
-        console.error("Ma'lumotlarni yuklashda xatolik:", err);
-        setError(t("errors.fetchData") || "Ma'lumotlarni yuklashda xatolik yuz berdi");
-        setRoomName(location.state?.name || t("noName") || "Xona nomi mavjud emas");
-      } finally {
-        setLoading(false);
-      }
-    };
+      // roomName ni backenddan kelgan ma'lumotdan olish
+      const room = response.data?.[0]?.room?.name;
+      setRoomName(room || t("noName") || "Xona nomi mavjud emas");
 
-    if (id) fetchRoomDetails();
-  }, [id, language, t]);
+    } catch (err) {
+      console.error("Ma'lumotlarni yuklashda xatolik:", err);
+      setError(t("errors.fetchData") || "Ma'lumotlarni yuklashda xatolik yuz berdi");
+      setRoomName(t("noName") || "Xona nomi mavjud emas");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (id) fetchRoomDetails();
+}, [id, language, t]);
+
 
   const totalPages = Math.ceil(products.length / itemsPerPage);
   const currentRugs = products.slice(
@@ -78,10 +78,11 @@ const AppartmentDetail = () => {
               <ChevronLeft size={20} className="text-gray-600" />
               {t("nav.rooms") || "Xonalar"}
             </Link>
-            <div className="pl-3 flex items-center font-semibold">
-              <ChevronLeft size={20} className="text-gray-600" />
-              {roomName}
-            </div>
+           <div className="pl-3 flex items-center font-semibold">
+  <ChevronLeft size={20} className="text-gray-600" />
+  {roomName}
+</div>
+
           </div>
         </div>
 
