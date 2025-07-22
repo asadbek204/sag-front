@@ -1,20 +1,17 @@
-
 import { useState, useEffect } from "react";
-// import { Navbar } from "../components/Navbar"; // Adjust import path as needed
 import Filter from "./Filters";
 import ProductCard from "./ProductCard";
-import qs from 'query-string'; 
+import qs from "query-string";
 import { Filter as FilterIcon, ChevronLeft } from "lucide-react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { useLanguage } from "../../contexts/LanguageContext";
 import { client } from "../../services";
 import { Navbar } from "../../components/Navbar";
-// import { client } from "../services"; // Adjust import path for your API client
 
 interface Rug {
   price: number | undefined;
   id: number;
-  catalog: number;
+  catalog: { id: number; name: string }; // Updated to include catalog object
   name: string;
   image: string;
   collection_type: number | string;
@@ -52,17 +49,14 @@ const Catalog = () => {
   const { t, language } = useLanguage();
   const location = useLocation();
   const collectionId = location.state?.collectionId;
-  const { id } = useParams<{ id: string }>();
+  const { id, categoryId } = useParams<{ id: string; categoryId: string }>();
   const [rugData, setRugData] = useState<Rug[]>([]);
   const name = location.state?.name;
   const [loading, setLoading] = useState(true);
-  const { categoryId} = useParams<{ categoryId: string; id: string }>();
   const [error, setError] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(() => typeof window !== "undefined" && window.innerWidth >= 1024);
   const [currentPage, setCurrentPage] = useState(1);
-  
-
-  const [sortOption, setSortOption] = useState("4"); // Default to "all" (sort_by=4)
+  const [sortOption, setSortOption] = useState("4");
   const [filterOptions, setFilterOptions] = useState<FilterOptions>({
     catalog: { id: 0, name: "" },
     collections: [],
@@ -92,103 +86,93 @@ const Catalog = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
- useEffect(() => {
-  const lang = mapLang(language);
-
-  const fetchFilterOptions = async () => {
-    try {
-      const res = await client.get(`/${lang}/api/v1/catalog/filter_choices_for_carpet_model/${categoryId}/`);
-      setFilterOptions({
-        catalog: res.data.catalog || { id: 0, name: "" },
-        collections: res.data.collections || [],
-        styles: Array.isArray(res.data.styles) ? (Array.isArray(res.data.styles[0]) ? res.data.styles[0] : res.data.styles) : [],
-        rooms: res.data.rooms || [],
-        colors: res.data.colors || [],
-        shapes: res.data.shapes || [],
-        labels: res.data.labels || {
-          catalog: "",
-          collections: "",
-          styles: "",
-          rooms: "",
-          colors: "",
-          shapes: "",
-        },
-      });
-    } catch (err) {
-      console.error(`Error fetching filter options for catalog ${id}:`, err);
-      setError(t("") || "");
-    }
-  };
-
-  const fetchAllRugs = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      const res = await client.get(
-        `/${lang}/api/v1/catalog/get_carpet_models_by_carpet_id/${id}/`
-      );
-
-      setRugData(res.data);
-    } catch (err) {
-      console.error("Error fetching all rugs:", err);
-      setError(t("catalog.error.rugs") || "Mahsulotlarni yuklashda xatolik");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchFilteredRugs = async () => {
-  try {
-    setLoading(true);
-    setError(null);
+  useEffect(() => {
     const lang = mapLang(language);
 
-  const queryParams = qs.stringify(
-  {
-    sort_by: sortOption !== "4" ? sortOption : undefined, // 4 = all, default emas
-    collections: filters.collection.length > 0 ? filters.collection.join(",") : undefined,
-    styles: filters.style.length > 0 ? filters.style.join(",") : undefined,
-    rooms: filters.room.length > 0 ? filters.room.join(",") : undefined,
-    colors: filters.color.length > 0 ? filters.color.join(",") : undefined,
-    shapes: filters.shape.length > 0 ? filters.shape.join(",") : undefined,
-  },
-  { skipNull: true, skipEmptyString: true }
-);
+    const fetchFilterOptions = async () => {
+      try {
+        const res = await client.get(`/${lang}/api/v1/catalog/filter_choices_for_carpet_model/${categoryId}/`);
+        setFilterOptions({
+          catalog: res.data.catalog || { id: 0, name: "" },
+          collections: res.data.collections || [],
+          styles: Array.isArray(res.data.styles) ? (Array.isArray(res.data.styles[0]) ? res.data.styles[0] : res.data.styles) : [],
+          rooms: res.data.rooms || [],
+          colors: res.data.colors || [],
+          shapes: res.data.shapes || [],
+          labels: res.data.labels || {
+            catalog: "",
+            collections: "",
+            styles: "",
+            rooms: "",
+            colors: "",
+            shapes: "",
+          },
+        });
+      } catch (err) {
+        console.error(`Error fetching filter options for catalog ${id}:`, err);
+        setError(t("") || "");
+      }
+    };
 
-    const res = await client.get(
-      `/${lang}/api/v1/catalog/filter_and_sort_carpets_for_carpet_model/${categoryId}/?${queryParams}`
-    );
+    const fetchAllRugs = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const res = await client.get(`/${lang}/api/v1/catalog/get_carpet_models_by_carpet_id/${id}/`);
+        setRugData(res.data);
+      } catch (err) {
+        console.error("Error fetching all rugs:", err);
+        setError(t("catalog.error.rugs") || "Mahsulotlarni yuklashda xatolik");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    setRugData(res.data);
-  } catch (err) {
-    console.error("Error fetching filtered rugs:", err);
-    setError(t("catalog.error.rugs") || "Filtrlangan mahsulotlarni yuklashda xatolik");
-  } finally {
-    setLoading(false);
-  }
-};
+    const fetchFilteredRugs = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const queryParams = qs.stringify(
+          {
+            sort_by: sortOption !== "4" ? sortOption : undefined,
+            collections: filters.collection.length > 0 ? filters.collection.join(",") : undefined,
+            styles: filters.style.length > 0 ? filters.style.join(",") : undefined,
+            rooms: filters.room.length > 0 ? filters.room.join(",") : undefined,
+            colors: filters.color.length > 0 ? filters.color.join(",") : undefined,
+            shapes: filters.shape.length > 0 ? filters.shape.join(",") : undefined,
+          },
+          { skipNull: true, skipEmptyString: true }
+        );
 
+        const res = await client.get(
+          `/${lang}/api/v1/catalog/filter_and_sort_carpets_for_carpet_model/${categoryId}/?${queryParams}`
+        );
+        setRugData(res.data);
+      } catch (err) {
+        console.error("Error fetching filtered rugs:", err);
+        setError(t("catalog.error.rugs") || "Filtrlangan mahsulotlarni yuklashda xatolik");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  if (id) {
-    fetchFilterOptions();
+    if (id) {
+      fetchFilterOptions();
+      const noFiltersApplied =
+        filters.collection.length === 0 &&
+        filters.style.length === 0 &&
+        filters.room.length === 0 &&
+        filters.color.length === 0 &&
+        filters.shape.length === 0 &&
+        sortOption === "4";
 
-    const noFiltersApplied =
-      filters.collection.length === 0 &&
-      filters.style.length === 0 &&
-      filters.room.length === 0 &&
-      filters.color.length === 0 &&
-      filters.shape.length === 0 &&
-      sortOption === "4";
-
-    if (noFiltersApplied) {
-      fetchAllRugs();
-    } else {
-      fetchFilteredRugs();
+      if (noFiltersApplied) {
+        fetchAllRugs();
+      } else {
+        fetchFilteredRugs();
+      }
     }
-  }
-}, [id, language, filters, sortOption]);
-
+  }, [id, language, filters, sortOption, categoryId]);
 
   const handleFilterChange = (newFilters: typeof filters) => {
     setFilters(newFilters);
@@ -205,24 +189,18 @@ const Catalog = () => {
     });
   };
 
-  // Map collection_type integer to string for ProductCard
-const mapCollectionType = (type: number | string): string => {
-  // Agar string kelsa, to'g'ridan-to'g'ri qaytarish
-  if (typeof type === 'string') {
-    return type;
-  }
-  
-  // Agar number kelsa, mapping qilish
-  const collectionMap: { [key: number]: string } = {
-    1: "New",
-    2: "Sale", 
-    3: "Hit",
-    4: "Default",
+  const mapCollectionType = (type: number | string): string => {
+    if (typeof type === "string") {
+      return type;
+    }
+    const collectionMap: { [key: number]: string } = {
+      1: "New",
+      2: "Sale",
+      3: "Hit",
+      4: "Default",
+    };
+    return collectionMap[type] || "";
   };
-  return collectionMap[type] || "";
-};
-
-
 
   const totalPages = Math.ceil(rugData.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -239,11 +217,11 @@ const mapCollectionType = (type: number | string): string => {
         )}
         <div className="mb-6">
           <div className="flex md:mb-12 mb-7 items-center text-base text-gray-600">
-            <ChevronLeft size={20} className="text-gray-600" />
+            <ChevronLeft size={20} className="text-gray600" />
             <Link to="/">{t("nav.home")}</Link>
             <div className="pl-3 flex items-center cursor-pointer" onClick={() => window.history.back()}>
               <ChevronLeft size={20} className="text-gray-600" />
-              {t("product.breadcrumb.carpets")}
+              {rugData[0]?.catalog?.name}
             </div>
             <div className="pl-3 flex items-center font-semibold cursor-pointer">
               <ChevronLeft size={20} className="text-gray-600" />
@@ -270,11 +248,10 @@ const mapCollectionType = (type: number | string): string => {
                 <button
                   key={value}
                   onClick={() => setSortOption(value)}
-                  className={`px-4 py-2 whitespace-nowrap border-b-2 transition-colors ${
-                    sortOption === value
+                  className={`px-4 py-2 whitespace-nowrap border-b-2 transition-colors ${sortOption === value
                       ? "text-gray-800 font-semibold border-gray-800"
                       : "text-gray-600 border-transparent hover:border-gray-300"
-                  }`}
+                    }`}
                 >
                   {label}
                 </button>
@@ -296,26 +273,25 @@ const mapCollectionType = (type: number | string): string => {
             </div>
           )}
 
-          <div className={`${showFilters ? "md:w-[calc(100%-320px)]" : "w-full"}`}>
+          <div className={`${showFilters ? "md:w-[calc(100%-320px)]" : "w-full min-h-[500px]"}`}>
             {loading ? (
               <p className="text-center py-12">{t("common.loading") || ""}</p>
             ) : rugData.length > 0 ? (
               <>
                 <div className={`grid grid-cols-2 sm:grid-cols-2 ${showFilters ? "lg:grid-cols-3" : "lg:grid-cols-4"} gap-8`}>
-                 {currentRugs.map((rug) => {
-  console.log("Raw collection_type:", rug.collection_type);
-  console.log("Mapped:", mapCollectionType(rug.collection_type));
-  return (
-    <ProductCard
-      key={rug.id}
-      id={rug.id}
-      name={rug.name}
-      image={rug.image}
-      price={rug.price}
-      collection_type={mapCollectionType(rug.collection_type)}
-    />
-  );
-})}
+                  {currentRugs.map((rug) => {
+
+                    return (
+                      <ProductCard
+                        key={rug.id}
+                        id={rug.id}
+                        name={rug.name}
+                        image={rug.image}
+                        price={rug.price}
+                        collection_type={mapCollectionType(rug.collection_type)}
+                      />
+                    );
+                  })}
 
                 </div>
 
@@ -345,9 +321,8 @@ const mapCollectionType = (type: number | string): string => {
                           <button
                             key={1}
                             onClick={() => setCurrentPage(1)}
-                            className={`px-3 py-2 rounded ${
-                              currentPage === 1 ? "bg-[#D7CCC8] text-white" : "text-gray-600 hover:bg-gray-100"
-                            }`}
+                            className={`px-3 py-2 rounded ${currentPage === 1 ? "bg-[#D7CCC8] text-white" : "text-gray-600 hover:bg-gray-100"
+                              }`}
                           >
                             1
                           </button>
@@ -360,9 +335,8 @@ const mapCollectionType = (type: number | string): string => {
                           <button
                             key={i}
                             onClick={() => setCurrentPage(i)}
-                            className={`px-3 py-2 rounded ${
-                              currentPage === i ? "bg-[#D7CCC8] text-white" : "text-gray-600 hover:bg-gray-100"
-                            }`}
+                            className={`px-3 py-2 rounded ${currentPage === i ? "bg-[#D7CCC8] text-white" : "text-gray-600 hover:bg-gray-100"
+                              }`}
                           >
                             {i}
                           </button>
@@ -375,9 +349,8 @@ const mapCollectionType = (type: number | string): string => {
                           <button
                             key={totalPages}
                             onClick={() => setCurrentPage(totalPages)}
-                            className={`px-3 py-2 rounded ${
-                              currentPage === totalPages ? "bg-[#D7CCC8] text-white" : "text-gray-600 hover:bg-gray-100"
-                            }`}
+                            className={`px-3 py-2 rounded ${currentPage === totalPages ? "bg-[#D7CCC8] text-white" : "text-gray-600 hover:bg-gray-100"
+                              }`}
                           >
                             {totalPages}
                           </button>

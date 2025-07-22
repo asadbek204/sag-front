@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useLanguage } from "../../contexts/LanguageContext";
+import { useLocation } from "react-router-dom";
 
 interface FilterOption {
   id: number;
@@ -39,24 +40,28 @@ interface FilterProps {
   onFilterChange: (filters: Filters) => void;
   onClearFilters: () => void;
   filterOptions: FilterOptions;
-   initialCollectionId?: number;
+  initialCollectionId?: number;
 }
 
 type FilterCategory = keyof Filters;
 
-const Filter = ({ filters, onFilterChange, onClearFilters, filterOptions , initialCollectionId,}: FilterProps) => {
+const Filter = ({ filters, onFilterChange, onClearFilters, filterOptions, initialCollectionId }: FilterProps) => {
   const { t } = useLanguage();
+  const location = useLocation();
 
   useEffect(() => {
-    if (initialCollectionId && !filters.collection.includes(initialCollectionId)) {
+    const collectionId = location.state?.collectionId || initialCollectionId;
+    if (collectionId && !filters.collection.includes(collectionId)) {
+      if (!filterOptions.collections.find((option) => option.id === collectionId)) {
+        console.warn(`Collection ID ${collectionId} not found in filterOptions.collections`);
+      }
       const newFilters = {
         ...filters,
-        collection: [...filters.collection, initialCollectionId],
+        collection: [...filters.collection, collectionId],
       };
       onFilterChange(newFilters);
     }
-  }, [initialCollectionId]);
-
+  }, [location.state?.collectionId, initialCollectionId, filters.collection, onFilterChange, filterOptions.collections]);
 
   const getInitialExpanded = () => {
     if (typeof window !== "undefined" && window.innerWidth >= 1024) {
@@ -112,25 +117,6 @@ const Filter = ({ filters, onFilterChange, onClearFilters, filterOptions , initi
     onFilterChange(newFilters);
   };
 
-  // const getColorClass = (colorName: string) => {
-  //   const colorMap: { [key: string]: string } = {
-  //     Red: "bg-red-500",
-  //     White: "bg-white",
-  //     Blue: "bg-blue-500",
-  //     Brown: "bg-brown-500",
-  //     Black: "bg-black",
-  //     Qizil: "bg-red-500",
-  //     Oq: "bg-white",
-  //     Ko_k: "bg-blue-500",
-  //     Krem_rang: "bg-amber-100",
-  //     Kulrang: "bg-gray-400",
-  //     Qaymoqrang: "bg-amber-50",
-  //     Qora: "bg-black",
-  //     Yashil: "bg-green-500",
-  //   };
-  //   return colorMap[colorName.replace(" ", "_")] || "bg-gray-300";
-  // };
-
   const FilterCheckbox = ({ category, value, label, type = "default" }: { category: FilterCategory; value: number; label: string; type?: string }) => (
     <label className="flex items-center gap-3 py-1 cursor-pointer">
       <input
@@ -148,7 +134,6 @@ const Filter = ({ filters, onFilterChange, onClearFilters, filterOptions , initi
           >
             {filters[category].includes(value) && <div className="w-2 h-2 bg-blue-500"></div>}
           </div>
-          {/* <div className={`w-4 h-4 rounded-sm ${getColorClass(label)}`}></div> */}
           <span className="text-sm">{label}</span>
         </>
       ) : (
@@ -185,7 +170,7 @@ const Filter = ({ filters, onFilterChange, onClearFilters, filterOptions , initi
               <FilterCheckbox key={option.id} category={category} value={option.id} label={option.name} type={type} />
             ))
           ) : (
-            <p className="text-sm text-gray-500">{t("region.no") || "Hech qanday opsiya mavjud emas"}</p>
+            <p className="text-sm text-gray-500">{t("common.loading") || "Hech qanday opsiya mavjud emas"}</p>
           )}
         </div>
       )}

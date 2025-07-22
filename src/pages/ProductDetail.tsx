@@ -36,7 +36,9 @@ interface ProductData {
   images: ProductImage[];
   character: string;
   character_details: CharacterDetail[];
-  shapes: { [key: string]: ShapeDetail[] }; // Dinamik shakllar uchun
+  shapes: { [key: string]: ShapeDetail[] };
+  catalog: { id: number; name: string }; // Added catalog
+  model: { id: number; name: string }; // Added model
 }
 
 const ProductDetail = () => {
@@ -44,7 +46,7 @@ const ProductDetail = () => {
   const [allImages, setAllImages] = useState<string[]>([]);
   const [selectedImage, setSelectedImage] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedShape, setSelectedShape] = useState<string>(""); // Shakl nomi dinamik
+  const [selectedShape, setSelectedShape] = useState<string>("");
   const location = useLocation();
   const { id } = useParams<{ id: string }>();
   const { t, language } = useLanguage();
@@ -66,7 +68,6 @@ const ProductDetail = () => {
         setAllImages(combined);
         setSelectedImage(combined[0] || "");
 
-        // Birinchi shaklni avtomatik tanlash
         if (data.shapes && Object.keys(data.shapes).length > 0) {
           setSelectedShape(Object.keys(data.shapes)[0]);
         }
@@ -78,7 +79,6 @@ const ProductDetail = () => {
     if (id) fetchData();
   }, [id, language]);
 
-  // 🔁 Avtomatik slider
   useEffect(() => {
     if (!allImages.length) return;
 
@@ -93,7 +93,6 @@ const ProductDetail = () => {
     return () => clearInterval(interval);
   }, [allImages]);
 
-  // Shakl nomlarini tarjima qilish
   const translateShape = (shape: string) => {
     switch (shape) {
       case "Прямоугольник":
@@ -101,7 +100,7 @@ const ProductDetail = () => {
       case "Овал":
         return t("product.shape.oval") || "Oval";
       default:
-        return shape; // Agar tarjima topilmasa, xuddi shunday qaytaradi
+        return shape;
     }
   };
 
@@ -121,7 +120,7 @@ const ProductDetail = () => {
             </Link>
             <div onClick={() => window.history.back()} className="pl-3 cursor-pointer flex items-center">
               <ChevronLeft size={20} className="text-gray-600" />
-              {product?.name}
+              {product?.name || t("common.loading")}
             </div>
             <div className="pl-3 flex items-center font-semibold">
               <ChevronLeft size={20} className="text-gray-600" />
@@ -132,15 +131,15 @@ const ProductDetail = () => {
           <>
             <div className="pl-3 flex items-center cursor-pointer" onClick={() => window.history.back()}>
               <ChevronLeft size={20} className="text-gray-600" />
-              {t("product.breadcrumb.carpets")}
+              {product?.catalog?.name || t("product.breadcrumb.carpets")}
             </div>
             <div className="pl-3 flex items-center cursor-pointer" onClick={() => window.history.back()}>
               <ChevronLeft size={20} className="text-gray-600" />
-              {t("product.breadcrumb.collection")}
+              {product?.model?.name || t("product.breadcrumb.collection")}
             </div>
             <div className="pl-3 flex items-center font-semibold">
               <ChevronLeft size={20} className="text-gray-600" />
-              {t("product.breadcrumb.product")}
+              {product?.name || t("product.breadcrumb.product")}
             </div>
           </>
         )}
@@ -185,16 +184,15 @@ const ProductDetail = () => {
                 ))}
               </div>
 
-       <div className="mt-5">
-         <ShareButtons/>
-       </div>
-
+              <div className="mt-5">
+                <ShareButtons />
+              </div>
             </div>
 
             {/* Info */}
             <div className="md:w-[40%] md:pt-0 pt-9">
               <h1 className="text-xl font-semibold text-gray-800 mb-2">{product.name}</h1>
-              <p className="text-sm text-gray-500 mb-4">{t('filter.colors')}: {product.color}</p>
+              <p className="text-sm text-gray-500 mb-4">{t("filter.colors")}: {product.color}</p>
 
               {/* Shakl tanlash */}
               {product.shapes && Object.keys(product.shapes).length > 0 && (
@@ -227,7 +225,7 @@ const ProductDetail = () => {
                       <tr key={item.id}>
                         <td className="py-2">{item.size}</td>
                         <td className="py-2 font-bold text-gray-800">
-                          {item.price.toLocaleString()}  {t('currency')}
+                          {item.price.toLocaleString()} {t("currency")}
                         </td>
                       </tr>
                     ))}
