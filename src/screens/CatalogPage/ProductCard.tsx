@@ -8,9 +8,10 @@ interface ProductCardProps {
   categoryId: number; 
   collectionId?: number;
   collectionType: string; 
+  styleId: number
 }
 
-const ProductCard = ({ id, name, image, categoryId, collectionId, collectionType }: ProductCardProps) => {
+const ProductCard = ({ id, name, image, categoryId, collectionId, collectionType, styleId}: ProductCardProps) => {
   const { t } = useLanguage();
 
   const getCollectionTypeLabel = (type: string) => {
@@ -44,11 +45,11 @@ const ProductCard = ({ id, name, image, categoryId, collectionId, collectionType
   };
 
   return (
-    <Link to={`/catalog/${categoryId}/product/${id}`} state={{ from: "catalog", name, collectionId  }} className="group">
+    <Link to={`/catalog/${categoryId}/product/${id}`} state={{ from: "catalog", name, collectionId, styleId }} className="group">
       <div className="shadow-md border-gray-200 overflow-hidden transition-shadow hover:shadow-md">
         <div className="relative h-[200px] sm:h-[360px] md:h-[430px] bg-gray-100">
           <img
-            src={image || "https://via.placeholder.com/300x400?text=Rasm+yok"}
+            src={image}
             alt={name}
             
             className="w-full h-full object-cover transform transition-transform duration-300 group-hover:scale-105"
