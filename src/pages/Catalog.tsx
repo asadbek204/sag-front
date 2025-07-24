@@ -44,6 +44,8 @@ const Catalog = () => {
   const [originalRugData, setOriginalRugData] = useState<Rug[]>([]);
   const [loading, setLoading] = useState(true);
   const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const styleQuery = searchParams.get("styles");
   const catalogName = location.state?.catalogKey;
   const [error, setError] = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(() => {
@@ -72,7 +74,7 @@ const Catalog = () => {
     shape: [],
     price: [],
     delivery: [],
-    style: [],
+    style: styleQuery ? [parseInt(styleQuery)] : [],
     room: [],
     size: { width: "", height: "" },
     color: [],
@@ -322,8 +324,8 @@ const Catalog = () => {
                       id={rug.id}
                       name={rug.name}
                       image={rug.image}
-                      collectionType={rug.collection_type} 
-                      categoryId={rug.catalog.id}                    />
+                      collectionType={rug.collection_type}
+                      categoryId={rug.catalog.id} styleId={0}                    />
                   ))}
                 </div>
                 

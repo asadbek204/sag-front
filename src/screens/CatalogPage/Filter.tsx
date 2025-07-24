@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useLanguage } from "../../contexts/LanguageContext";
 
@@ -44,8 +44,10 @@ const Filter = ({ filters, onFilterChange, onClearFilters, filterOptions }: Filt
     shape: false,
     room: false,
     color: false,
-    style: false,
+    style: filters.style.length > 0, 
   });
+
+
 
   const [localFilters, setLocalFilters] = useState({ ...filters });
 
@@ -55,6 +57,12 @@ const Filter = ({ filters, onFilterChange, onClearFilters, filterOptions }: Filt
       [section]: !prev[section],
     }));
   };
+
+
+  useEffect(() => {
+  setLocalFilters(filters);
+}, [filters]);
+
 
   const handleCheckboxChange = (category: string, id: number) => {
     if (category === 'size') return;

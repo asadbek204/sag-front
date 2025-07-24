@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useLanguage } from "../../contexts/LanguageContext";
-import { useLocation } from "react-router-dom";
+import { useLocation, useSearchParams  } from "react-router-dom";
+
 
 interface FilterOption {
   id: number;
@@ -47,21 +48,83 @@ type FilterCategory = keyof Filters;
 
 const Filter = ({ filters, onFilterChange, onClearFilters, filterOptions, initialCollectionId }: FilterProps) => {
   const { t } = useLanguage();
+  const [searchParams] = useSearchParams();
+  const roomQuery = searchParams.get('rooms');
   const location = useLocation();
+  
+   const state = location.state as {
+    from?: string;
+    name?: string;
+    collectionId?: number;
+    styleId?: number;
+  };
+
+
+   useEffect(() => {
+    if (state?.collectionId) {
+      console.log("Collection ID:", state.collectionId);
+      // Shu yerda avtomatik filterni set qilishingiz mumkin
+    }
+
+    if (state?.styleId) {
+      console.log("Style ID:", state.styleId);
+    }
+  }, [state]);
+
 
   useEffect(() => {
-    const collectionId = location.state?.collectionId || initialCollectionId;
-    if (collectionId && !filters.collection.includes(collectionId)) {
-      if (!filterOptions.collections.find((option) => option.id === collectionId)) {
-        console.warn(`Collection ID ${collectionId} not found in filterOptions.collections`);
+  const newFilters: Filters = { ...filters };
+
+  const filterKeys: (keyof Filters)[] = ["collection", "style", "room", "color", "shape"];
+
+  let hasChanges = false;
+
+  filterKeys.forEach((key) => {
+    const param = searchParams.get(`${key}s`); // "styles", "rooms", ...
+    if (param) {
+      const values = param.split(",").map(Number);
+      if (JSON.stringify(newFilters[key]) !== JSON.stringify(values)) {
+        newFilters[key] = values;
+        hasChanges = true;
       }
-      const newFilters = {
-        ...filters,
-        collection: [...filters.collection, collectionId],
-      };
-      onFilterChange(newFilters);
     }
-  }, [location.state?.collectionId, initialCollectionId, filters.collection, onFilterChange, filterOptions.collections]);
+  });
+
+  if (hasChanges) {
+    onFilterChange(newFilters);
+  }
+}, [searchParams]);
+
+
+ useEffect(() => {
+  const collectionId = location.state?.collectionId || initialCollectionId;
+  if (collectionId && !filters.collection.includes(collectionId)) {
+    if (!filterOptions.collections.find((option) => option.id === collectionId)) {
+      console.warn(`Collection ID ${collectionId} not found in filterOptions.collections`);
+    }
+    const newFilters = {
+      ...filters,
+      collection: [...filters.collection, collectionId],
+    };
+    onFilterChange(newFilters);
+  }
+}, [location.state?.collectionId, initialCollectionId, filters.collection, onFilterChange, filterOptions.collections]);
+
+
+useEffect(() => {
+  const styleId = location.state?.styleId;
+  if (styleId && !filters.style.includes(styleId)) {
+    if (!filterOptions.styles.find((option) => option.id === styleId)) {
+      console.warn(`Style ID ${styleId} not found in filterOptions.styles`);
+    }
+    const newFilters = {
+      ...filters,
+      style: [...filters.style, styleId],
+    };
+    onFilterChange(newFilters);
+  }
+}, [location.state?.styleId, filters.style, onFilterChange, filterOptions.styles]);
+
 
   const getInitialExpanded = () => {
     if (typeof window !== "undefined" && window.innerWidth >= 1024) {
@@ -119,12 +182,19 @@ const Filter = ({ filters, onFilterChange, onClearFilters, filterOptions, initia
 
   const FilterCheckbox = ({ category, value, label, type = "default" }: { category: FilterCategory; value: number; label: string; type?: string }) => (
     <label className="flex items-center gap-3 py-1 cursor-pointer">
-      <input
-        type="checkbox"
-        checked={filters[category].includes(value)}
-        onChange={() => handleCheckboxChange(category, value)}
-        className="hidden"
-      />
+     <input
+  type="checkbox"
+  checked={
+    searchParams
+      .get(`${category}s`)  // masalan: "rooms", "styles"
+      ?.split(",")
+      .includes(String(value)) ?? false
+  }
+  onChange={() => handleCheckboxChange(category, value)}
+  className="hidden"
+/>
+
+
       {type === "color" ? (
         <>
           <div
